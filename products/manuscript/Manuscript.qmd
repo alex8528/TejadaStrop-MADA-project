@@ -7,38 +7,20 @@ format:
     toc: false
     number-sections: true
     highlight-style: github
-bibliography: ../../assets/dataanalysis-references.bib
-csl: ../../assets/american-journal-of-epidemiology.csl
+
 ---
 
-The structure below is one possible setup for a manuscript stemming from a data analysis project. It loosely follows the structure of a standard scientific manuscript. Adjust as needed. You don't need to have exactly these sections, but the content covering those sections should be addressed.
+
 
 This uses [MS Word as output format](https://quarto.org/docs/output-formats/ms-word.html). See [the Quarto documentation](https://quarto.org/) for instructions on how to use other formats.
 
 
-```{r, echo=FALSE, message=FALSE}
-# load a few R packages
+```{r}
+# Load core packages used across the project
 library(here)
 library(knitr)
+
 ```
-
-
-**Authors**  
-
-* First Author$^{1,2,*}$ (ORCID: 0000-0000-1234-5678) 
-* Second Author$^{3, *}$
-* Third Author$^{3, \dagger}$
-* Last Author$^{1, 2, \land}$ 
-
-**Author affiliations**  
-
-1. College of Public Health, University of Georgia, Athens, GA, USA.
-2. Another Affiliation, Athens, GA, USA.
-3. Yet another Affiliation.
-
-$*$ These authors contributed equally to this work.
-
-$\land$ Corresponding author: some@email.com
 
 $\dagger$ Disclaimer: The opinions expressed in this article are the
 author's own and don't reflect their employer.
@@ -46,160 +28,114 @@ author's own and don't reflect their employer.
 
 {{< pagebreak >}}
 
-
-
 # Summary/Abstract
-_Write a summary of your project._
+This project examines whether prenatal mental health screening is associated with postpartum depressive symptoms using data from the Pregnancy Risk Assessment Monitoring System (PRAMS) Phase 8. The analysis focuses on self-reported experiences during prenatal care and postpartum mental health outcomes to assess the feasibility of identifying meaningful patterns in population-based surveillance data.
 
-_It is recommended to use a structured abstract with Background/Methods/Results/Discussion sections._
+
+
 
 {{< pagebreak >}}
 
 
 # Introduction 
-Postpartum depression is a common and serious public health concern that affects maternal well-being and infant outcomes. Clinical guidelines recommend routine mental health screening during prenatal care; however, the extent to which such screening is associated with postpartum mental health outcomes in real-world settings remains unclear.
+Postpartum depression is a common and serious public health concern that affects maternal well-being, family functioning, and infant outcomes. Clinical guidelines increasingly recommend routine screening for depression and anxiety during prenatal care; however, the extent to which such screening is associated with postpartum mental health outcomes in real-world settings remains unclear.
 
-Using data from the Pregnancy Risk Assessment Monitoring System (PRAMS) Phase 8, this study examines whether individuals who report being asked about depression or anxiety during prenatal care are less likely to report postpartum depressive symptoms.
+Using data from the Pregnancy Risk Assessment Monitoring System (PRAMS) Phase 8, this study examines whether individuals who report being asked about depression or anxiety during prenatal care are less likely to report postpartum depressive symptoms. By leveraging a large, population-based dataset, this project aims to explore whether prenatal screening practices may be associated with improved postpartum mental health outcomes.
 
 
 ## General Background Information
-_Provide enough background on your topic that others can understand the why and how of your analysis_ 
+Prenatal and postpartum mental health conditions are increasingly recognized as critical components of maternal health, with implications for both maternal and infant outcomes. Understanding whether routine prenatal screening translates into improved postpartum mental health can inform clinical practice and policy.
+
 
 ## Description of data and data source
 The data for this study come from the Pregnancy Risk Assessment Monitoring System (PRAMS) Phase 8, a population-based surveillance system conducted by the Centers for Disease Control and Prevention in collaboration with state health departments. PRAMS collects self-reported survey data from individuals who recently had a live birth and links these responses to selected birth certificate variables.
 
 PRAMS Phase 8 includes several hundred variables capturing maternal demographics, pre-pregnancy health conditions, prenatal care experiences, health behaviors, insurance coverage, mental health indicators, and postpartum outcomes. The dataset contains a mix of categorical and numeric variables and reflects real-world survey complexity, including skip patterns and missing data.
 
-For this project, variables related to prenatal mental health screening, pre-pregnancy mental health history, postpartum depressive symptoms, and sociodemographic characteristics will be used. Variable definitions and coding schemes are documented in the PRAMS Phase 8 codebook.
+Across participating states, PRAMS Phase 8 includes tens of thousands of respondents, providing sufficient sample size and variable richness to support exploratory analysis, multivariable modeling, and predictive approaches covered later in the course.
 
+For this project, variables related to prenatal mental health screening, pre-pregnancy mental health history, postpartum depressive symptoms, and sociodemographic characteristics will be used. Variable definitions and coding schemes are documented in the PRAMS Phase 8 codebook.
 
 ## Questions/Hypotheses to be addressed
 The primary research question for this study is:
 
 Are individuals who report being asked about depression or anxiety during prenatal care less likely to report postpartum depressive symptoms?
 
-The primary outcome of interest is self-reported postpartum depressive symptoms, measured using PRAMS items assessing feelings of depression and loss of interest since birth. Key predictors include indicators of prenatal mental health screening, such as whether a healthcare provider asked about depression or anxiety during prenatal visits. Additional covariates will include pre-pregnancy mental health history, insurance coverage, income, education, maternal age, and race or ethnicity.
+The primary outcome of interest is self-reported postpartum depressive symptoms, measured using PRAMS survey items assessing feelings of depression and loss of interest since birth. The primary predictors of interest include indicators of prenatal mental health screening, such as whether a healthcare provider asked about depression or anxiety during prenatal visits.
 
-At this stage, the analysis plan includes descriptive summaries of key variables and exploratory comparisons between screened and unscreened groups. Later stages of the project will involve regression-based and machine learning approaches covered in the course to model associations between prenatal screening and postpartum mental health outcomes.
-
-
-
+Additional covariates will include pre-pregnancy mental health history, insurance coverage, income, education, maternal age, and race or ethnicity.
 
 {{< pagebreak >}}
 
 
 # Methods 
 
-_Describe your methods. That should describe the data, the cleaning processes, and the analysis approaches. You might want to provide a shorter description here and all the details in the supplement._
+## Use of Computational Assistance
+Generative artificial intelligence tools (ChatGPT, OpenAI) were used to assist with code troubleshooting. All code and analytical decisions were reviewed, modified as needed, and implemented by the author. The author takes full responsibility for the accuracy, interpretation, and reproducibility of all analyses and results.
 
+## Planned Analysis Approach
 
-## Schematic of workflow
+At this stage of the project, the analysis plan includes descriptive summaries of key variables and exploratory comparisons between individuals who did and did not report prenatal mental health screening. These exploratory analyses will be used to assess data quality, missingness, and preliminary patterns in the data.
 
-Sometimes you might want to show a schematic diagram/figure that was not created with code (if you can do it with code, do it). @fig-schematic is an example of some - completely random/unrelated - schematic that was generated with BioRender.
-We store those figures in the `assets` folder.
+Later stages of the project will involve regression-based and machine learning approaches covered in the course to model associations between prenatal screening and postpartum mental health outcomes while accounting for relevant covariates. The richness of PRAMS survey content and linked birth data makes this analysis feasible within the scope of a semester-long project.
+
+{{< pagebreak >}}
+
+## Methods (Planned)
+
+# Data Source
+
+Data were obtained from the Pregnancy Risk Assessment Monitoring System (PRAMS), a population-based surveillance system conducted by the Centers for Disease Control and Prevention in collaboration with state health departments. PRAMS collects self-reported information on maternal experiences before, during, and shortly after pregnancy.
+
+# Study Population
+
+The analytic sample included respondents with non-missing values for the primary exposure (prenatal depression screening) and outcome (postpartum depressive symptoms). After exclusions, the final analytic sample consisted of 237,392 respondents.
+
+# Measures
+
+The primary exposure was self-reported prenatal depression screening (ASK_DPRS). The outcome was postpartum depressive symptoms (PP_DEPRESS). Both variables were recoded into binary indicators.
+
+Key covariates included maternal age, education, income, marital status, prenatal depression history, and prenatal care adequacy.
+
+# Statistical Approach
+
+Exploratory analyses included descriptive statistics, cross-tabulations, and graphical comparisons of postpartum depressive symptoms by screening status. All analyses were conducted in R.
+
+{{< pagebreak >}}
+
+## Results (Planned)
+
+Results sections will be developed after data cleaning and exploratory analysis are completed. Descriptive summaries, tables, and figures will be presented to characterize the study population and explore relationships between prenatal screening and postpartum depressive symptoms.
+
+The analytic sample included approximately 237,000 respondents after excluding missing outcome and exposure values. Overall, 81% of respondents reported being screened for depression during prenatal care, and 14% reported postpartum depressive symptoms.
+
+In exploratory analyses, postpartum depressive symptoms were more common among women who did not report receiving prenatal depression screening compared to those who were screened. Prior depression during pregnancy was strongly associated with postpartum depressive symptoms, suggesting that mental health history is an important confounder to consider in adjusted analyses. Differences in postpartum depressive symptoms were also observed across education levels.
 
 ```{r}
-#| label: fig-schematic
-#| fig-cap: "A figure that is manually generated and shows some overview/schematic. This has nothing to do with the data, it's just a random one from one of our projects I found and placed here."
-#| echo: FALSE
-knitr::include_graphics(here("assets","antigen-recognition.png"))
-```
-
-
-
-
-## Data acquisition
-_As applicable, explain where and how you got the data. If you directly import the data from an online source, you can combine this section with the next._
-
-
-## Data import and cleaning
-_Write code that reads in the file and cleans it so it's ready for analysis. Since this will be fairly long code for most datasets, it might be a good idea to have it in one or several R scripts. If that is the case, explain here briefly what kind of cleaning/processing you do, and provide more details and well documented code somewhere (e.g. as supplement in a paper). All materials, including files that contain code, should be commented well so everyone can follow along._
-
-
-## Statistical analysis
-_Explain anything related to your statistical analyses._
+analytic_dat |>
+  count(screened, pp_depress_bin) |>
+  group_by(screened) |>
+  mutate(pct = n/sum(n)) |>
+  ggplot(aes(x = factor(screened),
+             y = pct,
+             fill = factor(pp_depress_bin))) +
+  geom_col(position = "fill") +
+  labs(
+    x = "Prenatal Depression Screening",
+    y = "Proportion",
+    fill = "Postpartum Depressive Symptoms"
+  )
+  ```
 
 
 {{< pagebreak >}}
 
+## Discussion (Planned)
 
-# Results
-
-## Exploratory/Descriptive analysis
-
-_Use a combination of text/tables/figures to explore and describe your data. Show the most important descriptive results here. Additional ones should go in the supplement. Even more can be in the R and Quarto files that are part of your project._
-
-
-@tbl-summarytable shows a summary of the data.
-
-Note the loading of the data providing a **relative** path using the `../../` notation. (Two dots means a folder up). You never want to specify an **absolute** path like `C:\ahandel\myproject\results\` because if you share this with someone, it won't work for them since they don't have that path. You can also use the `here` R package to create paths. See examples of that below. I generally recommend the `here` package.
-
-```{r}
-#| label: tbl-summarytable
-#| tbl-cap: "Data summary table."
-#| echo: FALSE
-resulttable <- readRDS("../../results/tables/summarytable.rds")
-knitr::kable(resulttable)
-```
-
-
-
-## Basic statistical analysis
-
-_To get some further insight into your data, if reasonable you could compute simple statistics (e.g. simple models with 1 predictor) to look for associations between your outcome(s) and each individual predictor variable. Though note that unless you pre-specified the outcome and main exposure, any "p<0.05 means statistical significance" interpretation is not valid._
-
-
-@fig-result shows a scatterplot figure produced by one of the R scripts.
-
-```{r}
-#| label: fig-result
-#| fig-cap: "Height and weight stratified by gender."
-#| echo: FALSE
-knitr::include_graphics(here("results","figures","height-weight-stratified.png"))
-```
-
-
-## Full analysis
-
-_Use one or several suitable statistical/machine learning methods to analyze your data and to produce meaningful figures, tables, etc. This might again be code that is best placed in one or several separate R scripts that need to be well documented. You want the code to produce figures and data ready for display as tables, and save those. Then you load them here._
-
-Example @tbl-resulttable2 shows a summary of a linear model fit.
-
-```{r}
-#| label: tbl-resulttable2
-#| tbl-cap: "Linear model fit table."
-#| echo: FALSE
-resulttable2 <- readRDS(here("results","tables","resulttable2.rds"))
-knitr::kable(resulttable2)
-```
-
+The discussion section will interpret findings in the context of existing literature, address strengths and limitations of the analysis, and consider implications for prenatal care practices and maternal mental health policy.
 
 {{< pagebreak >}}
 
+## References
 
-# Discussion
-
-## Summary and Interpretation
-_Summarize what you did, what you found and what it means._
-
-## Strengths and Limitations
-_Discuss what you perceive as strengths and limitations of your analysis._
-
-## Conclusions
-_What are the main take-home messages?_
-
-_Include citations in your Qmd file using BibTeX, the list of references will automatically be placed at the end_
-
-This paper [@leek2015] discusses types of analyses. 
-
-These papers [@mckay2020; @mckay2020a] are good examples of papers published using a fully reproducible setup similar to the one shown in this template. 
-
-Note that this cited reference will show up at the end of the document, the reference formatting is determined by the CSL file specified in the YAML header. Many more style files for almost any journal [are available](https://www.zotero.org/styles). You also specify the location of your BibTeX reference file in the YAML. You can call your reference file anything you like.
-
-
-{{< pagebreak >}}
-
-# References
-
-
-
+References will be added in later stages of the project using a BibTeX file and cited throughout the manuscript.

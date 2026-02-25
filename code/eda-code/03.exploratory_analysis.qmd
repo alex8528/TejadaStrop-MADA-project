@@ -1,0 +1,74 @@
+## Load Data
+```{r}
+library(tidyverse)
+library(here)
+
+analytic_dat <- readRDS(here("data", "processed-data", "prams_analytic.rds"))
+
+dim(analytic_dat)
+```
+
+## Screening distribution
+```{r}
+analytic_dat |> 
+  count(screened) |> 
+  mutate(pct = n/sum(n))
+
+```
+
+## Postpartum depression distribution
+
+```{r}
+analytic_dat |> 
+  count(pp_depress_bin) |> 
+  mutate(pct = n/sum(n))
+```
+
+## Cross-tabulation
+```{r}
+analytic_dat |>
+  count(screened, pp_depress_bin) |>
+  group_by(screened) |>
+  mutate(pct = n/sum(n))
+```
+
+## Plot
+```{r}
+analytic_dat |>
+  ggplot(aes(x = factor(screened),
+             fill = factor(pp_depress_bin))) +
+  geom_bar(position = "fill") +
+  labs(
+    x = "Prenatal Depression Screening",
+    y = "Proportion",
+    fill = "Postpartum Depressive Symptoms"
+  )
+```
+
+## Depression by Prior Depression During Pregnancy
+```{r}
+analytic_dat |>
+  count(BPG_DEPRS8, pp_depress_bin) |>
+  group_by(BPG_DEPRS8) |>
+  mutate(pct = n/sum(n))
+```
+
+## Depression by Education
+```{r}
+analytic_dat |>
+  count(MAT_ED, pp_depress_bin) |>
+  group_by(MAT_ED) |>
+  mutate(pct = n/sum(n))
+```
+
+## Proportion with Postpartum Depression and screening
+```{r}
+analytic_dat |>
+  ggplot(aes(x = factor(screened),
+             y = as.numeric(pp_depress_bin))) +
+  stat_summary(fun = mean, geom = "bar") +
+  labs(
+    x = "Prenatal Depression Screening",
+    y = "Proportion with Postpartum Depressive Symptoms"
+  )
+  ```

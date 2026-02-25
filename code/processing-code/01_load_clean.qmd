@@ -1,0 +1,75 @@
+## Load Data Chunk
+```{r}
+library(tidyverse)
+library(here)
+
+raw_path <- here("data", "raw-data", "prams_arf.csv")
+file.exists(raw_path)
+
+raw <- readr::read_csv(raw_path, show_col_types = FALSE)
+glimpse(raw)
+
+dat <- raw |>
+  rename_with(stringr::str_squish) |>
+  mutate(across(where(is.character), stringr::str_squish)) |>
+  distinct()
+
+glimpse(dat)
+```
+
+## Save Cleaned file
+```{r}
+dir.create(here("data", "processed-data"), showWarnings = FALSE, recursive = TRUE)
+
+saveRDS(dat, here("data", "processed-data", "prams_clean.rds"))
+
+# Confirm key variables exist
+c("PP_DEPRESS", "ASK_DPRS", "WTANAL") %in% names(dat)
+
+# Check ID uniqueness
+dat |> summarise(n = n(), n_id_unique = n_distinct(ID))
+```
+
+```{r}
+# Confirm key variables exist
+c("PP_DEPRESS", "ASK_DPRS", "WTANAL") %in% names(raw)
+
+# Check ID uniqueness (raw)
+raw |> summarise(n = n(), n_id_unique = n_distinct(ID))
+```
+
+```{r}
+dir.create(here("data", "processed-data"), showWarnings = FALSE, recursive = TRUE)
+
+saveRDS(dat, here("data", "processed-data", "prams_clean.rds"))
+
+file.exists(here("data", "processed-data", "prams_clean.rds"))
+
+```
+
+```{r}
+dim(raw)
+```
+
+## Clean Data
+```{r}
+dat <- raw |>
+  rename_with(stringr::str_squish) |>
+  mutate(across(where(is.character), stringr::str_squish)) |>
+  distinct()
+
+dim(dat)
+
+dir.create(here("data", "processed-data"), showWarnings = FALSE, recursive = TRUE)
+saveRDS(dat, here("data", "processed-data", "prams_clean.rds"))
+
+file.exists(here("data", "processed-data", "prams_clean.rds"))
+
+c("PP_DEPRESS", "ASK_DPRS", "WTANAL") %in% names(dat)
+
+dat |> summarise(
+  n = n(),
+  n_id_unique = n_distinct(ID),
+  n_id_missing = sum(is.na(ID))
+)
+```
