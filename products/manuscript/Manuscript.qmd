@@ -8,6 +8,12 @@ format:
     number-sections: true
     highlight-style: github
 
+execute:
+  echo: true
+  warning: false
+  message: false
+  eval: false
+
 ---
 
 
@@ -19,7 +25,22 @@ This uses [MS Word as output format](https://quarto.org/docs/output-formats/ms-w
 # Load core packages used across the project
 library(here)
 library(knitr)
+library(tidyverse)
 
+analytic_path <- here("data", "processed-data", "prams_analytic.rds")
+stopifnot(file.exists(analytic_path))
+
+analytic_dat <- readRDS(analytic_path)
+
+```
+
+# Add Data-load 
+```{r}
+
+analytic_path <- here("data", "processed-data", "prams_analytic.rds")
+stopifnot(file.exists(analytic_path))
+
+analytic_dat <- readRDS(analytic_path)
 ```
 
 $\dagger$ Disclaimer: The opinions expressed in this article are the
@@ -125,7 +146,7 @@ analytic_dat |>
     y = "Proportion",
     fill = "Postpartum Depressive Symptoms"
   )
-  ```
+```
 
 
 {{< pagebreak >}}
