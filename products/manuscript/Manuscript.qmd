@@ -3,59 +3,52 @@ title: "Prenatal Mental Health Screening and Postpartum Depressive Symptoms"
 author: "Alexandra Tejada-Strop"
 
 format:
-  docx:
-    toc: false
+  html:
+    toc: true
     number-sections: true
     highlight-style: github
-
 execute:
-  echo: true
+  echo: false
   warning: false
   message: false
-  eval: false
-
+  eval: true
 ---
 
-
-
-This uses [MS Word as output format](https://quarto.org/docs/output-formats/ms-word.html). See [the Quarto documentation](https://quarto.org/) for instructions on how to use other formats.
-
-
 ```{r}
-# Load core packages used across the project
-library(here)
-library(knitr)
 library(tidyverse)
+library(here)
+library(broom)
+library(knitr)
+
+
+# Load analytic dataset
+analytic_path <- here("data", "processed-data", "prams_analytic.rds")
+stopifnot(file.exists(analytic_path))
+analytic_dat <- readRDS(analytic_path)
+
+readRDS(here("results", "tables", "glm_bivariate_screened.rds"))
+
+# Load saved results from Part 3 analysis
+biv_tbl <- readRDS(here("results", "tables", "glm_bivariate_screened.rds"))
+multi_tbl <- readRDS(here("results", "tables", "glm_multivariable_main.rds"))
+
+# Path to saved EDA figure
+fig_path <- here("results", "figures", "screening_vs_postpartum_depression.png")
 
 analytic_path <- here("data", "processed-data", "prams_analytic.rds")
 stopifnot(file.exists(analytic_path))
-
-analytic_dat <- readRDS(analytic_path)
-
-```
-
-# Add Data-load 
-```{r}
-
-analytic_path <- here("data", "processed-data", "prams_analytic.rds")
-stopifnot(file.exists(analytic_path))
-
 analytic_dat <- readRDS(analytic_path)
 ```
+
+
 
 $\dagger$ Disclaimer: The opinions expressed in this article are the
 author's own and don't reflect their employer.
 
 
-{{< pagebreak >}}
 
 # Summary/Abstract
 This project examines whether prenatal mental health screening is associated with postpartum depressive symptoms using data from the Pregnancy Risk Assessment Monitoring System (PRAMS) Phase 8. The analysis focuses on self-reported experiences during prenatal care and postpartum mental health outcomes to assess the feasibility of identifying meaningful patterns in population-based surveillance data.
-
-
-
-
-{{< pagebreak >}}
 
 
 # Introduction 
@@ -86,76 +79,112 @@ The primary outcome of interest is self-reported postpartum depressive symptoms,
 
 Additional covariates will include pre-pregnancy mental health history, insurance coverage, income, education, maternal age, and race or ethnicity.
 
-{{< pagebreak >}}
-
-
 # Methods 
 
 ## Use of Computational Assistance
-Generative artificial intelligence tools (ChatGPT, OpenAI) were used to assist with code troubleshooting. All code and analytical decisions were reviewed, modified as needed, and implemented by the author. The author takes full responsibility for the accuracy, interpretation, and reproducibility of all analyses and results.
+Artificial intelligence tool (ChatGPT) was used to assist with code troubleshooting. All code and analytical decisions were reviewed, modified as needed, and implemented by the author. The author takes full responsibility for the accuracy, interpretation, and reproducibility of all analyses and results.
 
-## Planned Analysis Approach
+## Analysis Approach
 
 At this stage of the project, the analysis plan includes descriptive summaries of key variables and exploratory comparisons between individuals who did and did not report prenatal mental health screening. These exploratory analyses will be used to assess data quality, missingness, and preliminary patterns in the data.
 
 Later stages of the project will involve regression-based and machine learning approaches covered in the course to model associations between prenatal screening and postpartum mental health outcomes while accounting for relevant covariates. The richness of PRAMS survey content and linked birth data makes this analysis feasible within the scope of a semester-long project.
 
-{{< pagebreak >}}
-
-## Methods (Planned)
-
-# Data Source
+## Data Source
 
 Data were obtained from the Pregnancy Risk Assessment Monitoring System (PRAMS), a population-based surveillance system conducted by the Centers for Disease Control and Prevention in collaboration with state health departments. PRAMS collects self-reported information on maternal experiences before, during, and shortly after pregnancy.
 
-# Study Population
+## Study Population
 
-The analytic sample included respondents with non-missing values for the primary exposure (prenatal depression screening) and outcome (postpartum depressive symptoms). After exclusions, the final analytic sample consisted of 237,392 respondents.
+The analytic sample included respondents with non-missing values for the primary exposure (prenatal depression screening) and outcome (postpartum depressive symptoms). 
 
-# Measures
+```{r}
+analytic_dat |>
+  summarise(n_total = n())
 
-The primary exposure was self-reported prenatal depression screening (ASK_DPRS). The outcome was postpartum depressive symptoms (PP_DEPRESS). Both variables were recoded into binary indicators.
+analytic_dat |>
+  select(pp_depress_bin, screened, BPG_DEPRS8, MAT_ED) |>
+  drop_na() |>
+  summarise(n_analysis = n())
+```
 
-Key covariates included maternal age, education, income, marital status, prenatal depression history, and prenatal care adequacy.
 
-# Statistical Approach
+## Measures
+
+The primary exposure was self-reported prenatal mental health screening (screened), indicating whether a provider asked about depression or anxiety during prenatal care. The primary outcome was postpartum depressive symptoms (pp_depress_bin), coded as a binary indicator. Both variables were analyzed as categorical or binary measures.
+
+Key covariates included prior depression during pregnancy (BPG_DEPRS8) and maternal education (MAT_ED).
+
+## Statistical Approach
 
 Exploratory analyses included descriptive statistics, cross-tabulations, and graphical comparisons of postpartum depressive symptoms by screening status. All analyses were conducted in R.
 
-{{< pagebreak >}}
 
-## Results (Planned)
+
+## Results
 
 Results sections will be developed after data cleaning and exploratory analysis are completed. Descriptive summaries, tables, and figures will be presented to characterize the study population and explore relationships between prenatal screening and postpartum depressive symptoms.
 
 The analytic sample included approximately 237,000 respondents after excluding missing outcome and exposure values. Overall, 81% of respondents reported being screened for depression during prenatal care, and 14% reported postpartum depressive symptoms.
+
+```{r}
+multi_tbl |>
+  mutate(across(where(is.numeric), ~ round(.x, 3))) |>
+  knitr::kable(caption = "Multivariable logistic regression results (odds ratios with 95% confidence intervals)")
+```
+
+### Exploratory Analysis
+
+We first examined the distribution of prenatal mental health screening and postpartum depressive symptoms in the analytic sample. We also explored how postpartum depressive symptoms varied by screening status, prior depression during pregnancy, and maternal education.
+
+Preliminary descriptive results suggested that postpartum depressive symptoms were more common among respondents who did not report receiving prenatal mental health screening. Higher rates of postpartum depressive symptoms were also observed among respondents who reported depression during pregnancy. Differences across maternal education groups were also examined to explore potential patterns in the data.
+
+These exploratory analyses help identify initial patterns in the dataset and guide the selection of variables for later modeling and statistical analysis.
+
+```{r}
+analytic_dat |>
+  count(screened, pp_depress_bin) |>
+  group_by(screened) |>
+  mutate(percent = round(n / sum(n) * 100, 1)) |>
+  knitr::kable(
+    caption = "Prenatal screening and postpartum depressive symptoms"
+  )
+```
 
 In exploratory analyses, postpartum depressive symptoms were more common among women who did not report receiving prenatal depression screening compared to those who were screened. Prior depression during pregnancy was strongly associated with postpartum depressive symptoms, suggesting that mental health history is an important confounder to consider in adjusted analyses. Differences in postpartum depressive symptoms were also observed across education levels.
 
 ```{r}
 analytic_dat |>
   count(screened, pp_depress_bin) |>
-  group_by(screened) |>
-  mutate(pct = n/sum(n)) |>
-  ggplot(aes(x = factor(screened),
-             y = pct,
-             fill = factor(pp_depress_bin))) +
+  ggplot(aes(x = factor(screened), y = n, fill = factor(pp_depress_bin))) +
   geom_col(position = "fill") +
   labs(
-    x = "Prenatal Depression Screening",
+    x = "Prenatal mental health screening",
     y = "Proportion",
-    fill = "Postpartum Depressive Symptoms"
+    fill = "Postpartum depressive symptoms"
   )
 ```
 
 
-{{< pagebreak >}}
+```{r}
 
-## Discussion (Planned)
+# Figure 1. Prenatal depression and postpartum depressive symptoms.knitr::include_graphics(fig_path)
+
+```
+
+```{r}
+multi_tbl |>
+  mutate(across(where(is.numeric), ~ round(.x, 3))) |>
+  knitr::kable(
+    caption = "Multivariable logistic regression results (odds ratios with 95% confidence intervals)"
+  )
+```
+
+
+## Discussion
 
 The discussion section will interpret findings in the context of existing literature, address strengths and limitations of the analysis, and consider implications for prenatal care practices and maternal mental health policy.
 
-{{< pagebreak >}}
 
 ## References
 

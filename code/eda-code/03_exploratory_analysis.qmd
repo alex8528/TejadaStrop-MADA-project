@@ -1,19 +1,40 @@
+---
+title: "03 Exploratory analysis"
+author: "Alexandra Tejada-Strop"
+format: html
+execute:
+  echo: true
+  warning: false
+  message: false
+---
+
 ## Load Data
 ```{r}
 library(tidyverse)
 library(here)
+library(skimr)
+
+dir.create(here("results", "tables"), showWarnings = FALSE, recursive = TRUE)
+dir.create(here("results", "figures"), showWarnings = FALSE, recursive = TRUE)
 
 analytic_dat <- readRDS(here("data", "processed-data", "prams_analytic.rds"))
 
 dim(analytic_dat)
 ```
 
+
 ## Screening distribution
 ```{r}
-analytic_dat |> 
+screen_tbl <- analytic_dat |> 
   count(screened) |> 
   mutate(pct = n/sum(n))
 
+screen_tbl
+
+saveRDS(
+  screen_tbl,
+  here("results", "tables", "screening_distribution.rds")
+)
 ```
 
 ## Postpartum depression distribution
@@ -34,7 +55,7 @@ analytic_dat |>
 
 ## Plot
 ```{r}
-analytic_dat |>
+plot_screen_dep <- analytic_dat |>
   ggplot(aes(x = factor(screened),
              fill = factor(pp_depress_bin))) +
   geom_bar(position = "fill") +
@@ -43,6 +64,15 @@ analytic_dat |>
     y = "Proportion",
     fill = "Postpartum Depressive Symptoms"
   )
+
+plot_screen_dep
+
+ggsave(
+  filename = here("results", "figures", "screening_vs_postpartum_depression.png"),
+  plot = plot_screen_dep,
+  width = 7,
+  height = 5
+)
 ```
 
 ## Depression by Prior Depression During Pregnancy

@@ -1,3 +1,46 @@
+---
+title: "01 Load and clean PRAMS ARF data"
+author: "Alexandra Tejada-Strop"
+format: html
+execute:
+  echo: true
+  warning: false
+  message: false
+---
+
+```{r}
+# Load Packages
+library(tidyverse)
+library(readxl)
+library(janitor)
+library(here)
+
+# Define path to raw data (portable using here())
+raw_path <- here("data", "raw-data", "prams_arf.xlsx")
+
+# Confirm the file exists
+stopifnot(file.exists(raw_path))
+
+# Load the raw dataset
+raw <- read_excel(raw_path)
+
+# Basic cleaning
+prams_clean <- raw |>
+  janitor::clean_names() |>
+  mutate(across(where(is.character), ~ na_if(.x, "")))
+
+# Create processed-data folder if it doesn't exist
+dir.create(here("data", "processed-data"), recursive = TRUE, showWarnings = FALSE)
+
+# Save cleaned dataset
+saveRDS(prams_clean, here("data", "processed-data", "prams_clean.rds"))
+
+# Confirm the file saved
+file.exists(here("data", "processed-data", "prams_clean.rds"))
+```
+
+
+
 ## Load Data Chunk
 ```{r}
 library(tidyverse)
@@ -72,4 +115,9 @@ dat |> summarise(
   n_id_unique = n_distinct(ID),
   n_id_missing = sum(is.na(ID))
 )
+```
+
+```{r}
+c("PP_DEPRESS","ASK_DPRS","WTANAL") %in% names(dat)
+
 ```

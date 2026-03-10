@@ -1,3 +1,14 @@
+---
+title: "02 Create analytic dataset"
+author: "Alexandra Tejada-Strop"
+format: html
+execute:
+  echo: true
+  warning: false
+  message: false
+---
+
+
 ## Load cleaned data
 ```{r}
 library(tidyverse)
@@ -108,4 +119,31 @@ analytic_dat |>
   count(screened, pp_depress_bin) |>
   group_by(screened) |>
   mutate(pct = n/sum(n))
+```
+
+```{r}
+# Packages
+library(tidyverse)
+library(here)
+
+# Load cleaned dataset (portable path)
+clean_path <- here("data", "processed-data", "prams_clean.rds")
+stopifnot(file.exists(clean_path))
+
+prams_clean <- readRDS(clean_path)
+
+
+
+prams_analytic <- prams_clean |>
+  # Example: drop completely empty columns (optional)
+  select(where(~ !all(is.na(.x)))) |>
+  # Example: remove obvious duplicate rows (optional)
+  distinct()
+
+# Save analytic dataset
+dir.create(here("data", "processed-data"), showWarnings = FALSE, recursive = TRUE)
+saveRDS(prams_analytic, here("data", "processed-data", "prams_analytic.rds"))
+
+# Confirm saved
+file.exists(here("data", "processed-data", "prams_analytic.rds"))
 ```
