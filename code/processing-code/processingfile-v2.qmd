@@ -1,6 +1,6 @@
 ---
 title: "PRAMS ARF Processing and Cleaning"
-author: "Alex Tejada Strop"
+author: "Alexandra Tejada-Strop"
 date: "2026-02-23"
 format: html
 execute:

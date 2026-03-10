@@ -1,17 +1,32 @@
-# large-files
+# Large Files
 
-This folder is for output files that are so large that they cannot be tracked with
-GitHub. That's generally anything above around 20MB. 
+This folder is intended for output files that are too large to be tracked by GitHub.  
+In general, GitHub repositories should avoid tracking files larger than approximately 20 MB.
 
-Such large files might result from creating posterior samples from Bayesian models.
+Examples of files that might be stored here include:
 
-Don't use this folder for large raw data files. If you need to store large raw data files, create a separate folder for that, e.g. `data/large-files/`.
+- large model outputs
+- posterior samples from Bayesian models
+- very large intermediate results
+- large simulation outputs
 
-This folder is set in `.gitignore` to be ignored when pushing/pulling. (The folder itself and the readme will be synced, but all other files will be ignored.)
+For this project, most results (tables and figures) are small enough to be stored directly in the `results` folder. However, this directory is included in case future analyses generate large output files.
 
-This allows large files to be part of the project. If you want to collaborate with someone or work on multiple computers, you need to manually share/transfer everything in this folder, e.g. by Dropbox/OneDrive/etc.
+---
 
-If you use a cloud service, you should add the link to the storage location and instructions for obtaining access below.
+# Git Tracking
 
-Link to large files: LINK-GOES-HERE
-Instructions for obtaining large files: email/discord message/etc. INFO HERE.
+This folder is listed in the repository's `.gitignore` file.  
+
+This means:
+
+- the folder itself **will appear in the repository**
+- files placed inside it **will NOT be pushed to GitHub**
+
+---
+
+# External Storage (if needed)
+
+Link to large files:  
+TBD
+
