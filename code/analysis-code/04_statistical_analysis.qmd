@@ -14,7 +14,8 @@ library(here)
 library(tidymodels)
 library(broom)
 
-# Load analytic dataset
+# Load dataset
+
 data_path <- here("data", "processed-data", "prams_analytic.rds")
 stopifnot(file.exists(data_path))
 dat <- readRDS(data_path)

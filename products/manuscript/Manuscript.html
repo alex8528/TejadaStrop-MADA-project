@@ -101,7 +101,7 @@ window.Quarto = {
   <li><a href="#introduction" id="toc-introduction" class="nav-link" data-scroll-target="#introduction"><span class="header-section-number">2</span> Introduction</a>
   <ul class="collapse">
   <li><a href="#general-background-information" id="toc-general-background-information" class="nav-link" data-scroll-target="#general-background-information"><span class="header-section-number">2.1</span> General Background Information</a></li>
-  <li><a href="#description-of-data-and-data-source" id="toc-description-of-data-and-data-source" class="nav-link" data-scroll-target="#description-of-data-and-data-source"><span class="header-section-number">2.2</span> Description of data and data source</a></li>
+  <li><a href="#description-of-data" id="toc-description-of-data" class="nav-link" data-scroll-target="#description-of-data"><span class="header-section-number">2.2</span> Description of data</a></li>
   <li><a href="#questionshypotheses-to-be-addressed" id="toc-questionshypotheses-to-be-addressed" class="nav-link" data-scroll-target="#questionshypotheses-to-be-addressed"><span class="header-section-number">2.3</span> Questions/Hypotheses to be addressed</a></li>
   </ul></li>
   <li><a href="#methods" id="toc-methods" class="nav-link" data-scroll-target="#methods"><span class="header-section-number">3</span> Methods</a>
@@ -149,15 +149,6 @@ window.Quarto = {
 </header>
 
 
-<div class="cell">
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 2 × 7
-  term        estimate std.error statistic  p.value conf.low conf.high
-  &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;
-1 (Intercept)    0.178    0.0133   -130.   0           0.173     0.182
-2 screened1      0.905    0.0149     -6.67 2.54e-11    0.879     0.932</code></pre>
-</div>
-</div>
 <p><span class="math inline">\(\dagger\)</span> Disclaimer: The opinions expressed in this article are the author’s own and don’t reflect their employer.</p>
 <section id="abstract" class="level1" data-number="1">
 <h1 data-number="1"><span class="header-section-number">1</span> Abstract</h1>
@@ -174,8 +165,8 @@ window.Quarto = {
 <p>Prenatal and postpartum mental health conditions are increasingly recognized as critical components of maternal health. Poor maternal mental health has been associated with adverse outcomes for both mothers and infants, including reduced maternal functioning and challenges in early child development <span class="citation" data-cites="acog2023screening">American College of Obstetricians and Gynecologists (<a href="#ref-acog2023screening" role="doc-biblioref">2023</a>)</span>. As a result, healthcare providers are encouraged to assess mental health concerns throughout pregnancy and after delivery.</p>
 <p>Routine screening for depression during pregnancy may provide opportunities for earlier identification of individuals experiencing symptoms or those at elevated risk of developing postpartum depression. However, population-level evidence examining how prenatal screening relates to postpartum depressive symptoms remains limited. Understanding this relationship may help inform both clinical practice and maternal health policy.</p>
 </section>
-<section id="description-of-data-and-data-source" class="level2" data-number="2.2">
-<h2 data-number="2.2" class="anchored" data-anchor-id="description-of-data-and-data-source"><span class="header-section-number">2.2</span> Description of data and data source</h2>
+<section id="description-of-data" class="level2" data-number="2.2">
+<h2 data-number="2.2" class="anchored" data-anchor-id="description-of-data"><span class="header-section-number">2.2</span> Description of data</h2>
 <p>The data for this study come from the Pregnancy Risk Assessment Monitoring System (PRAMS) Phase 8, a population-based surveillance system conducted by the Centers for Disease Control and Prevention in collaboration with state health departments <span class="citation" data-cites="cdc_prams_phase8_codebook">Centers for Disease Control and Prevention (<a href="#ref-cdc_prams_phase8_codebook" role="doc-biblioref">2024a</a>)</span> <span class="citation" data-cites="cdc_prams_phase8_topics">Centers for Disease Control and Prevention (<a href="#ref-cdc_prams_phase8_topics" role="doc-biblioref">2024b</a>)</span>. PRAMS collects self-reported survey data from individuals who recently had a live birth and links these responses to selected birth certificate variables.</p>
 <p>PRAMS is designed to monitor maternal experiences and behaviors before, during, and shortly after pregnancy. The survey includes questions related to prenatal care, maternal health conditions, health behaviors, mental health, and postpartum experiences. These data allow researchers to examine population-level patterns related to maternal and infant health.</p>
 <p>PRAMS Phase 8 includes several hundred variables capturing maternal demographics, pre-pregnancy health conditions, prenatal care experiences, health behaviors, insurance coverage, mental health indicators, and postpartum outcomes. The dataset contains a mix of categorical and numeric variables and reflects real-world survey complexity, including skip patterns and missing data.</p>
@@ -207,19 +198,59 @@ window.Quarto = {
 </section>
 <section id="study-population" class="level2" data-number="3.4">
 <h2 data-number="3.4" class="anchored" data-anchor-id="study-population"><span class="header-section-number">3.4</span> Study Population</h2>
-<p>The analytic sample included respondents with non-missing values for the primary exposure (prenatal depression screening) and outcome (postpartum depressive symptoms).</p>
+<p>The full PRAMS analytic dataset included 237,392 respondents. After excluding observations with missing values for the primary exposure, outcome, and selected covariates used in the main model, the final analytic sample included 233,213 respondents.</p>
 <div class="cell">
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 1 × 1
-  n_total
-    &lt;int&gt;
-1  237392</code></pre>
+<div id="tbl-study-pop" class="cell quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-study-pop-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;1: Study population characteristics
+</figcaption>
+<div aria-describedby="tbl-study-pop-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output-display">
+<table class="do-not-create-environment cell caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Characteristic</th>
+<th style="text-align: right;">n</th>
+<th style="text-align: right;">Percent</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Total respondents in dataset</td>
+<td style="text-align: right;">237392</td>
+<td style="text-align: right;">100.0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Respondents in analytic sample</td>
+<td style="text-align: right;">233213</td>
+<td style="text-align: right;">98.2</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Screened during prenatal care</td>
+<td style="text-align: right;">192539</td>
+<td style="text-align: right;">81.1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Not screened during prenatal care</td>
+<td style="text-align: right;">44853</td>
+<td style="text-align: right;">18.9</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Reported postpartum depressive symptoms</td>
+<td style="text-align: right;">33599</td>
+<td style="text-align: right;">14.2</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">No postpartum depressive symptoms</td>
+<td style="text-align: right;">203793</td>
+<td style="text-align: right;">85.8</td>
+</tr>
+</tbody>
+</table>
 </div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 1 × 1
-  n_analysis
-       &lt;int&gt;
-1     233213</code></pre>
+</div>
+</figure>
 </div>
 </div>
 </section>
@@ -336,13 +367,26 @@ window.Quarto = {
 <p>Preliminary descriptive results suggested that postpartum depressive symptoms were more common among respondents who did not report receiving prenatal mental health screening. Higher rates of postpartum depressive symptoms were also observed among respondents who reported depression during pregnancy. Differences across maternal education groups were also examined to explore potential patterns in the data.</p>
 <p>These exploratory analyses help identify initial patterns in the dataset and guide the selection of variables for later modeling and statistical analysis.</p>
 <div class="cell">
+<div id="tbl-screening" class="cell quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-screening-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;2: Prenatal screening and postpartum depressive symptoms
+</figcaption>
+<div aria-describedby="tbl-screening-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
-<caption>Prenatal screening and postpartum depressive symptoms</caption>
+<table class="do-not-create-environment cell caption-top table table-sm table-striped small">
+<colgroup>
+<col style="width: 12%">
+<col style="width: 25%">
+<col style="width: 41%">
+<col style="width: 9%">
+<col style="width: 10%">
+</colgroup>
 <thead>
 <tr class="header">
 <th style="text-align: right;">screened</th>
-<th style="text-align: right;">pp_depress_bin</th>
+<th style="text-align: left;">Prenatal screening</th>
+<th style="text-align: left;">Postpartum depressive symptoms</th>
 <th style="text-align: right;">n</th>
 <th style="text-align: right;">percent</th>
 </tr>
@@ -350,25 +394,29 @@ window.Quarto = {
 <tbody>
 <tr class="odd">
 <td style="text-align: right;">0</td>
-<td style="text-align: right;">0</td>
+<td style="text-align: left;">Not screened</td>
+<td style="text-align: left;">No</td>
 <td style="text-align: right;">38048</td>
 <td style="text-align: right;">84.8</td>
 </tr>
 <tr class="even">
 <td style="text-align: right;">0</td>
-<td style="text-align: right;">1</td>
+<td style="text-align: left;">Not screened</td>
+<td style="text-align: left;">Yes</td>
 <td style="text-align: right;">6805</td>
 <td style="text-align: right;">15.2</td>
 </tr>
 <tr class="odd">
 <td style="text-align: right;">1</td>
-<td style="text-align: right;">0</td>
+<td style="text-align: left;">Screened</td>
+<td style="text-align: left;">No</td>
 <td style="text-align: right;">165745</td>
 <td style="text-align: right;">86.1</td>
 </tr>
 <tr class="even">
 <td style="text-align: right;">1</td>
-<td style="text-align: right;">1</td>
+<td style="text-align: left;">Screened</td>
+<td style="text-align: left;">Yes</td>
 <td style="text-align: right;">26794</td>
 <td style="text-align: right;">13.9</td>
 </tr>
@@ -376,106 +424,92 @@ window.Quarto = {
 </table>
 </div>
 </div>
+</figure>
+</div>
+</div>
 <p>In exploratory analyses, postpartum depressive symptoms were more common among women who did not report receiving prenatal depression screening compared to those who were screened. Prior depression during pregnancy was strongly associated with postpartum depressive symptoms, suggesting that mental health history is an important confounder to consider in adjusted analyses. Differences in postpartum depressive symptoms were also observed across education levels.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="Manuscript_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="Manuscript_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
 <div class="cell">
+<div id="tbl-multivariable" class="cell quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-multivariable-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;3: Multivariable logistic regression results
+</figcaption>
+<div aria-describedby="tbl-multivariable-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
-<caption>Multivariable logistic regression results (odds ratios with 95% confidence intervals)</caption>
+<table class="do-not-create-environment cell caption-top table table-sm table-striped small">
 <colgroup>
+<col style="width: 40%">
+<col style="width: 14%">
 <col style="width: 17%">
-<col style="width: 13%">
-<col style="width: 14%">
-<col style="width: 14%">
-<col style="width: 11%">
-<col style="width: 13%">
-<col style="width: 14%">
+<col style="width: 17%">
+<col style="width: 10%">
 </colgroup>
 <thead>
 <tr class="header">
-<th style="text-align: left;">term</th>
-<th style="text-align: right;">estimate</th>
-<th style="text-align: right;">std.error</th>
-<th style="text-align: right;">statistic</th>
-<th style="text-align: right;">p.value</th>
-<th style="text-align: right;">conf.low</th>
-<th style="text-align: right;">conf.high</th>
+<th style="text-align: left;">Predictor</th>
+<th style="text-align: right;">Odds ratio</th>
+<th style="text-align: right;">95% CI lower</th>
+<th style="text-align: right;">95% CI upper</th>
+<th style="text-align: right;">P value</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">(Intercept)</td>
-<td style="text-align: right;">0.154</td>
-<td style="text-align: right;">0.040</td>
-<td style="text-align: right;">-46.571</td>
-<td style="text-align: right;">0.000</td>
-<td style="text-align: right;">0.143</td>
-<td style="text-align: right;">0.167</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">screened1</td>
+<td style="text-align: left;">Screened during prenatal care</td>
 <td style="text-align: right;">0.759</td>
-<td style="text-align: right;">0.015</td>
-<td style="text-align: right;">-17.863</td>
-<td style="text-align: right;">0.000</td>
 <td style="text-align: right;">0.737</td>
 <td style="text-align: right;">0.783</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">BPG_DEPRS82</td>
-<td style="text-align: right;">3.376</td>
-<td style="text-align: right;">0.014</td>
-<td style="text-align: right;">89.451</td>
 <td style="text-align: right;">0.000</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Depression during pregnancy</td>
+<td style="text-align: right;">3.376</td>
 <td style="text-align: right;">3.287</td>
 <td style="text-align: right;">3.467</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">MAT_ED2</td>
-<td style="text-align: right;">1.360</td>
-<td style="text-align: right;">0.043</td>
-<td style="text-align: right;">7.235</td>
 <td style="text-align: right;">0.000</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">High school graduate</td>
+<td style="text-align: right;">1.360</td>
 <td style="text-align: right;">1.252</td>
 <td style="text-align: right;">1.479</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">MAT_ED3</td>
-<td style="text-align: right;">1.289</td>
-<td style="text-align: right;">0.040</td>
-<td style="text-align: right;">6.359</td>
 <td style="text-align: right;">0.000</td>
-<td style="text-align: right;">1.193</td>
-<td style="text-align: right;">1.395</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">MAT_ED4</td>
-<td style="text-align: right;">1.088</td>
-<td style="text-align: right;">0.040</td>
-<td style="text-align: right;">2.121</td>
-<td style="text-align: right;">0.034</td>
-<td style="text-align: right;">1.007</td>
-<td style="text-align: right;">1.177</td>
+<td style="text-align: left;">Some college</td>
+<td style="text-align: right;">1.289</td>
+<td style="text-align: right;">1.193</td>
+<td style="text-align: right;">1.395</td>
+<td style="text-align: right;">0.000</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">MAT_ED5</td>
+<td style="text-align: left;">College graduate</td>
+<td style="text-align: right;">1.088</td>
+<td style="text-align: right;">1.007</td>
+<td style="text-align: right;">1.177</td>
+<td style="text-align: right;">0.034</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">More than college</td>
 <td style="text-align: right;">0.694</td>
-<td style="text-align: right;">0.040</td>
-<td style="text-align: right;">-9.134</td>
-<td style="text-align: right;">0.000</td>
 <td style="text-align: right;">0.642</td>
 <td style="text-align: right;">0.751</td>
+<td style="text-align: right;">0.000</td>
 </tr>
 </tbody>
 </table>
+</div>
+</div>
+</figure>
 </div>
 </div>
 </section>
@@ -512,7 +546,7 @@ Centers for Disease Control and Prevention. (2024a). <em>Phase 8 automated resea
 Centers for Disease Control and Prevention. (2024b). <em>PRAMS phase 8 topic reference document</em>. <a href="https://www.cdc.gov/prams/pdf/questionnaire/phase-8-topics-reference_508tagged.pdf">https://www.cdc.gov/prams/pdf/questionnaire/phase-8-topics-reference_508tagged.pdf</a>
 </div>
 <div id="ref-farr2016provider" class="csl-entry" role="listitem">
-Farr, S. L., Dietz, P. M., O’Hara, M. W., Burley, K., Ko, J. Y., &amp; Gibbs Pickens, C. M. (2016). Provider communication on perinatal depression: A population-based study. <em>Archives of Women’s Mental Health</em>, <em>19</em>(1), 35–40. <a href="https://doi.org/10.1007/s00737-014-0499-y">https://doi.org/10.1007/s00737-014-0499-y</a>
+Farr, S. L., Dietz, P. M., O’Hara, M. W., Burley, K., Ko, J. Y., &amp; Gibbs Pickens, C. M. (2016). Provider communication on perinatal depression: A population-based study. <em>Archives of Women’s Mental Health</em>, <em>19</em>(1), 35–40. https://doi.org/<a href="https://doi.org/10.1089/jwh.2013.4438">https://doi.org/10.1089/jwh.2013.4438</a>
 </div>
 <div id="ref-uspstf2019perinatal" class="csl-entry" role="listitem">
 U.S. Preventive Services Task Force. (2019). <em>Perinatal depression: Preventive interventions</em>. <a href="https://www.uspreventiveservicestaskforce.org/uspstf/recommendation/perinatal-depression-preventive-interventions">https://www.uspreventiveservicestaskforce.org/uspstf/recommendation/perinatal-depression-preventive-interventions</a>

@@ -25,11 +25,17 @@ library(knitr)
 
 
 # Load analytic dataset
+
 analytic_path <- here("data", "processed-data", "prams_analytic.rds")
 stopifnot(file.exists(analytic_path))
 analytic_dat <- readRDS(analytic_path)
 
-readRDS(here("results", "tables", "glm_bivariate_screened.rds"))
+n_total <- nrow(analytic_dat)
+
+n_analysis <- analytic_dat |>
+  select(pp_depress_bin, screened, BPG_DEPRS8, MAT_ED) |>
+  drop_na() |>
+  nrow()
 
 # Load saved results from Part 3 analysis
 biv_tbl <- readRDS(here("results", "tables", "glm_bivariate_screened.rds"))
@@ -71,7 +77,7 @@ Prenatal and postpartum mental health conditions are increasingly recognized as 
 
 Routine screening for depression during pregnancy may provide opportunities for earlier identification of individuals experiencing symptoms or those at elevated risk of developing postpartum depression. However, population-level evidence examining how prenatal screening relates to postpartum depressive symptoms remains limited. Understanding this relationship may help inform both clinical practice and maternal health policy.
 
-## Description of data and data source
+## Description of data
 
 The data for this study come from the Pregnancy Risk Assessment Monitoring System (PRAMS) Phase 8, a population-based surveillance system conducted by the Centers for Disease Control and Prevention in collaboration with state health departments @cdc_prams_phase8_codebook @cdc_prams_phase8_topics. PRAMS collects self-reported survey data from individuals who recently had a live birth and links these responses to selected birth certificate variables.
 
@@ -108,19 +114,63 @@ Later stages of the project will involve regression-based and machine learning a
 Data were obtained from the Pregnancy Risk Assessment Monitoring System (PRAMS), a population-based surveillance system conducted by the Centers for Disease Control and Prevention in collaboration with state health departments. PRAMS collects self-reported information on maternal experiences before, during, and shortly after pregnancy.
 
 ## Study Population
-
-The analytic sample included respondents with non-missing values for the primary exposure (prenatal depression screening) and outcome (postpartum depressive symptoms). 
+The full PRAMS analytic dataset included `r scales::comma(n_total)` respondents. After excluding observations with missing values for the primary exposure, outcome, and selected covariates used in the main model, the final analytic sample included `r scales::comma(n_analysis)` respondents.
 
 ```{r}
-analytic_dat |>
-  summarise(n_total = n())
+#| label: tbl-study-pop
+#| tbl-cap: "Study population characteristics"
 
-analytic_dat |>
-  select(pp_depress_bin, screened, BPG_DEPRS8, MAT_ED) |>
-  drop_na() |>
-  summarise(n_analysis = n())
+study_pop_tbl <- tibble(
+  Characteristic = c(
+    "Total respondents in dataset",
+    "Respondents in analytic sample",
+    "Screened during prenatal care",
+    "Not screened during prenatal care",
+    "Reported postpartum depressive symptoms",
+    "No postpartum depressive symptoms"
+  ),
+  n = c(
+    n_total,
+    n_analysis,
+    sum(analytic_dat$screened == 1, na.rm = TRUE),
+    sum(analytic_dat$screened == 0, na.rm = TRUE),
+    sum(analytic_dat$pp_depress_bin == 1, na.rm = TRUE),
+    sum(analytic_dat$pp_depress_bin == 0, na.rm = TRUE)
+  )
+) |>
+  mutate(`Percent` = round(100 * n / n_total, 1))
+
+knitr::kable(study_pop_tbl)
 ```
 
+```{r}
+demo_tbl <- analytic_dat |>
+  transmute(
+    `Prenatal screening` = case_when(
+      screened == 0 ~ "Not screened",
+      screened == 1 ~ "Screened",
+      TRUE ~ NA_character_
+    ),
+    `Postpartum depressive symptoms` = case_when(
+      pp_depress_bin == 0 ~ "No",
+      pp_depress_bin == 1 ~ "Yes",
+      TRUE ~ NA_character_
+    ),
+    `Depression during pregnancy` = case_when(
+      BPG_DEPRS8 == 0 ~ "No",
+      BPG_DEPRS8 == 1 ~ "Yes",
+      TRUE ~ NA_character_
+    ),
+    `Maternal education` = case_when(
+      MAT_ED == 1 ~ "Less than high school",
+      MAT_ED == 2 ~ "High school graduate",
+      MAT_ED == 3 ~ "Some college",
+      MAT_ED == 4 ~ "College graduate",
+      MAT_ED == 5 ~ "More than college",
+      TRUE ~ NA_character_
+    )
+  )
+```
 
 ## Measures
 
@@ -159,13 +209,15 @@ Preliminary descriptive results suggested that postpartum depressive symptoms we
 These exploratory analyses help identify initial patterns in the dataset and guide the selection of variables for later modeling and statistical analysis.
 
 ```{r}
-analytic_dat |>
-  count(screened, pp_depress_bin) |>
-  group_by(screened) |>
-  mutate(percent = round(n / sum(n) * 100, 1)) |>
-  knitr::kable(
-    caption = "Prenatal screening and postpartum depressive symptoms"
-  )
+#| label: tbl-screening
+#| tbl-cap: "Prenatal screening and postpartum depressive symptoms"
+
+screening_summary <- readr::read_csv(
+  here("results", "tables", "screening_summary.csv"),
+  show_col_types = FALSE
+)
+
+knitr::kable(screening_summary)
 ```
 
 In exploratory analyses, postpartum depressive symptoms were more common among women who did not report receiving prenatal depression screening compared to those who were screened. Prior depression during pregnancy was strongly associated with postpartum depressive symptoms, suggesting that mental health history is an important confounder to consider in adjusted analyses. Differences in postpartum depressive symptoms were also observed across education levels.
@@ -190,11 +242,31 @@ analytic_dat |>
 ```
 
 ```{r}
-multi_tbl |>
-  mutate(across(where(is.numeric), ~ round(.x, 3))) |>
-  knitr::kable(
-    caption = "Multivariable logistic regression results (odds ratios with 95% confidence intervals)"
+#| label: tbl-multivariable
+#| tbl-cap: "Multivariable logistic regression results"
+
+multi_clean <- multi_tbl |>
+  filter(term != "(Intercept)") |>
+  mutate(
+    Predictor = case_when(
+      term == "screened1" ~ "Screened during prenatal care",
+      term == "BPG_DEPRS82" ~ "Depression during pregnancy",
+      term == "MAT_ED2" ~ "High school graduate",
+      term == "MAT_ED3" ~ "Some college",
+      term == "MAT_ED4" ~ "College graduate",
+      term == "MAT_ED5" ~ "More than college",
+      TRUE ~ term
+    )
+  ) |>
+  transmute(
+    Predictor,
+    `Odds ratio` = round(estimate, 3),
+    `95% CI lower` = round(conf.low, 3),
+    `95% CI upper` = round(conf.high, 3),
+    `P value` = round(p.value, 3)
   )
+
+knitr::kable(multi_clean)
 ```
 
 ## Discussion

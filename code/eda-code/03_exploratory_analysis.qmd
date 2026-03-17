@@ -13,6 +13,7 @@ execute:
 library(tidyverse)
 library(here)
 library(skimr)
+library(scales)
 
 dir.create(here("results", "tables"), showWarnings = FALSE, recursive = TRUE)
 dir.create(here("results", "figures"), showWarnings = FALSE, recursive = TRUE)
@@ -22,12 +23,18 @@ analytic_dat <- readRDS(here("data", "processed-data", "prams_analytic.rds"))
 dim(analytic_dat)
 ```
 
-
 ## Screening distribution
 ```{r}
 screen_tbl <- analytic_dat |> 
   count(screened) |> 
-  mutate(pct = n/sum(n))
+  mutate(
+    pct = n / sum(n),
+    screening_status = case_when(
+      screened == 0 ~ "Not screened",
+      screened == 1 ~ "Screened",
+      TRUE ~ as.character(screened)
+    )
+  )
 
 screen_tbl
 
@@ -38,67 +45,194 @@ saveRDS(
 ```
 
 ## Postpartum depression distribution
-
 ```{r}
-analytic_dat |> 
+
+ppd_tbl <- analytic_dat |> 
   count(pp_depress_bin) |> 
-  mutate(pct = n/sum(n))
+  mutate(
+    pct = n / sum(n),
+    depression_status = case_when(
+      pp_depress_bin == 0 ~ "No depressive symptoms",
+      pp_depress_bin == 1 ~ "Postpartum depressive symptoms",
+      TRUE ~ as.character(pp_depress_bin)
+    )
+  )
+
+ppd_tbl
+
 ```
 
-## Cross-tabulation
+## Plot: Postpartum depressive symptoms by screening
+
 ```{r}
-analytic_dat |>
+data_summary <- analytic_dat |>
   count(screened, pp_depress_bin) |>
   group_by(screened) |>
-  mutate(pct = n/sum(n))
-```
+  mutate(proportion = n / sum(n)) |>
+  mutate(
+    screening_status = case_when(
+      screened == 0 ~ "Not screened",
+      screened == 1 ~ "Screened",
+      TRUE ~ as.character(screened)
+    ),
+    depression_status = case_when(
+      pp_depress_bin == 0 ~ "No depressive symptoms",
+      pp_depress_bin == 1 ~ "Postpartum depressive symptoms",
+      TRUE ~ as.character(pp_depress_bin)
+    )
+  )
 
-## Plot
-```{r}
-plot_screen_dep <- analytic_dat |>
-  ggplot(aes(x = factor(screened),
-             fill = factor(pp_depress_bin))) +
-  geom_bar(position = "fill") +
+plot_screen_dep <- ggplot(
+  data_summary,
+  aes(
+    x = screening_status,
+    y = proportion,
+    fill = depression_status
+  )
+) +
+  geom_col(width = 0.65, color = "white") +
+  geom_text(
+    aes(label = scales::percent(proportion, accuracy = 0.1)),
+    position = position_stack(vjust = 0.5),
+    size = 4
+  ) +
+  scale_y_continuous(
+    labels = scales::percent,
+    expand = expansion(mult = c(0, .05))
+  ) +
+  scale_fill_manual(
+    values = c(
+      "No depressive symptoms" = "#4E79A7",
+      "Postpartum depressive symptoms" = "#E15759"
+    )
+  ) +
   labs(
-    x = "Prenatal Depression Screening",
-    y = "Proportion",
-    fill = "Postpartum Depressive Symptoms"
+    title = "Postpartum Depressive Symptoms by Prenatal Mental Health Screening",
+    subtitle = "PRAMS Phase 8",
+    x = "Prenatal mental health screening",
+    y = "Percent of respondents",
+    fill = "Postpartum depressive symptoms"
+  ) +
+  theme_minimal(base_size = 13) +
+  theme(
+    legend.position = "top",
+    plot.title = element_text(face = "bold", size = 14),
+    axis.title = element_text(face = "bold")
   )
 
 plot_screen_dep
 
 ggsave(
-  filename = here("results", "figures", "screening_vs_postpartum_depression.png"),
+  filename = here("results","figures","screening_vs_postpartum_depression.png"),
   plot = plot_screen_dep,
   width = 7,
-  height = 5
+  height = 5,
+  dpi = 300
 )
 ```
 
-## Depression by Prior Depression During Pregnancy
+## Cross tabulation
 ```{r}
-analytic_dat |>
+cross_tab <- analytic_dat |>
+  count(screened, pp_depress_bin) |>
+  group_by(screened) |>
+  mutate(
+    percent = round(n / sum(n) * 100, 1),
+    screening_status = case_when(
+      screened == 0 ~ "Not screened",
+      screened == 1 ~ "Screened",
+      TRUE ~ as.character(screened)
+    ),
+    depression_status = case_when(
+      pp_depress_bin == 0 ~ "No depressive symptoms",
+      pp_depress_bin == 1 ~ "Postpartum depressive symptoms",
+      TRUE ~ as.character(pp_depress_bin)
+    )
+  ) |>
+  select(screening_status, depression_status, n, percent)
+
+cross_tab
+```
+
+## Interpretation
+The exploratory analysis suggests that postpartum depressive symptoms were slightly less common among respondents who reported being screened during prenatal care. About 13.9% of screened respondents reported postpartum depressive symptoms compared with 15.2% among those who were not screened.
+
+## Depression by prior depression during pregnancy
+```{r}
+dep_prior_tbl <- analytic_dat |>
   count(BPG_DEPRS8, pp_depress_bin) |>
   group_by(BPG_DEPRS8) |>
-  mutate(pct = n/sum(n))
+  mutate(pct = n / sum(n))
+
+dep_prior_tbl
 ```
 
-## Depression by Education
+## Depression by education
 ```{r}
-analytic_dat |>
+dep_edu_tbl <- analytic_dat |>
   count(MAT_ED, pp_depress_bin) |>
   group_by(MAT_ED) |>
-  mutate(pct = n/sum(n))
+  mutate(pct = n / sum(n))
+
+dep_edu_tbl
 ```
 
-## Proportion with Postpartum Depression and screening
+## Proportion with postpartum depressive symptoms by screening
 ```{r}
-analytic_dat |>
-  ggplot(aes(x = factor(screened),
+plot_ppd_screen <- analytic_dat |>
+  mutate(
+    screening_status = case_when(
+      screened == 0 ~ "Not screened",
+      screened == 1 ~ "Screened",
+      TRUE ~ as.character(screened)
+    )
+  ) |>
+  ggplot(aes(x = screening_status,
              y = as.numeric(pp_depress_bin))) +
-  stat_summary(fun = mean, geom = "bar") +
+  stat_summary(fun = mean, geom = "bar", width = 0.65) +
+  scale_y_continuous(labels = scales::percent) +
   labs(
-    x = "Prenatal Depression Screening",
-    y = "Proportion with Postpartum Depressive Symptoms"
+    title = "Proportion with Postpartum Depressive Symptoms by Screening Status",
+    x = "Prenatal mental health screening",
+    y = "Percent with postpartum depressive symptoms"
+  ) +
+  theme_minimal(base_size = 13) +
+  theme(
+    plot.title = element_text(face = "bold")
   )
-  ```
+
+plot_ppd_screen
+```
+
+## Save screening summary table
+```{r}
+screening_table <- analytic_dat |>
+  count(screened, pp_depress_bin) |>
+  group_by(screened) |>
+  mutate(percent = round(n / sum(n) * 100, 1)) |>
+  mutate(
+    `Prenatal screening` = case_when(
+      screened == 0 ~ "Not screened",
+      screened == 1 ~ "Screened",
+      TRUE ~ as.character(screened)
+    ),
+    `Postpartum depressive symptoms` = case_when(
+      pp_depress_bin == 0 ~ "No",
+      pp_depress_bin == 1 ~ "Yes",
+      TRUE ~ as.character(pp_depress_bin)
+    )
+  ) |>
+  select(
+    `Prenatal screening`,
+    `Postpartum depressive symptoms`,
+    n,
+    percent
+  )
+
+screening_table
+
+write_csv(
+  screening_table,
+  here("results", "tables", "screening_summary.csv")
+)
+```
