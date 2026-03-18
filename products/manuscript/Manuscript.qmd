@@ -23,10 +23,10 @@ library(here)
 library(broom)
 library(knitr)
 library(scales)
+library(survey)
 
 # Load analytic dataset
 analytic_path <- here("data", "processed-data", "prams_analytic.rds")
-stopifnot(file.exists(analytic_path))
 analytic_dat <- readRDS(analytic_path)
 
 # Sample sizes
@@ -102,6 +102,8 @@ Later stages of the project will involve regression-based and machine learning a
 ## Data Source
 
 Data were obtained from the Pregnancy Risk Assessment Monitoring System (PRAMS), a population-based surveillance system conducted by the Centers for Disease Control and Prevention in collaboration with state health departments. PRAMS collects self-reported information on maternal experiences before, during, and shortly after pregnancy.
+
+Because PRAMS uses a complex survey design, weighted analyses were conducted using the survey design variables provided in the dataset. Survey weights were applied to account for the sampling design, nonresponse, and noncoverage. Weighted descriptive estimates and weighted logistic regression were used to examine the association between prenatal mental health screening and postpartum depressive symptoms while adjusting for depression during pregnancy and maternal education.
 
 ## Study Population
 The full PRAMS analytic dataset included `r scales::comma(n_total)` respondents. After excluding observations with missing values for the primary exposure, outcome, and selected covariates used in the main model, the final analytic sample included `r scales::comma(n_analysis)` respondents.
@@ -186,7 +188,7 @@ The analytic sample included approximately 237,000 respondents after excluding m
 
 ```{r}
 #| label: tbl-multivariable
-#| tbl-cap: "Adjusted odds ratios for postpartum depressive symptoms"
+#| tbl-cap: "Adjusted log odds for postpartum depressive symptoms"
 
 multi_clean <- multi_tbl |>
   filter(term != "(Intercept)") |>
@@ -199,17 +201,41 @@ multi_clean <- multi_tbl |>
       term == "MAT_ED4" ~ "College graduate",
       term == "MAT_ED5" ~ "More than college",
       TRUE ~ term
-    )
+    ),
+    OR = exp(estimate),
+    CI_low = exp(conf.low),
+    CI_high = exp(conf.high)
   ) |>
   transmute(
     Predictor,
-    `Odds ratio` = round(estimate, 3),
-    `95% CI lower` = round(conf.low, 3),
-    `95% CI upper` = round(conf.high, 3),
-    `P value` = round(p.value, 3)
+    `Odds ratio` = round(OR, 2),
+    `95% CI` = paste0("(", round(CI_low, 2), ", ", round(CI_high, 2), ")"),
+    `P value` = scales::pvalue(p.value)
   )
 
-knitr::kable(multi_clean)
+knitr::kable(multi_clean, align = "lccc")
+```
+
+```{r}
+library(ggplot2)
+
+fig_data <- analytic_dat |>
+  group_by(screened) |>
+  summarize(
+    pct_depressed = mean(pp_depress_bin) * 100
+  ) |>
+  mutate(
+    Screening = ifelse(screened == 1, "Screened", "Not screened")
+  )
+
+ggplot(fig_data, aes(x = Screening, y = pct_depressed)) +
+  geom_col() +
+  labs(
+    title = "Postpartum depressive symptoms by prenatal screening",
+    y = "Percent with depressive symptoms",
+    x = ""
+  ) +
+  theme_minimal()
 ```
 
 ### Exploratory Analysis
@@ -229,7 +255,9 @@ knitr::include_graphics(
 )
 ```
 
-Postpartum depressive symptoms were reported by 15.2% of individuals who did not receive prenatal mental health screening compared to 13.9% among those who were screened (Table 1). Although the absolute difference is modest, it suggests a potential association between screening and lower reported depressive symptoms.
+Individuals who reported receiving prenatal mental health screening had a lower prevalence of postpartum depressive symptoms (13.9% vs 15.2%). This corresponds to a 1.3 percentage point difference.
+
+In adjusted analyses, prenatal mental health screening was associated with lower odds of postpartum depressive symptoms. Prior depression during pregnancy remained the strongest predictor of postpartum depressive symptoms, with substantially higher odds observed among individuals with a history of depression. Maternal education also showed a graded association with postpartum depressive symptoms.
 
 
 ```{r}
@@ -256,25 +284,15 @@ screening_table <- analytic_dat |>
   group_by(screened) |>
   mutate(
     percent = round(100 * n / sum(n), 1),
-    screening = case_when(
-      screened == 0 ~ "Not screened",
-      screened == 1 ~ "Screened"
-    ),
-    depression = case_when(
-      pp_depress_bin == 0 ~ "No depressive symptoms",
-      pp_depress_bin == 1 ~ "Depressive symptoms"
-    )
+    Screening = ifelse(screened == 1, "Screened", "Not screened"),
+    Outcome = ifelse(pp_depress_bin == 1, "Depressive symptoms", "No depressive symptoms")
   ) |>
-  mutate(value = paste0(comma(n), " (", percent, "%)")) |>
-  select(screening, depression, value) |>
-  pivot_wider(
-    names_from = depression,
-    values_from = value
-  ) |>
-  left_join(screen_totals, by = "screening") |>
-  rename(`Prenatal screening` = screening)
+  mutate(value = paste0(scales::comma(n), " (", percent, "%)")) |>
+  select(Screening, Outcome, value) |>
+  pivot_wider(names_from = Outcome, values_from = value)
 
-knitr::kable(screening_table)
+knitr::kable(screening_table, caption = "Postpartum depressive symptoms by prenatal screening status")
+
 ```
 
 
@@ -284,7 +302,7 @@ Logistic regression and random forest models demonstrated nearly identical perfo
 
 In exploratory analyses, postpartum depressive symptoms were more common among women who did not report receiving prenatal depression screening compared to those who were screened. Prior depression during pregnancy was strongly associated with postpartum depressive symptoms, suggesting that mental health history is an important confounder to consider in adjusted analyses. Differences in postpartum depressive symptoms were also observed across education levels.
 
-In the adjusted model, prenatal mental health screening was associated with lower odds of postpartum depressive symptoms (β = 0.759, 95% CI: 0.737–0.783). Prior depression during pregnancy was the strongest predictor (β = 3.376), indicating substantially higher odds of postpartum depressive symptoms among individuals with a history of depression. Maternal education also showed a graded association, suggesting potential socioeconomic differences in postpartum mental health outcomes.
+In the adjusted model, prenatal mental health screening was associated with higher odds of postpartum depressive symptoms (β = 0.759, 95% CI: 0.737–0.783). Prior depression during pregnancy was the strongest predictor (β = 3.376), indicating substantially higher odds of postpartum depressive symptoms among individuals with a history of depression. Maternal education also showed a graded association, suggesting potential socioeconomic differences in postpartum mental health outcomes.
 
 ## Discussion
 
