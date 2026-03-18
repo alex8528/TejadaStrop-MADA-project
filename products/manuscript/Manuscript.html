@@ -102,7 +102,7 @@ window.Quarto = {
   <ul class="collapse">
   <li><a href="#general-background-information" id="toc-general-background-information" class="nav-link" data-scroll-target="#general-background-information"><span class="header-section-number">2.1</span> General Background Information</a></li>
   <li><a href="#description-of-data" id="toc-description-of-data" class="nav-link" data-scroll-target="#description-of-data"><span class="header-section-number">2.2</span> Description of data</a></li>
-  <li><a href="#questionshypotheses-to-be-addressed" id="toc-questionshypotheses-to-be-addressed" class="nav-link" data-scroll-target="#questionshypotheses-to-be-addressed"><span class="header-section-number">2.3</span> Questions/Hypotheses to be addressed</a></li>
+  <li><a href="#questions" id="toc-questions" class="nav-link" data-scroll-target="#questions"><span class="header-section-number">2.3</span> Questions</a></li>
   </ul></li>
   <li><a href="#methods" id="toc-methods" class="nav-link" data-scroll-target="#methods"><span class="header-section-number">3</span> Methods</a>
   <ul class="collapse">
@@ -158,7 +158,6 @@ window.Quarto = {
 <h1 data-number="2"><span class="header-section-number">2</span> Introduction</h1>
 <p>Postpartum depression is a common and serious public health concern that can affect maternal well-being, family functioning, and infant outcomes. Estimates suggest that a substantial proportion of women experience depressive symptoms during the postpartum period, making maternal mental health an important area of public health attention <span class="citation" data-cites="bauman2020vitalsigns">Bauman et al. (<a href="#ref-bauman2020vitalsigns" role="doc-biblioref">2020</a>)</span>. In response to this concern, clinical guidelines increasingly recommend routine screening for depression and anxiety during pregnancy and the postpartum period <span class="citation" data-cites="acog2023screening">American College of Obstetricians and Gynecologists (<a href="#ref-acog2023screening" role="doc-biblioref">2023</a>)</span> <span class="citation" data-cites="uspstf2019perinatal">U.S. Preventive Services Task Force (<a href="#ref-uspstf2019perinatal" role="doc-biblioref">2019</a>)</span>.</p>
 <p>Despite these recommendations, the relationship between prenatal mental health screening and postpartum depressive symptoms is not fully understood in real-world clinical settings. While screening may help identify individuals at risk, it remains unclear whether simply being screened during prenatal care is associated with improved postpartum mental health outcomes.</p>
-<p>Using data from the Pregnancy Risk Assessment Monitoring System (PRAMS) Phase 8, this study examines whether individuals who report being asked about depression or anxiety during prenatal care are less likely to report postpartum depressive symptoms. By leveraging a large population-based surveillance dataset, this project explores whether prenatal screening practices may be associated with postpartum mental health outcomes at the population level.</p>
 <p>Using data from the Pregnancy Risk Assessment Monitoring System (PRAMS) Phase 8, this study examines whether individuals who report being asked about depression or anxiety during prenatal care are less likely to report postpartum depressive symptoms. By leveraging a large, population-based dataset, this project aims to explore whether prenatal screening practices may be associated with improved postpartum mental health outcomes.</p>
 <section id="general-background-information" class="level2" data-number="2.1">
 <h2 data-number="2.1" class="anchored" data-anchor-id="general-background-information"><span class="header-section-number">2.1</span> General Background Information</h2>
@@ -171,10 +170,9 @@ window.Quarto = {
 <p>PRAMS is designed to monitor maternal experiences and behaviors before, during, and shortly after pregnancy. The survey includes questions related to prenatal care, maternal health conditions, health behaviors, mental health, and postpartum experiences. These data allow researchers to examine population-level patterns related to maternal and infant health.</p>
 <p>PRAMS Phase 8 includes several hundred variables capturing maternal demographics, pre-pregnancy health conditions, prenatal care experiences, health behaviors, insurance coverage, mental health indicators, and postpartum outcomes. The dataset contains a mix of categorical and numeric variables and reflects real-world survey complexity, including skip patterns and missing data.</p>
 <p>Across participating states, PRAMS Phase 8 includes tens of thousands of respondents, providing sufficient sample size and variable richness to support exploratory analysis and regression modeling. For this project, variables related to prenatal mental health screening, pre-pregnancy mental health history, postpartum depressive symptoms, and sociodemographic characteristics were selected for analysis.</p>
-<p>For this project, variables related to prenatal mental health screening, pre-pregnancy mental health history, postpartum depressive symptoms, and sociodemographic characteristics will be used. Variable definitions and coding schemes are documented in the PRAMS Phase 8 codebook.</p>
 </section>
-<section id="questionshypotheses-to-be-addressed" class="level2" data-number="2.3">
-<h2 data-number="2.3" class="anchored" data-anchor-id="questionshypotheses-to-be-addressed"><span class="header-section-number">2.3</span> Questions/Hypotheses to be addressed</h2>
+<section id="questions" class="level2" data-number="2.3">
+<h2 data-number="2.3" class="anchored" data-anchor-id="questions"><span class="header-section-number">2.3</span> Questions</h2>
 <p>The primary research question for this study is:</p>
 <p>Are individuals who report being asked about depression or anxiety during prenatal care less likely to report postpartum depressive symptoms?</p>
 <p>The primary outcome of interest is self-reported postpartum depressive symptoms, measured using PRAMS survey items assessing feelings of depression and loss of interest since birth. The primary predictors of interest include indicators of prenatal mental health screening, such as whether a healthcare provider asked about depression or anxiety during prenatal visits.</p>
@@ -217,34 +215,94 @@ Table&nbsp;1: Study population characteristics
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">Total respondents in dataset</td>
-<td style="text-align: right;">237392</td>
-<td style="text-align: right;">100.0</td>
+<td style="text-align: left;">Sample size</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
 </tr>
 <tr class="even">
+<td style="text-align: left;">Total respondents in full dataset</td>
+<td style="text-align: right;">237,392</td>
+<td style="text-align: right;">100</td>
+</tr>
+<tr class="odd">
 <td style="text-align: left;">Respondents in analytic sample</td>
-<td style="text-align: right;">233213</td>
+<td style="text-align: right;">233,213</td>
 <td style="text-align: right;">98.2</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Prenatal screening</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Screened during prenatal care</td>
-<td style="text-align: right;">192539</td>
+<td style="text-align: right;">192,539</td>
 <td style="text-align: right;">81.1</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Not screened during prenatal care</td>
-<td style="text-align: right;">44853</td>
+<td style="text-align: right;">44,853</td>
 <td style="text-align: right;">18.9</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">Reported postpartum depressive symptoms</td>
-<td style="text-align: right;">33599</td>
-<td style="text-align: right;">14.2</td>
+<td style="text-align: left;">Postpartum depressive symptoms</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">No postpartum depressive symptoms</td>
-<td style="text-align: right;">203793</td>
+<td style="text-align: left;">Yes</td>
+<td style="text-align: right;">33,599</td>
+<td style="text-align: right;">14.2</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">No</td>
+<td style="text-align: right;">203,793</td>
 <td style="text-align: right;">85.8</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Depression during pregnancy</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Yes</td>
+<td style="text-align: right;">197,546</td>
+<td style="text-align: right;">83.2</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">No</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Maternal education</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Less than high school</td>
+<td style="text-align: right;">6,401</td>
+<td style="text-align: right;">2.7</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">High school graduate</td>
+<td style="text-align: right;">20,158</td>
+<td style="text-align: right;">8.5</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Some college</td>
+<td style="text-align: right;">56,114</td>
+<td style="text-align: right;">23.6</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">College graduate</td>
+<td style="text-align: right;">66,426</td>
+<td style="text-align: right;">28</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">More than college</td>
+<td style="text-align: right;">86,182</td>
+<td style="text-align: right;">36.3</td>
 </tr>
 </tbody>
 </table>
@@ -267,181 +325,12 @@ Table&nbsp;1: Study population characteristics
 </section>
 <section id="results" class="level2" data-number="3.7">
 <h2 data-number="3.7" class="anchored" data-anchor-id="results"><span class="header-section-number">3.7</span> Results</h2>
-<p>Results sections will be developed after data cleaning and exploratory analysis are completed. Descriptive summaries, tables, and figures will be presented to characterize the study population and explore relationships between prenatal screening and postpartum depressive symptoms.</p>
 <p>The analytic sample included approximately 237,000 respondents after excluding missing outcome and exposure values. Overall, 81% of respondents reported being screened for depression during prenatal care, and 14% reported postpartum depressive symptoms.</p>
-<div class="cell">
-<div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
-<caption>Multivariable logistic regression results (odds ratios with 95% confidence intervals)</caption>
-<colgroup>
-<col style="width: 17%">
-<col style="width: 13%">
-<col style="width: 14%">
-<col style="width: 14%">
-<col style="width: 11%">
-<col style="width: 13%">
-<col style="width: 14%">
-</colgroup>
-<thead>
-<tr class="header">
-<th style="text-align: left;">term</th>
-<th style="text-align: right;">estimate</th>
-<th style="text-align: right;">std.error</th>
-<th style="text-align: right;">statistic</th>
-<th style="text-align: right;">p.value</th>
-<th style="text-align: right;">conf.low</th>
-<th style="text-align: right;">conf.high</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">(Intercept)</td>
-<td style="text-align: right;">0.154</td>
-<td style="text-align: right;">0.040</td>
-<td style="text-align: right;">-46.571</td>
-<td style="text-align: right;">0.000</td>
-<td style="text-align: right;">0.143</td>
-<td style="text-align: right;">0.167</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">screened1</td>
-<td style="text-align: right;">0.759</td>
-<td style="text-align: right;">0.015</td>
-<td style="text-align: right;">-17.863</td>
-<td style="text-align: right;">0.000</td>
-<td style="text-align: right;">0.737</td>
-<td style="text-align: right;">0.783</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">BPG_DEPRS82</td>
-<td style="text-align: right;">3.376</td>
-<td style="text-align: right;">0.014</td>
-<td style="text-align: right;">89.451</td>
-<td style="text-align: right;">0.000</td>
-<td style="text-align: right;">3.287</td>
-<td style="text-align: right;">3.467</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">MAT_ED2</td>
-<td style="text-align: right;">1.360</td>
-<td style="text-align: right;">0.043</td>
-<td style="text-align: right;">7.235</td>
-<td style="text-align: right;">0.000</td>
-<td style="text-align: right;">1.252</td>
-<td style="text-align: right;">1.479</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">MAT_ED3</td>
-<td style="text-align: right;">1.289</td>
-<td style="text-align: right;">0.040</td>
-<td style="text-align: right;">6.359</td>
-<td style="text-align: right;">0.000</td>
-<td style="text-align: right;">1.193</td>
-<td style="text-align: right;">1.395</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">MAT_ED4</td>
-<td style="text-align: right;">1.088</td>
-<td style="text-align: right;">0.040</td>
-<td style="text-align: right;">2.121</td>
-<td style="text-align: right;">0.034</td>
-<td style="text-align: right;">1.007</td>
-<td style="text-align: right;">1.177</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">MAT_ED5</td>
-<td style="text-align: right;">0.694</td>
-<td style="text-align: right;">0.040</td>
-<td style="text-align: right;">-9.134</td>
-<td style="text-align: right;">0.000</td>
-<td style="text-align: right;">0.642</td>
-<td style="text-align: right;">0.751</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<section id="exploratory-analysis" class="level3" data-number="3.7.1">
-<h3 data-number="3.7.1" class="anchored" data-anchor-id="exploratory-analysis"><span class="header-section-number">3.7.1</span> Exploratory Analysis</h3>
-<p>We first examined the distribution of prenatal mental health screening and postpartum depressive symptoms in the analytic sample. We also explored how postpartum depressive symptoms varied by screening status, prior depression during pregnancy, and maternal education.</p>
-<p>Preliminary descriptive results suggested that postpartum depressive symptoms were more common among respondents who did not report receiving prenatal mental health screening. Higher rates of postpartum depressive symptoms were also observed among respondents who reported depression during pregnancy. Differences across maternal education groups were also examined to explore potential patterns in the data.</p>
-<p>These exploratory analyses help identify initial patterns in the dataset and guide the selection of variables for later modeling and statistical analysis.</p>
-<div class="cell">
-<div id="tbl-screening" class="cell quarto-float quarto-figure quarto-figure-center anchored">
-<figure class="quarto-float quarto-float-tbl figure">
-<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-screening-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;2: Prenatal screening and postpartum depressive symptoms
-</figcaption>
-<div aria-describedby="tbl-screening-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<div class="cell-output-display">
-<table class="do-not-create-environment cell caption-top table table-sm table-striped small">
-<colgroup>
-<col style="width: 12%">
-<col style="width: 25%">
-<col style="width: 41%">
-<col style="width: 9%">
-<col style="width: 10%">
-</colgroup>
-<thead>
-<tr class="header">
-<th style="text-align: right;">screened</th>
-<th style="text-align: left;">Prenatal screening</th>
-<th style="text-align: left;">Postpartum depressive symptoms</th>
-<th style="text-align: right;">n</th>
-<th style="text-align: right;">percent</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: right;">0</td>
-<td style="text-align: left;">Not screened</td>
-<td style="text-align: left;">No</td>
-<td style="text-align: right;">38048</td>
-<td style="text-align: right;">84.8</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">0</td>
-<td style="text-align: left;">Not screened</td>
-<td style="text-align: left;">Yes</td>
-<td style="text-align: right;">6805</td>
-<td style="text-align: right;">15.2</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">1</td>
-<td style="text-align: left;">Screened</td>
-<td style="text-align: left;">No</td>
-<td style="text-align: right;">165745</td>
-<td style="text-align: right;">86.1</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">1</td>
-<td style="text-align: left;">Screened</td>
-<td style="text-align: left;">Yes</td>
-<td style="text-align: right;">26794</td>
-<td style="text-align: right;">13.9</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-</figure>
-</div>
-</div>
-<p>In exploratory analyses, postpartum depressive symptoms were more common among women who did not report receiving prenatal depression screening compared to those who were screened. Prior depression during pregnancy was strongly associated with postpartum depressive symptoms, suggesting that mental health history is an important confounder to consider in adjusted analyses. Differences in postpartum depressive symptoms were also observed across education levels.</p>
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="Manuscript_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
 <div class="cell">
 <div id="tbl-multivariable" class="cell quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-multivariable-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;3: Multivariable logistic regression results
+Table&nbsp;2: Adjusted odds ratios for postpartum depressive symptoms
 </figcaption>
 <div aria-describedby="tbl-multivariable-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
@@ -512,6 +401,74 @@ Table&nbsp;3: Multivariable logistic regression results
 </figure>
 </div>
 </div>
+<section id="exploratory-analysis" class="level3" data-number="3.7.1">
+<h3 data-number="3.7.1" class="anchored" data-anchor-id="exploratory-analysis"><span class="header-section-number">3.7.1</span> Exploratory Analysis</h3>
+<p>We first examined the distribution of prenatal mental health screening and postpartum depressive symptoms in the analytic sample. We also explored how postpartum depressivmultie symptoms varied by screening status, prior depression during pregnancy, and maternal education.</p>
+<p>Preliminary descriptive results suggested that postpartum depressive symptoms were more common among respondents who did not report receiving prenatal mental health screening. Higher rates of postpartum depressive symptoms were also observed among respondents who reported depression during pregnancy. Differences across maternal education groups were also examined to explore potential patterns in the data.</p>
+<p>These exploratory analyses help identify initial patterns in the dataset and guide the selection of variables for later modeling and statistical analysis.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-screening" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-screening-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../../results/figures/screening_vs_postpartum_depression.png" class="img-fluid figure-img" width="1050">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-screening-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Postpartum depressive symptoms by prenatal mental health screening
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div id="tbl-screening" class="cell quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-screening-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;3: Distribution of postpartum depressive symptoms by prenatal mental health screening
+</figcaption>
+<div aria-describedby="tbl-screening-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output-display">
+<table class="do-not-create-environment cell caption-top table table-sm table-striped small">
+<colgroup>
+<col style="width: 11%">
+<col style="width: 24%">
+<col style="width: 29%">
+<col style="width: 25%">
+<col style="width: 10%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: right;">screened</th>
+<th style="text-align: left;">Prenatal screening</th>
+<th style="text-align: left;">No depressive symptoms</th>
+<th style="text-align: left;">Depressive symptoms</th>
+<th style="text-align: left;">Total</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">Not screened</td>
+<td style="text-align: left;">38,048 (84.8%)</td>
+<td style="text-align: left;">6,805 (15.2%)</td>
+<td style="text-align: left;">44,853</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">Screened</td>
+<td style="text-align: left;">165,745 (86.1%)</td>
+<td style="text-align: left;">26,794 (13.9%)</td>
+<td style="text-align: left;">192,539</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</figure>
+</div>
+</div>
+<p>Table 2 shows that among respondents who were not screened during prenatal care, 15.2% reported postpartum depressive symptoms. Among those who were screened, 13.9% reported postpartum depressive symptoms.</p>
+<p>In exploratory analyses, postpartum depressive symptoms were more common among women who did not report receiving prenatal depression screening compared to those who were screened. Prior depression during pregnancy was strongly associated with postpartum depressive symptoms, suggesting that mental health history is an important confounder to consider in adjusted analyses. Differences in postpartum depressive symptoms were also observed across education levels.</p>
 </section>
 </section>
 <section id="discussion" class="level2" data-number="3.8">
