@@ -329,6 +329,15 @@ ggplot(fig_dep_preg, aes(x = Depression_pregnancy, y = percent, fill = Outcome))
     axis.text = element_text(size = 10),
     axis.title = element_text(size = 11)
   )
+
+ggsave(
+  filename = "depression_pregnancy_vs_postpartum.png",
+  plot = last_plot(),   # make sure this is the correct fig_dep_preg plot
+  path = "C:/Users/alexa/OneDrive/Documents/GitHub/mada-portfolio/class-project/figures",
+  width = 8,
+  height = 5,
+  dpi = 300
+)
 ```
 
 In exploratory analyses, postpartum depressive symptoms were more common among respondents who did not report receiving prenatal depression screening compared with those who were screened. Depression during pregnancy was strongly associated with postpartum depressive symptoms, suggesting that mental health history is an important confounder to consider in adjusted analyses. Differences in postpartum depressive symptoms were also observed across education levels.
