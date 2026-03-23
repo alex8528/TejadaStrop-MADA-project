@@ -1,17 +1,30 @@
+---
+title: "Supplementary Material"
 format:
   html:
     toc: true
     number-sections: true
+    code-fold: true
     highlight-style: github
+---
 
-```{r}
+## Table 1. Bivariate model results
+
+```{r table-bivariate}
 resulttable1 <- readRDS(here::here("results","tables","glm_bivariate_screened.rds"))
+
 knitr::kable(
   resulttable1,
   caption = "Bivariate logistic regression results: postpartum depressive symptoms ~ prenatal screening"
 )
 ```
 
+## Figure S1. Screening and postpartum depression
+
 ```{r}
 #| fig-cap: "Prenatal screening and postpartum depressive symptoms."
-knitr::include_graphics(here::here(results","figures","screening_vs_postpartum_depression.png"))
+
+knitr::include_graphics(
+  here::here("results","figures","screening_vs_postpartum_depression.png")
+)
+```

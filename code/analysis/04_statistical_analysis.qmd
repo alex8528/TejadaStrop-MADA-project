@@ -1,0 +1,156 @@
+---
+title: "04 Statistical Analysis"
+author: "Alexandra Tejada-Strop"
+format: html
+execute:
+  echo: true
+  warning: false
+  message: false
+---
+
+This page performs the main statistical analyses for the project.
+
+It fits a bivariate logistic regression model examining the association between prenatal mental health screening and postpartum depressive symptoms, followed by a multivariable logistic regression adjusting for selected covariates. A tidymodels workflow is also fit and saved for downstream use.
+
+```{r setup}
+library(tidyverse)
+library(here)
+library(tidymodels)
+library(broom)
+```
+
+```{r}
+# Load processed analytic dataset
+data_path <- here("data", "processed-data", "prams_analytic.rds")
+stopifnot(file.exists(data_path))
+
+dat <- readRDS(data_path)
+
+# Create results folders if they do not already exist
+dir.create(here("results", "tables"), showWarnings = FALSE, recursive = TRUE)
+dir.create(here("results", "output"), showWarnings = FALSE, recursive = TRUE)
+
+# Quick check of imported data
+glimpse(dat)
+
+```
+
+```{r}
+
+# Define variables
+outcome <- "pp_depress_bin"
+main_exposure <- "screened"
+covariates <- c("BPG_DEPRS8", "MAT_ED")
+
+all_vars <- c(outcome, main_exposure, covariates)
+stopifnot(all(all_vars %in% names(dat)))
+
+# Create complete-case analysis dataset
+analysis_dat <- dat |>
+  select(all_of(all_vars)) |>
+  drop_na() |>
+  mutate(
+    screened = as.factor(screened),
+    BPG_DEPRS8 = as.factor(BPG_DEPRS8),
+    MAT_ED = as.factor(MAT_ED)
+  )
+
+# Check outcome coding before modeling
+table(analysis_dat$pp_depress_bin, useNA = "ifany")
+
+# Optional: save the complete-case dataset used for modeling
+saveRDS(
+  analysis_dat,
+  here("results", "output", "analysis_dataset_complete_case.rds")
+)
+
+# Basic analytic sample summary
+analysis_dat |>
+  summarise(
+    n = n(),
+    postpartum_depression_cases = sum(pp_depress_bin == 1, na.rm = TRUE)
+  )
+
+analysis_dat <- dat |>
+  select(all_of(all_vars)) |>
+  drop_na() |>
+  mutate(
+    screened = as.factor(screened),
+    BPG_DEPRS8 = as.factor(BPG_DEPRS8),
+    MAT_ED = as.factor(MAT_ED)
+  )
+
+table(analysis_dat$pp_depress_bin, useNA = "ifany")
+
+analysis_dat |>
+  summarise(
+    n = n(),
+    postpartum_depression_cases = sum(pp_depress_bin == 1, na.rm = TRUE)
+  )
+```
+
+```{r}
+# Bivariate logistic regression model
+fit_biv <- glm(
+  pp_depress_bin ~ screened,
+  data = analysis_dat,
+  family = binomial()
+)
+
+biv_tbl <- tidy(fit_biv, conf.int = TRUE, exponentiate = TRUE)
+
+biv_tbl
+
+# Save bivariate results
+saveRDS(biv_tbl, here("results", "tables", "glm_bivariate_screened.rds"))
+saveRDS(fit_biv, here("results", "output", "glm_bivariate_screened.rds"))
+```
+
+```{r}
+
+# Multivariable logistic regression model
+fit_multi <- glm(
+  pp_depress_bin ~ screened + BPG_DEPRS8 + MAT_ED,
+  data = analysis_dat,
+  family = binomial()
+)
+
+multi_tbl <- tidy(fit_multi, conf.int = TRUE, exponentiate = TRUE)
+
+multi_tbl
+
+# Save multivariable results
+saveRDS(multi_tbl, here("results", "tables", "glm_multivariable_main.rds"))
+saveRDS(fit_multi, here("results", "output", "glm_multivariable_main.rds"))
+```
+
+```{r}
+# Tidymodels expects a factor outcome for classification
+analysis_dat2 <- analysis_dat |>
+  mutate(pp_depress_bin = factor(pp_depress_bin, levels = c(0, 1)))
+
+rec <- recipe(pp_depress_bin ~ screened + BPG_DEPRS8 + MAT_ED, data = analysis_dat2) |>
+  step_dummy(all_nominal_predictors()) |>
+  step_zv(all_predictors())
+
+wf <- workflow() |>
+  add_recipe(rec) |>
+  add_model(logistic_reg() |> set_engine("glm"))
+
+fit_wf <- fit(wf, data = analysis_dat2)
+
+# Save tidymodels workflow
+saveRDS(fit_wf, here("results", "output", "tidymodels_logistic_main.rds"))
+
+fit_wf
+```
+
+```{r}
+# Confirm output files were successfully saved
+file.exists(here("results", "output", "analysis_dataset_complete_case.rds"))
+file.exists(here("results", "tables", "glm_bivariate_screened.rds"))
+file.exists(here("results", "output", "glm_bivariate_screened.rds"))
+file.exists(here("results", "tables", "glm_multivariable_main.rds"))
+file.exists(here("results", "output", "glm_multivariable_main.rds"))
+file.exists(here("results", "output", "tidymodels_logistic_main.rds"))
+```

@@ -1,14 +1,28 @@
-# raw-data
+# Raw Data
 
-This folder should contain all raw data. As needed add sub-folders.
+This folder contains the original PRAMS data and supporting documentation used in this project.
 
-Currently, as an example, it contains a simple made-up data-set in an Excel file.
+## Data Files
 
-The dataset contains the variables `Height`, `Weight` and `Gender` of a few imaginary individuals.
+- `prams_arf.csv`  
+  Primary dataset used in the analysis pipeline.
 
-The dataset purposefully contains some faulty entries that need to be cleaned.
+- `prams_arf.xlsx`  
+  Excel version of the dataset for easier viewing.
 
-Generally, any dataset should contain some meta-data explaining what each variable in the dataset is. (This is often called a **Codebook**.) For this simple example, the codebook is given as a second sheet in the Excel file.
+## Documentation
 
-This raw data-set should generally not be edited by hand. It should instead be loaded and processed/cleaned using code.
+- `PRAMS codebooks/`  
+  Official PRAMS documentation, including:
+  - Phase 8 codebooks
+  - Standard and supplemental questionnaires
+  - COVID-19 vaccine supplement
+  - PRAMS FAQ
+  - Setup guidance for statistical software (SUDAAN, SAS, SPSS, STATA)
 
+## Notes
+
+- These are original, unmodified data files.
+- Data cleaning and preparation are performed in:
+  - `code/processing/`
+- The `.csv` file is used for all analyses.

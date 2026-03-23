@@ -1,12 +1,17 @@
-# code
+# Code
 
-This folder and sub-folders should contain all your code. This can be R or Quarto files (or files for other programming languages). 
+This folder contains all scripts used in the analysis pipeline.
 
-Place your files in the appropriate sub-folders. You can structure the folders as appropriate.
+## Processing
+- `processing/01_load_clean.qmd`  
+- `processing/02_create_analytic_dataset.qmd`  
 
-You can either have fewer large scripts, or multiple scripts that do only specific actions. Those can be R or Quarto files (or some other language/format). In either case, document the scripts and what goes on in them so well that someone else (including future you) can easily figure out what is happening.
+## Exploratory Analysis
+- `eda/03_exploratory_analysis.qmd`  
 
-The scripts should load the appropriate data (e.g. raw or processed), perform actions, and save results (e.g. processed data, figures, computed values) in the appropriate folders. Document somewhere what inputs each script takes and where output is placed. 
+## Statistical Analysis
+- `analysis/04_statistical_analysis.qmd`  
+- `analysis/05_model_validation.qmd`  
 
-If scripts need to be run in a specific order, document this. Either as comments in the script, or in a separate text file such as this readme file. Ideally of course in both locations.
-
+## Notes
+Scripts are numbered to indicate the order in which they should be run.
