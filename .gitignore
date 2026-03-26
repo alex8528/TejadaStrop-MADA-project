@@ -37,8 +37,6 @@ results/large-files/*
 # But we want to commit the folder and the readme!
 !results/large-files/readme.md
 
-data/raw-data/
-data/processed-data/
 .Rhistory
 **/.Rhistory
 **/*.vdoc*
