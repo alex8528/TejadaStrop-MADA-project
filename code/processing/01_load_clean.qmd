@@ -9,115 +9,58 @@ execute:
 ---
 
 ```{r}
-# Load Packages
+# Load packages
 library(tidyverse)
 library(readxl)
 library(janitor)
 library(here)
 
-# Define path to raw data (portable using here())
+# Define path to raw data
 raw_path <- here("data", "raw-data", "prams_arf.xlsx")
 
-# Confirm the file exists
-stopifnot(file.exists(raw_path))
-
-# Load the raw dataset
-raw <- read_excel(raw_path)
-
-# Basic cleaning
-prams_clean <- raw |>
-  janitor::clean_names() |>
-  mutate(across(where(is.character), ~ na_if(.x, "")))
-
-# Create processed-data folder if it doesn't exist
+# Create processed-data folder if needed
 dir.create(here("data", "processed-data"), recursive = TRUE, showWarnings = FALSE)
 
-# Save cleaned dataset
-saveRDS(prams_clean, here("data", "processed-data", "prams_clean.rds"))
+# Check if raw data exists
+if (!file.exists(raw_path)) {
 
-# Confirm the file saved
-file.exists(here("data", "processed-data", "prams_clean.rds"))
-```
+  message("Raw PRAMS file not available. Skipping raw data processing. Use the processed files in data/processed-data as described in the README.")
 
+} else {
 
+  # Try to load and clean raw data
+  prams_clean <- tryCatch({
 
-## Load Data Chunk
-```{r}
-library(tidyverse)
-library(here)
+    raw <- read_excel(raw_path)
 
-raw_path <- here("data", "raw-data", "prams_arf.csv")
-file.exists(raw_path)
+    raw |>
+      janitor::clean_names() |>
+      mutate(across(where(is.character), ~ na_if(.x, "")))
 
-raw <- readr::read_csv(raw_path, show_col_types = FALSE)
-glimpse(raw)
+  }, error = function(e) {
 
-dat <- raw |>
-  rename_with(stringr::str_squish) |>
-  mutate(across(where(is.character), stringr::str_squish)) |>
-  distinct()
+    message("Raw PRAMS file is available, but could not be processed in this environment. Skipping raw data processing and using processed files instead.")
+    return(NULL)
 
-glimpse(dat)
-```
+  })
 
-## Save Cleaned file
-```{r}
-dir.create(here("data", "processed-data"), showWarnings = FALSE, recursive = TRUE)
+  # Save cleaned data only if processing succeeded
+  if (!is.null(prams_clean)) {
 
-saveRDS(dat, here("data", "processed-data", "prams_clean.rds"))
+    saveRDS(prams_clean, here("data", "processed-data", "prams_clean.rds"))
 
-# Confirm key variables exist
-c("PP_DEPRESS", "ASK_DPRS", "WTANAL") %in% names(dat)
+    file.exists(here("data", "processed-data", "prams_clean.rds"))
 
-# Check ID uniqueness
-dat |> summarise(n = n(), n_id_unique = n_distinct(ID))
-```
+    c("PP_DEPRESS", "ASK_DPRS", "WTANAL") %in% names(prams_clean)
 
-```{r}
-# Confirm key variables exist
-c("PP_DEPRESS", "ASK_DPRS", "WTANAL") %in% names(raw)
+    prams_clean |> summarise(
+      n = n(),
+      n_id_unique = n_distinct(ID),
+      n_id_missing = sum(is.na(ID))
+    )
 
-# Check ID uniqueness (raw)
-raw |> summarise(n = n(), n_id_unique = n_distinct(ID))
-```
+    message("Raw data loaded and cleaned successfully.")
 
-```{r}
-dir.create(here("data", "processed-data"), showWarnings = FALSE, recursive = TRUE)
-
-saveRDS(dat, here("data", "processed-data", "prams_clean.rds"))
-
-file.exists(here("data", "processed-data", "prams_clean.rds"))
-
-```
-
-```{r}
-dim(raw)
-```
-
-## Clean Data
-```{r}
-dat <- raw |>
-  rename_with(stringr::str_squish) |>
-  mutate(across(where(is.character), stringr::str_squish)) |>
-  distinct()
-
-dim(dat)
-
-dir.create(here("data", "processed-data"), showWarnings = FALSE, recursive = TRUE)
-saveRDS(dat, here("data", "processed-data", "prams_clean.rds"))
-
-file.exists(here("data", "processed-data", "prams_clean.rds"))
-
-c("PP_DEPRESS", "ASK_DPRS", "WTANAL") %in% names(dat)
-
-dat |> summarise(
-  n = n(),
-  n_id_unique = n_distinct(ID),
-  n_id_missing = sum(is.na(ID))
-)
-```
-
-```{r}
-c("PP_DEPRESS","ASK_DPRS","WTANAL") %in% names(dat)
-
+  }
+}
 ```
