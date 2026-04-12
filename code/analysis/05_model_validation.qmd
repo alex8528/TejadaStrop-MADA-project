@@ -25,17 +25,19 @@ stopifnot(file.exists(data_path))
 
 analytic_dat <- readRDS(data_path)
 
+required_vars <- c("pp_depress_bin", "screened", "bpg_deprs8", "mat_ed")
+stopifnot(all(required_vars %in% names(analytic_dat)))
+
 analytic_dat <- analytic_dat |>
   mutate(
     pp_depress_bin = factor(pp_depress_bin, levels = c(0, 1), labels = c("No", "Yes")),
     screened = factor(screened),
-    BPG_DEPRS8 = factor(BPG_DEPRS8),
-    MAT_ED = factor(MAT_ED)
+    bpg_deprs8 = factor(bpg_deprs8),
+    mat_ed = factor(mat_ed)
   ) |>
-  drop_na(pp_depress_bin, screened, BPG_DEPRS8, MAT_ED)
+  drop_na(pp_depress_bin, screened, bpg_deprs8, mat_ed)
 
 glimpse(analytic_dat)
-
 ```
 
 # Cross Validation
@@ -45,16 +47,19 @@ set.seed(123)
 folds <- vfold_cv(analytic_dat, v = 5, strata = pp_depress_bin)
 
 folds
-
 ```
 
 # Logistic regression model
-
 ```{r}
+my_metrics <- metric_set(
+  accuracy,
+  metric_tweak("roc_auc", roc_auc, event_level = "second")
+)
+
 log_spec <- logistic_reg() |>
   set_engine("glm")
 
-log_recipe <- recipe(pp_depress_bin ~ screened + BPG_DEPRS8 + MAT_ED, data = analytic_dat)
+log_recipe <- recipe(pp_depress_bin ~ screened + bpg_deprs8 + mat_ed, data = analytic_dat)
 
 log_workflow <- workflow() |>
   add_model(log_spec) |>
@@ -63,7 +68,7 @@ log_workflow <- workflow() |>
 log_res <- fit_resamples(
   log_workflow,
   resamples = folds,
-  metrics = metric_set(accuracy, roc_auc),
+  metrics = my_metrics,
   control = control_resamples(save_pred = TRUE)
 )
 
@@ -71,16 +76,14 @@ log_metrics <- collect_metrics(log_res) |>
   mutate(model = "Logistic regression")
 
 log_metrics
-
 ```
 
 # Random forest model
-
 ```{r}
 rf_spec <- rand_forest(trees = 300, mode = "classification") |>
   set_engine("ranger")
 
-rf_recipe <- recipe(pp_depress_bin ~ screened + BPG_DEPRS8 + MAT_ED, data = analytic_dat)
+rf_recipe <- recipe(pp_depress_bin ~ screened + bpg_deprs8 + mat_ed, data = analytic_dat)
 
 rf_workflow <- workflow() |>
   add_model(rf_spec) |>
@@ -89,7 +92,7 @@ rf_workflow <- workflow() |>
 rf_res <- fit_resamples(
   rf_workflow,
   resamples = folds,
-  metrics = metric_set(accuracy, roc_auc),
+  metrics = my_metrics,
   control = control_resamples(save_pred = TRUE)
 )
 
@@ -97,8 +100,8 @@ rf_metrics <- collect_metrics(rf_res) |>
   mutate(model = "Random forest")
 
 rf_metrics
-
 ```
+
 
 # Compare models
 ```{r}
@@ -107,9 +110,7 @@ model_compare <- bind_rows(log_metrics, rf_metrics) |>
   arrange(.metric, desc(mean))
 
 model_compare
-```
 
-```{r}
 dir.create(here("results", "tables"), showWarnings = FALSE, recursive = TRUE)
 dir.create(here("results", "output"), showWarnings = FALSE, recursive = TRUE)
 
@@ -117,11 +118,11 @@ write_csv(model_compare, here("results", "tables", "model_comparison.csv"))
 saveRDS(model_compare, here("results", "tables", "model_comparison.rds"))
 saveRDS(log_res, here("results", "output", "logistic_cv_results.rds"))
 saveRDS(rf_res, here("results", "output", "random_forest_cv_results.rds"))
-```
 
-```{r}
 file.exists(here("results", "tables", "model_comparison.csv"))
 file.exists(here("results", "tables", "model_comparison.rds"))
 file.exists(here("results", "output", "logistic_cv_results.rds"))
 file.exists(here("results", "output", "random_forest_cv_results.rds"))
 ```
+
+

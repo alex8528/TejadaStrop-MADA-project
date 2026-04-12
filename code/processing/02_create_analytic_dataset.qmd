@@ -8,142 +8,93 @@ execute:
   message: false
 ---
 
-
-## Load cleaned data
 ```{r}
+# Load packages
 library(tidyverse)
 library(here)
 
-dat <- readRDS(here("data", "processed-data", "prams_clean.rds"))
-dim(dat)
-```
-
-```{r}
-dat |> count(ASK_DPRS, sort = TRUE)
-dat |> count(PP_DEPRESS, sort = TRUE)
-```
-
-## Create analytic dataset
-```{r}
-analytic_dat <- dat |>
-  select(
-    ID,
-    PP_DEPRESS,
-    ASK_DPRS,
-
-    # covariates (starter set)
-    MAT_AGE_PU,
-    MAT_ED,
-    INCOME8,
-    HISPANIC,
-    MARRIED,
-    BPG_DEPRS8,
-    HTH_ANX,
-    KOTELCHUCK,
-    PNC_1TRM,
-
-    # survey design
-    WTANAL,
-    STRATUMC,
-    SUD_NEST,
-    NEST_YR
-  )
-  ```
-
-  ## Recoding Variables
-
-  ```{r}
-  analytic_dat <- analytic_dat |>
-  mutate(
-    screened = case_when(
-      ASK_DPRS %in% c(1, "1") ~ 1,
-      ASK_DPRS %in% c(2, "2") ~ 0,
-      TRUE ~ NA_real_
-    ),
-    pp_depress_bin = case_when(
-      PP_DEPRESS %in% c(1, "1") ~ 1,
-      PP_DEPRESS %in% c(2, "2") ~ 0,
-      TRUE ~ NA_real_
-    )
-  )
-
-analytic_dat2 <- analytic_dat |>
-  filter(!is.na(screened), !is.na(pp_depress_bin))
-
-dim(analytic_dat2)
-
-  ```
-
-## Save
-```{r}
-saveRDS(analytic_dat2, here("data", "processed-data", "prams_analytic.rds"))
-file.exists(here("data", "processed-data", "prams_analytic.rds"))
-```
-
-```{r}
-analytic_dat <- analytic_dat |>
-  mutate(
-    # Exposure: prenatal depression screening
-    screened = case_when(
-      ASK_DPRS == 2 ~ 1,   # Yes screened
-      ASK_DPRS == 1 ~ 0,   # No
-      TRUE ~ NA_real_
-    ),
-
-    # Outcome: postpartum depressive symptoms
-    pp_depress_bin = case_when(
-      PP_DEPRESS == 2 ~ 1,  # Yes depression
-      PP_DEPRESS == 1 ~ 0,  # No
-      TRUE ~ NA_real_
-    )
-  )
-```
-
-```{r}
-analytic_dat2 <- analytic_dat |>
-  filter(!is.na(screened), !is.na(pp_depress_bin))
-
-dim(analytic_dat2)
-
-saveRDS(analytic_dat2, here("data", "processed-data", "prams_analytic.rds"))
-file.exists(here("data", "processed-data", "prams_analytic.rds"))
-```
-
-```{r}
-analytic_dat2 |> count(screened) |> mutate(pct = n/sum(n))
-analytic_dat2 |> count(pp_depress_bin) |> mutate(pct = n/sum(n))
-```
-
-```{r}
-analytic_dat |>
-  count(screened, pp_depress_bin) |>
-  group_by(screened) |>
-  mutate(pct = n/sum(n))
-```
-
-```{r}
-# Packages
-library(tidyverse)
-library(here)
-
-# Load cleaned dataset (portable path)
+# Define path to cleaned data
 clean_path <- here("data", "processed-data", "prams_clean.rds")
-stopifnot(file.exists(clean_path))
 
-prams_clean <- readRDS(clean_path)
+# Check if cleaned data exists
+if (!file.exists(clean_path)) {
 
+  message("Cleaned dataset not available. Skipping analytic dataset creation. Use prams_analytic.rds in data/processed-data as described in the README.")
 
+} else {
 
-prams_analytic <- prams_clean |>
-  # Example: drop completely empty columns (optional)
-  select(where(~ !all(is.na(.x)))) |>
-  # Example: remove obvious duplicate rows (optional)
-  distinct()
+  # Try to read cleaned data
+  dat <- tryCatch(
+    readRDS(clean_path),
+    error = function(e) {
+      message("Cleaned dataset is present but could not be read in this environment. Skipping analytic dataset creation. Use prams_analytic.rds in data/processed-data as described in the README.")
+      return(NULL)
+    }
+  )
 
-# Save analytic dataset
-dir.create(here("data", "processed-data"), showWarnings = FALSE, recursive = TRUE)
-saveRDS(prams_analytic, here("data", "processed-data", "prams_analytic.rds"))
+  if (!is.null(dat)) {
 
-# Confirm saved
-file.exists(here("data", "processed-data", "prams_analytic.rds"))
+    dim(dat)
+    names(dat)
+
+    dat |> count(ask_dprs, sort = TRUE)
+    dat |> count(pp_depress, sort = TRUE)
+
+    # Create analytic dataset
+    analytic_dat <- dat |>
+      select(
+        id,
+        pp_depress,
+        ask_dprs,
+        mat_age_pu,
+        mat_ed,
+        income8,
+        hispanic,
+        married,
+        bpg_deprs8,
+        hth_anx,
+        kotelchuck,
+        pnc_1trm,
+        wtanal,
+        stratumc,
+        sud_nest,
+        nest_yr
+      ) |>
+      mutate(
+        screened = case_when(
+          ask_dprs %in% c(1, "1") ~ 1,
+          ask_dprs %in% c(2, "2") ~ 0,
+          TRUE ~ NA_real_
+        ),
+        pp_depress_bin = case_when(
+          pp_depress %in% c(1, "1") ~ 1,
+          pp_depress %in% c(2, "2") ~ 0,
+          TRUE ~ NA_real_
+        )
+      ) |>
+      filter(!is.na(screened), !is.na(pp_depress_bin))
+
+    # Create processed-data folder if needed
+    dir.create(here("data", "processed-data"), recursive = TRUE, showWarnings = FALSE)
+
+    # Save analytic dataset
+    saveRDS(analytic_dat, here("data", "processed-data", "prams_analytic.rds"))
+
+    # Confirm saved
+    file.exists(here("data", "processed-data", "prams_analytic.rds"))
+
+    # Quick checks
+    dim(analytic_dat)
+
+    analytic_dat |> count(screened) |> mutate(pct = n / sum(n))
+    analytic_dat |> count(pp_depress_bin) |> mutate(pct = n / sum(n))
+
+    analytic_dat |>
+      count(screened, pp_depress_bin) |>
+      group_by(screened) |>
+      mutate(pct = n / sum(n))
+
+    message("Analytic dataset created successfully.")
+  }
+}
 ```

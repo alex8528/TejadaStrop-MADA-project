@@ -15,3 +15,5 @@ This folder contains all scripts used in the analysis pipeline.
 
 ## Notes
 Scripts are numbered to indicate the order in which they should be run.
+
+The raw PRAMS Excel file may be too large to process in some environments. A processed analytic dataset is provided in data/processed-data so the remaining workflow can be reproduced.

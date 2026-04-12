@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.8.27">
+<meta name="generator" content="quarto-1.9.37">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -10,6 +10,9 @@
 
 <title>03 Exploratory analysis</title>
 <style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
 div.columns{display: flex; gap: min(4vw, 1.5em);}
@@ -62,15 +65,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="03_exploratory_analysis_files/libs/clipboard/clipboard.min.js"></script>
 <script src="03_exploratory_analysis_files/libs/quarto-html/quarto.js" type="module"></script>
 <script src="03_exploratory_analysis_files/libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="03_exploratory_analysis_files/libs/quarto-html/axe/axe-check.js" type="module"></script>
 <script src="03_exploratory_analysis_files/libs/quarto-html/popper.min.js"></script>
 <script src="03_exploratory_analysis_files/libs/quarto-html/tippy.umd.min.js"></script>
 <script src="03_exploratory_analysis_files/libs/quarto-html/anchor.min.js"></script>
 <link href="03_exploratory_analysis_files/libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="03_exploratory_analysis_files/libs/quarto-html/quarto-syntax-highlighting-ed96de9b727972fe78a7b5d16c58bf87.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="03_exploratory_analysis_files/libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="03_exploratory_analysis_files/libs/bootstrap/bootstrap.min.js"></script>
 <link href="03_exploratory_analysis_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="03_exploratory_analysis_files/libs/bootstrap/bootstrap-9e3ffae467580fdb927a41352e75a2e0.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="03_exploratory_analysis_files/libs/bootstrap/bootstrap-efbb37e9afcc02144ebbc7afd12a776f.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 
 
 </head>
@@ -125,8 +127,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-<section id="screening-distribution" class="level2">
-<h2 class="anchored" data-anchor-id="screening-distribution">Screening distribution</h2>
+<section id="screening-distribution" class="level1">
+<h1>Screening distribution</h1>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>screen_tbl <span class="ot">&lt;-</span> analytic_dat <span class="sc">|&gt;</span> </span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(screened) <span class="sc">|&gt;</span> </span>
@@ -144,8 +146,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code># A tibble: 2 × 4
   screened      n   pct screening_status
      &lt;dbl&gt;  &lt;int&gt; &lt;dbl&gt; &lt;chr&gt;           
-1        0  44853 0.189 Not screened    
-2        1 192539 0.811 Screened        </code></pre>
+1        0 192539 0.811 Not screened    
+2        1  44853 0.189 Screened        </code></pre>
 </div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">saveRDS</span>(</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  screen_tbl,</span>
@@ -153,8 +155,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
-<section id="postpartum-depression-distribution" class="level2">
-<h2 class="anchored" data-anchor-id="postpartum-depression-distribution">Postpartum depression distribution</h2>
+<section id="postpartum-depression-distribution" class="level1">
+<h1>Postpartum depression distribution</h1>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>ppd_tbl <span class="ot">&lt;-</span> analytic_dat <span class="sc">|&gt;</span> </span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(pp_depress_bin) <span class="sc">|&gt;</span> </span>
@@ -172,13 +174,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code># A tibble: 2 × 4
   pp_depress_bin      n   pct depression_status             
            &lt;dbl&gt;  &lt;int&gt; &lt;dbl&gt; &lt;chr&gt;                         
-1              0 203793 0.858 No depressive symptoms        
-2              1  33599 0.142 Postpartum depressive symptoms</code></pre>
+1              0  33599 0.142 No depressive symptoms        
+2              1 203793 0.858 Postpartum depressive symptoms</code></pre>
 </div>
 </div>
 </section>
-<section id="plot-postpartum-depressive-symptoms-by-screening" class="level2">
-<h2 class="anchored" data-anchor-id="plot-postpartum-depressive-symptoms-by-screening">Plot: Postpartum depressive symptoms by screening</h2>
+<section id="plot-postpartum-depressive-symptoms-by-screening" class="level1">
+<h1>Plot: Postpartum depressive symptoms by screening</h1>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>data_summary <span class="ot">&lt;-</span> analytic_dat <span class="sc">|&gt;</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(screened, pp_depress_bin) <span class="sc">|&gt;</span></span>
@@ -252,8 +254,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
-<section id="cross-tabulation" class="level2">
-<h2 class="anchored" data-anchor-id="cross-tabulation">Cross tabulation</h2>
+<section id="cross-tabulation" class="level1">
+<h1>Cross tabulation</h1>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>cross_tab <span class="ot">&lt;-</span> analytic_dat <span class="sc">|&gt;</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(screened, pp_depress_bin) <span class="sc">|&gt;</span></span>
@@ -279,71 +281,68 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 # Groups:   screened [2]
   screened screening_status depression_status                   n percent
      &lt;dbl&gt; &lt;chr&gt;            &lt;chr&gt;                           &lt;int&gt;   &lt;dbl&gt;
-1        0 Not screened     No depressive symptoms          38048    84.8
-2        0 Not screened     Postpartum depressive symptoms   6805    15.2
-3        1 Screened         No depressive symptoms         165745    86.1
-4        1 Screened         Postpartum depressive symptoms  26794    13.9</code></pre>
+1        0 Not screened     No depressive symptoms          26794    13.9
+2        0 Not screened     Postpartum depressive symptoms 165745    86.1
+3        1 Screened         No depressive symptoms           6805    15.2
+4        1 Screened         Postpartum depressive symptoms  38048    84.8</code></pre>
 </div>
 </div>
-</section>
-<section id="interpretation" class="level2">
-<h2 class="anchored" data-anchor-id="interpretation">Interpretation</h2>
 <p>The exploratory analysis suggests that postpartum depressive symptoms were slightly less common among respondents who reported being screened during prenatal care. About 13.9% of screened respondents reported postpartum depressive symptoms compared with 15.2% among those who were not screened.</p>
 </section>
-<section id="depression-by-prior-depression-during-pregnancy" class="level2">
-<h2 class="anchored" data-anchor-id="depression-by-prior-depression-during-pregnancy">Depression by prior depression during pregnancy</h2>
+<section id="depression-by-prior-depression-during-pregnancy" class="level1">
+<h1>Depression by prior depression during pregnancy</h1>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>dep_prior_tbl <span class="ot">&lt;-</span> analytic_dat <span class="sc">|&gt;</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(BPG_DEPRS8, pp_depress_bin) <span class="sc">|&gt;</span></span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(BPG_DEPRS8) <span class="sc">|&gt;</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(bpg_deprs8, pp_depress_bin) <span class="sc">|&gt;</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(bpg_deprs8) <span class="sc">|&gt;</span></span>
 <span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">pct =</span> n <span class="sc">/</span> <span class="fu">sum</span>(n))</span>
 <span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>dep_prior_tbl</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 6 × 4
-# Groups:   BPG_DEPRS8 [3]
-  BPG_DEPRS8 pp_depress_bin      n   pct
+# Groups:   bpg_deprs8 [3]
+  bpg_deprs8 pp_depress_bin      n   pct
        &lt;dbl&gt;          &lt;dbl&gt;  &lt;int&gt; &lt;dbl&gt;
-1          1              0 175943 0.891
-2          1              1  21603 0.109
-3          2              0  26157 0.693
-4          2              1  11601 0.307
-5         NA              0   1693 0.811
-6         NA              1    395 0.189</code></pre>
+1          1              0  21603 0.109
+2          1              1 175943 0.891
+3          2              0  11601 0.307
+4          2              1  26157 0.693
+5         NA              0    395 0.189
+6         NA              1   1693 0.811</code></pre>
 </div>
 </div>
 </section>
-<section id="depression-by-education" class="level2">
-<h2 class="anchored" data-anchor-id="depression-by-education">Depression by education</h2>
+<section id="depression-by-education" class="level1">
+<h1>Depression by education</h1>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>dep_edu_tbl <span class="ot">&lt;-</span> analytic_dat <span class="sc">|&gt;</span></span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(MAT_ED, pp_depress_bin) <span class="sc">|&gt;</span></span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(MAT_ED) <span class="sc">|&gt;</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(mat_ed, pp_depress_bin) <span class="sc">|&gt;</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(mat_ed) <span class="sc">|&gt;</span></span>
 <span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">pct =</span> n <span class="sc">/</span> <span class="fu">sum</span>(n))</span>
 <span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>dep_edu_tbl</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 12 × 4
-# Groups:   MAT_ED [6]
-   MAT_ED pp_depress_bin     n    pct
+# Groups:   mat_ed [6]
+   mat_ed pp_depress_bin     n    pct
     &lt;dbl&gt;          &lt;dbl&gt; &lt;int&gt;  &lt;dbl&gt;
- 1      1              0  5570 0.870 
- 2      1              1   831 0.130 
- 3      2              0 16240 0.806 
- 4      2              1  3918 0.194 
- 5      3              0 45987 0.820 
- 6      3              1 10127 0.180 
- 7      4              0 56158 0.845 
- 8      4              1 10268 0.155 
- 9      5              0 78056 0.906 
-10      5              1  8126 0.0943
-11     NA              0  1782 0.844 
-12     NA              1   329 0.156 </code></pre>
+ 1      1              0   831 0.130 
+ 2      1              1  5570 0.870 
+ 3      2              0  3918 0.194 
+ 4      2              1 16240 0.806 
+ 5      3              0 10127 0.180 
+ 6      3              1 45987 0.820 
+ 7      4              0 10268 0.155 
+ 8      4              1 56158 0.845 
+ 9      5              0  8126 0.0943
+10      5              1 78056 0.906 
+11     NA              0   329 0.156 
+12     NA              1  1782 0.844 </code></pre>
 </div>
 </div>
 </section>
-<section id="proportion-with-postpartum-depressive-symptoms-by-screening" class="level2">
-<h2 class="anchored" data-anchor-id="proportion-with-postpartum-depressive-symptoms-by-screening">Proportion with postpartum depressive symptoms by screening</h2>
+<section id="proportion-with-postpartum-depressive-symptoms-by-screening" class="level1">
+<h1>Proportion with postpartum depressive symptoms by screening</h1>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>plot_ppd_screen <span class="ot">&lt;-</span> analytic_dat <span class="sc">|&gt;</span></span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
@@ -377,8 +376,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-<section id="save-screening-summary-table" class="level2">
-<h2 class="anchored" data-anchor-id="save-screening-summary-table">Save screening summary table</h2>
+<section id="save-screening-summary-table" class="level1">
+<h1>Save screening summary table</h1>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>screening_table <span class="ot">&lt;-</span> analytic_dat <span class="sc">|&gt;</span></span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(screened, pp_depress_bin) <span class="sc">|&gt;</span></span>
@@ -409,10 +408,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 # Groups:   screened [2]
   screened `Prenatal screening` `Postpartum depressive symptoms`      n percent
      &lt;dbl&gt; &lt;chr&gt;                &lt;chr&gt;                             &lt;int&gt;   &lt;dbl&gt;
-1        0 Not screened         No                                38048    84.8
-2        0 Not screened         Yes                                6805    15.2
-3        1 Screened             No                               165745    86.1
-4        1 Screened             Yes                               26794    13.9</code></pre>
+1        0 Not screened         No                                26794    13.9
+2        0 Not screened         Yes                              165745    86.1
+3        1 Screened             No                                 6805    15.2
+4        1 Screened             Yes                               38048    84.8</code></pre>
 </div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write_csv</span>(</span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  screening_table,</span>

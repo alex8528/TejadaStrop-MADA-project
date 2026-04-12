@@ -23,7 +23,7 @@ analytic_dat <- readRDS(here("data", "processed-data", "prams_analytic.rds"))
 dim(analytic_dat)
 ```
 
-## Screening distribution
+# Screening distribution
 ```{r}
 screen_tbl <- analytic_dat |> 
   count(screened) |> 
@@ -44,9 +44,8 @@ saveRDS(
 )
 ```
 
-## Postpartum depression distribution
+# Postpartum depression distribution
 ```{r}
-
 ppd_tbl <- analytic_dat |> 
   count(pp_depress_bin) |> 
   mutate(
@@ -59,11 +58,9 @@ ppd_tbl <- analytic_dat |>
   )
 
 ppd_tbl
-
 ```
 
-## Plot: Postpartum depressive symptoms by screening
-
+# Plot: Postpartum depressive symptoms by screening
 ```{r}
 data_summary <- analytic_dat |>
   count(screened, pp_depress_bin) |>
@@ -131,7 +128,7 @@ ggsave(
 )
 ```
 
-## Cross tabulation
+# Cross tabulation
 ```{r}
 cross_tab <- analytic_dat |>
   count(screened, pp_depress_bin) |>
@@ -154,30 +151,29 @@ cross_tab <- analytic_dat |>
 cross_tab
 ```
 
-## Interpretation
 The exploratory analysis suggests that postpartum depressive symptoms were slightly less common among respondents who reported being screened during prenatal care. About 13.9% of screened respondents reported postpartum depressive symptoms compared with 15.2% among those who were not screened.
 
-## Depression by prior depression during pregnancy
+# Depression by prior depression during pregnancy
 ```{r}
 dep_prior_tbl <- analytic_dat |>
-  count(BPG_DEPRS8, pp_depress_bin) |>
-  group_by(BPG_DEPRS8) |>
+  count(bpg_deprs8, pp_depress_bin) |>
+  group_by(bpg_deprs8) |>
   mutate(pct = n / sum(n))
 
 dep_prior_tbl
 ```
 
-## Depression by education
+# Depression by education
 ```{r}
 dep_edu_tbl <- analytic_dat |>
-  count(MAT_ED, pp_depress_bin) |>
-  group_by(MAT_ED) |>
+  count(mat_ed, pp_depress_bin) |>
+  group_by(mat_ed) |>
   mutate(pct = n / sum(n))
 
 dep_edu_tbl
 ```
 
-## Proportion with postpartum depressive symptoms by screening
+# Proportion with postpartum depressive symptoms by screening
 ```{r}
 plot_ppd_screen <- analytic_dat |>
   mutate(
@@ -204,7 +200,7 @@ plot_ppd_screen <- analytic_dat |>
 plot_ppd_screen
 ```
 
-## Save screening summary table
+# Save screening summary table
 ```{r}
 screening_table <- analytic_dat |>
   count(screened, pp_depress_bin) |>
@@ -236,3 +232,4 @@ write_csv(
   here("results", "tables", "screening_summary.csv")
 )
 ```
+

@@ -51,12 +51,12 @@ if (!file.exists(raw_path)) {
 
     file.exists(here("data", "processed-data", "prams_clean.rds"))
 
-    c("PP_DEPRESS", "ASK_DPRS", "WTANAL") %in% names(prams_clean)
+    c("pp_depress", "ask_dprs", "wtanal") %in% names(prams_clean)
 
     prams_clean |> summarise(
       n = n(),
-      n_id_unique = n_distinct(ID),
-      n_id_missing = sum(is.na(ID))
+      n_id_unique = n_distinct(id),
+      n_id_missing = sum(is.na(id))
     )
 
     message("Raw data loaded and cleaned successfully.")

@@ -32,15 +32,13 @@ dir.create(here("results", "output"), showWarnings = FALSE, recursive = TRUE)
 
 # Quick check of imported data
 glimpse(dat)
-
 ```
 
 ```{r}
-
 # Define variables
 outcome <- "pp_depress_bin"
 main_exposure <- "screened"
-covariates <- c("BPG_DEPRS8", "MAT_ED")
+covariates <- c("bpg_deprs8", "mat_ed")
 
 all_vars <- c(outcome, main_exposure, covariates)
 stopifnot(all(all_vars %in% names(dat)))
@@ -51,37 +49,27 @@ analysis_dat <- dat |>
   drop_na() |>
   mutate(
     screened = as.factor(screened),
-    BPG_DEPRS8 = as.factor(BPG_DEPRS8),
-    MAT_ED = as.factor(MAT_ED)
+    bpg_deprs8 = as.factor(bpg_deprs8),
+    mat_ed = as.factor(mat_ed)
   )
+```
 
 # Check outcome coding before modeling
+```{r}
 table(analysis_dat$pp_depress_bin, useNA = "ifany")
+```
 
-# Optional: save the complete-case dataset used for modeling
+# Save the complete-case dataset used for modeling
+```{r}
+
 saveRDS(
   analysis_dat,
   here("results", "output", "analysis_dataset_complete_case.rds")
 )
+```
 
 # Basic analytic sample summary
-analysis_dat |>
-  summarise(
-    n = n(),
-    postpartum_depression_cases = sum(pp_depress_bin == 1, na.rm = TRUE)
-  )
-
-analysis_dat <- dat |>
-  select(all_of(all_vars)) |>
-  drop_na() |>
-  mutate(
-    screened = as.factor(screened),
-    BPG_DEPRS8 = as.factor(BPG_DEPRS8),
-    MAT_ED = as.factor(MAT_ED)
-  )
-
-table(analysis_dat$pp_depress_bin, useNA = "ifany")
-
+```{r}
 analysis_dat |>
   summarise(
     n = n(),
@@ -89,8 +77,8 @@ analysis_dat |>
   )
 ```
 
-```{r}
 # Bivariate logistic regression model
+```{r}
 fit_biv <- glm(
   pp_depress_bin ~ screened,
   data = analysis_dat,
@@ -100,17 +88,19 @@ fit_biv <- glm(
 biv_tbl <- tidy(fit_biv, conf.int = TRUE, exponentiate = TRUE)
 
 biv_tbl
+```
 
 # Save bivariate results
+```{r}
+
 saveRDS(biv_tbl, here("results", "tables", "glm_bivariate_screened.rds"))
 saveRDS(fit_biv, here("results", "output", "glm_bivariate_screened.rds"))
 ```
 
-```{r}
-
 # Multivariable logistic regression model
+```{r}
 fit_multi <- glm(
-  pp_depress_bin ~ screened + BPG_DEPRS8 + MAT_ED,
+  pp_depress_bin ~ screened + bpg_deprs8 + mat_ed,
   data = analysis_dat,
   family = binomial()
 )
@@ -118,18 +108,20 @@ fit_multi <- glm(
 multi_tbl <- tidy(fit_multi, conf.int = TRUE, exponentiate = TRUE)
 
 multi_tbl
+```
 
 # Save multivariable results
+```{r}
 saveRDS(multi_tbl, here("results", "tables", "glm_multivariable_main.rds"))
 saveRDS(fit_multi, here("results", "output", "glm_multivariable_main.rds"))
 ```
 
-```{r}
 # Tidymodels expects a factor outcome for classification
+```{r}
 analysis_dat2 <- analysis_dat |>
   mutate(pp_depress_bin = factor(pp_depress_bin, levels = c(0, 1)))
 
-rec <- recipe(pp_depress_bin ~ screened + BPG_DEPRS8 + MAT_ED, data = analysis_dat2) |>
+rec <- recipe(pp_depress_bin ~ screened + bpg_deprs8 + mat_ed, data = analysis_dat2) |>
   step_dummy(all_nominal_predictors()) |>
   step_zv(all_predictors())
 
@@ -138,15 +130,17 @@ wf <- workflow() |>
   add_model(logistic_reg() |> set_engine("glm"))
 
 fit_wf <- fit(wf, data = analysis_dat2)
+```
 
 # Save tidymodels workflow
+```{r}
 saveRDS(fit_wf, here("results", "output", "tidymodels_logistic_main.rds"))
 
 fit_wf
 ```
 
-```{r}
 # Confirm output files were successfully saved
+```{r}
 file.exists(here("results", "output", "analysis_dataset_complete_case.rds"))
 file.exists(here("results", "tables", "glm_bivariate_screened.rds"))
 file.exists(here("results", "output", "glm_bivariate_screened.rds"))
@@ -154,3 +148,4 @@ file.exists(here("results", "tables", "glm_multivariable_main.rds"))
 file.exists(here("results", "output", "glm_multivariable_main.rds"))
 file.exists(here("results", "output", "tidymodels_logistic_main.rds"))
 ```
+
