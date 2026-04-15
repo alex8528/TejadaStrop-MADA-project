@@ -187,6 +187,8 @@ Exploratory analyses included descriptive statistics, cross tabulations, and gra
 
 Multivariable logistic regression models were specified with postpartum depressive symptoms as the binary outcome. Prenatal mental health screening was included as the primary exposure. Covariates included depression during pregnancy and maternal education. Results are presented as odds ratios with corresponding 95 percent confidence intervals.
 
+To incorporate model validation methods from this course, I also compared logistic regression with a random forest model using 5 fold cross validation. Model performance was evaluated using accuracy and ROC AUC. Cross validated mean performance and standard error were used to assess predictive performance and uncertainty across resamples.
+
 \newpage
 
 # Results
@@ -368,10 +370,10 @@ model_validation_tbl <- model_validation_results |>
       .metric == "roc_auc" ~ "ROC AUC",
       TRUE ~ .metric
     ),
-    mean = round(mean, 3)
+    value = paste0(round(mean, 3), " (SE ", round(std_err, 3), ")")
   ) |>
-  select(model, metric_label, mean) |>
-  pivot_wider(names_from = metric_label, values_from = mean) |>
+  select(model, metric_label, value) |>
+  pivot_wider(names_from = metric_label, values_from = value) |>
   rename(Model = model)
 
 knitr::kable(model_validation_tbl, align = c("l", "c", "c"))
@@ -382,12 +384,12 @@ Reference groups were not screened during prenatal care, no depression during pr
 
 In adjusted analyses, respondents who reported prenatal mental health screening had lower odds of postpartum depressive symptoms compared with those who were not screened. In the multivariable model, prenatal screening was associated with lower odds of postpartum depressive symptoms after adjustment for depression during pregnancy and maternal education.
 
-Model validation results indicated that logistic regression and random forest models performed similarly. Because the random forest did not meaningfully improve predictive performance, logistic regression was retained as the preferred model due to its interpretability.
+Model validation results from 5 fold cross validation indicated that logistic regression and random forest performed similarly on both accuracy and ROC AUC. Standard errors across the resamples were also small, suggesting little difference in predictive performance between the two approaches. Because the random forest did not meaningfully improve performance, logistic regression was retained as the preferred model due to its interpretability and easier explanation of associations.
 
 # Discussion
 This study evaluated the association between prenatal mental health screening and postpartum depressive symptoms using population based PRAMS data. Respondents who reported prenatal mental health screening had lower odds of postpartum depressive symptoms than those who were not screened, even after adjustment for depression during pregnancy and maternal education.
 
-Although PRAMS includes survey weights and design variables, the analyses presented here are unweighted and intended as an exploratory course project focused on reproducible modeling workflows.
+Although PRAMS includes survey weights and design variables, the analyses presented here are unweighted and intended as an exploratory course project focused on reproducible modeling workflows. In addition to descriptive and regression analyses, this project also incorporated cross validation and model comparison to evaluate whether a more flexible machine learning approach improved prediction beyond logistic regression.
 
 These findings are generally consistent with existing research showing that postpartum depressive symptoms remain a significant public health concern in the United States. Previous analyses using PRAMS data have documented that a substantial proportion of women report postpartum depressive symptoms and that provider discussions about perinatal depression vary across populations and healthcare settings @bauman2020vitalsigns; @farr2016provider. Clinical guidelines from organizations such as the American College of Obstetricians and Gynecologists recommend routine screening for depression during pregnancy and the postpartum period to support earlier identification and intervention @acog2023screening.
 
@@ -401,7 +403,7 @@ This study also has several limitations. First, PRAMS data are self reported and
 
 Despite these limitations, the findings highlight the potential value of examining prenatal mental health screening practices using population based surveillance data. Understanding how screening practices relate to maternal mental health outcomes may help inform future research and public health efforts aimed at improving maternal mental health.
 
-Future analyses could expand on this work by incorporating additional covariates such as insurance status, socioeconomic indicators, and access to mental health services. More advanced modeling approaches could also be used to explore predictors of postpartum depressive symptoms and identify subgroups that may benefit most from screening and early intervention.
+Future analyses could expand on this work by incorporating additional covariates such as insurance status, socioeconomic indicators, and access to mental health services. Additional machine learning approaches, weighted survey analyses, and more detailed model assessment could also be used to explore predictors of postpartum depressive symptoms and identify subgroups that may benefit most from screening and early intervention.
 
 Overall, this study demonstrates how large surveillance datasets such as PRAMS can be used to explore maternal mental health patterns and generate hypotheses for future research. Continued attention to perinatal mental health remains important for improving maternal and infant health outcomes.
 
