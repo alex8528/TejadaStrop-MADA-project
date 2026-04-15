@@ -3,4 +3,3 @@ data/raw-data/PRAMS[[:space:]]codebooks/*.pdf filter=lfs diff=lfs merge=lfs -tex
 data/raw-data/PRAMS[[:space:]]codebooks/*.xlsx filter=lfs diff=lfs merge=lfs -text
 data/raw-data/PRAMS[[:space:]]codebooks/*.docx filter=lfs diff=lfs merge=lfs -text
 data/raw-data/PRAMS[[:space:]]codebooks/* filter=lfs diff=lfs merge=lfs -text
-data/processed-data/prams_analytic.rds filter=lfs diff=lfs merge=lfs -text
