@@ -189,6 +189,8 @@ Multivariable logistic regression models were specified with postpartum depressi
 
 To incorporate model validation methods from this course, I also compared logistic regression with a random forest model using 5 fold cross validation. Model performance was evaluated using accuracy and ROC AUC. Cross validated mean performance and standard error were used to assess predictive performance and uncertainty across resamples.
 
+To extend the analysis beyond standard logistic regression, I also applied machine learning approaches using the tidymodels framework. Specifically, I fit both a logistic regression model and a random forest model to examine whether more flexible methods improved predictive performance. Model performance was evaluated using 5-fold cross-validation. Accuracy and area under the receiver operating characteristic curve (ROC AUC) were used as the primary performance metrics. To assess uncertainty in model performance, I summarized results using the mean and standard error across cross-validation folds.
+
 \newpage
 
 # Results
@@ -382,6 +384,10 @@ knitr::kable(model_validation_tbl, align = c("l", "c", "c"))
 
 Reference groups were not screened during prenatal care, no depression during pregnancy, and less than high school education.
 
+The comparison between logistic regression and random forest models showed similar overall performance. While the random forest model provided slightly improved flexibility, it did not substantially outperform logistic regression in terms of ROC AUC or accuracy. This suggests that the relationship between prenatal mental health screening and postpartum depressive symptoms may be adequately captured using a simpler, more interpretable model. 
+
+Cross-validation results were consistent across folds, and the relatively small standard errors indicate stable model performance across resamples. This provides additional confidence that the findings are not driven by overfitting or sample-specific patterns.
+
 In adjusted analyses, respondents who reported prenatal mental health screening had lower odds of postpartum depressive symptoms compared with those who were not screened. In the multivariable model, prenatal screening was associated with lower odds of postpartum depressive symptoms after adjustment for depression during pregnancy and maternal education.
 
 Model validation results from 5 fold cross validation indicated that logistic regression and random forest performed similarly on both accuracy and ROC AUC. Standard errors across the resamples were also small, suggesting little difference in predictive performance between the two approaches. Because the random forest did not meaningfully improve performance, logistic regression was retained as the preferred model due to its interpretability and easier explanation of associations.
@@ -406,6 +412,10 @@ Despite these limitations, the findings highlight the potential value of examini
 Future analyses could expand on this work by incorporating additional covariates such as insurance status, socioeconomic indicators, and access to mental health services. Additional machine learning approaches, weighted survey analyses, and more detailed model assessment could also be used to explore predictors of postpartum depressive symptoms and identify subgroups that may benefit most from screening and early intervention.
 
 Overall, this study demonstrates how large surveillance datasets such as PRAMS can be used to explore maternal mental health patterns and generate hypotheses for future research. Continued attention to perinatal mental health remains important for improving maternal and infant health outcomes.
+
+Incorporating machine learning methods provided an opportunity to evaluate whether more complex models improved predictive performance. Although the random forest model can capture non-linear relationships and interactions, it did not meaningfully outperform logistic regression in this analysis. This finding supports the use of logistic regression for this research question, as it offers greater interpretability while maintaining comparable predictive performance. The use of cross-validation further strengthened the analysis by providing an estimate of how well the models are expected to perform on new data, along with a measure of uncertainty.
+
+Together, these results demonstrate that more complex models do not always lead to better performance, particularly when the underlying relationships are relatively simple or when the number of predictors is limited.
 
 \newpage
 
