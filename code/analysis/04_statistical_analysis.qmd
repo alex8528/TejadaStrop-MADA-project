@@ -21,7 +21,7 @@ library(broom)
 
 ```{r}
 # Load processed analytic dataset
-data_path <- here("data", "processed-data", "prams_analytic.rds")
+data_path <- here("data", "processed-data", "prams_analytic_localfix.rds")
 stopifnot(file.exists(data_path))
 
 dat <- readRDS(data_path)

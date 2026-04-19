@@ -20,7 +20,7 @@ library(ranger)
 ```
 
 ```{r}
-data_path <- here("data", "processed-data", "prams_analytic.rds")
+data_path <- here("data", "processed-data", "prams_analytic_localfix.rds")
 stopifnot(file.exists(data_path))
 
 analytic_dat <- readRDS(data_path)

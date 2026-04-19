@@ -26,7 +26,7 @@ library(scales)
 library(survey)
 library(kableExtra)
 
-analytic_path <- here("data", "processed-data", "prams_analytic.rds")
+analytic_path <- here("data", "processed-data", "prams_analytic_localfix.rds")
 stopifnot(file.exists(analytic_path))
 
 analytic_dat <- readRDS(analytic_path)

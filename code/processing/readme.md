@@ -40,7 +40,7 @@ This script typically:
 Example output files:
 
 prams_clean.rds  
-prams_analytic.rds
+prams_analytic_localfix.rds
 
 ### Quarto File
 
@@ -78,6 +78,6 @@ This documentation helps ensure the project remains understandable and reproduci
 
 Because the raw PRAMS file and intermediate cleaned file may not be fully reproducible in all environments, the recommended starting point for reproduction is:
 
-data/processed-data/prams_analytic.rds
+data/processed-data/prams_analytic_localfix.rds
 
 The files `01_load_clean.qmd` and `02_create_analytic_dataset.qmd` are included for workflow documentation, but they may skip processing if required inputs are unavailable or unreadable.

@@ -19,7 +19,7 @@ clean_path <- here("data", "processed-data", "prams_clean.rds")
 # Check if cleaned data exists
 if (!file.exists(clean_path)) {
 
-  message("Cleaned dataset not available. Skipping analytic dataset creation. Use prams_analytic.rds in data/processed-data as described in the README.")
+  message("Cleaned dataset not available. Skipping analytic dataset creation. Use prams_analytic_localfix.rds in data/processed-data as described in the README.")
 
 } else {
 
@@ -27,7 +27,7 @@ if (!file.exists(clean_path)) {
   dat <- tryCatch(
     readRDS(clean_path),
     error = function(e) {
-      message("Cleaned dataset is present but could not be read in this environment. Skipping analytic dataset creation. Use prams_analytic.rds in data/processed-data as described in the README.")
+      message("Cleaned dataset is present but could not be read in this environment. Skipping analytic dataset creation. Use prams_analytic_localfix.rds in data/processed-data as described in the README.")
       return(NULL)
     }
   )
@@ -78,10 +78,10 @@ if (!file.exists(clean_path)) {
     dir.create(here("data", "processed-data"), recursive = TRUE, showWarnings = FALSE)
 
     # Save analytic dataset
-    saveRDS(analytic_dat, here("data", "processed-data", "prams_analytic.rds"))
+    saveRDS(analytic_dat, here("data", "processed-data", "prams_analytic_localfix.rds"))
 
     # Confirm saved
-    file.exists(here("data", "processed-data", "prams_analytic.rds"))
+    file.exists(here("data", "processed-data", "prams_analytic_localfix.rds"))
 
     # Quick checks
     dim(analytic_dat)

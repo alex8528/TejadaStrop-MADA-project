@@ -18,7 +18,7 @@ library(scales)
 dir.create(here("results", "tables"), showWarnings = FALSE, recursive = TRUE)
 dir.create(here("results", "figures"), showWarnings = FALSE, recursive = TRUE)
 
-analytic_dat <- readRDS(here("data", "processed-data", "prams_analytic.rds"))
+analytic_dat <- readRDS(here("data", "processed-data", "prams_analytic_localfix.rds"))
 
 dim(analytic_dat)
 ```
