@@ -251,7 +251,7 @@ fig_data <- analytic_complete |>
   ungroup() |>
   mutate(
     Screening = ifelse(screened == 1, "Screened", "Not screened"),
-    Outcome = ifelse(pp_depress_bin == 1, "Depressive symptoms", "No depressive symptoms")
+    Outcome = ifelse(pp_depress_bin == 0, "Depressive symptoms", "No depressive symptoms")
   )
 
 ggplot(fig_data, aes(x = Screening, y = percent, fill = Outcome)) +
@@ -294,7 +294,7 @@ fig_dep_preg <- analytic_complete |>
   ungroup() |>
   mutate(
     Depression_pregnancy = ifelse(bpg_deprs8 == 2, "Yes", "No"),
-    Outcome = ifelse(pp_depress_bin == 1, "Depressive symptoms", "No depressive symptoms")
+    Outcome = ifelse(pp_depress_bin == 0, "Depressive symptoms", "No depressive symptoms")
   )
 
 ggplot(fig_dep_preg, aes(x = Depression_pregnancy, y = percent, fill = Outcome)) +
@@ -347,7 +347,7 @@ screening_table <- analytic_complete |>
   mutate(
     percent = round(100 * n / sum(n), 1),
     Screening = ifelse(screened == 1, "Screened", "Not screened"),
-    Outcome = ifelse(pp_depress_bin == 1, "Depressive symptoms", "No depressive symptoms")
+    Outcome = ifelse(pp_depress_bin == 0, "Depressive symptoms", "No depressive symptoms")
   ) |>
   ungroup() |>
   mutate(value = paste0(scales::comma(n), " (", percent, "%)")) |>
@@ -358,7 +358,7 @@ screening_table <- analytic_complete |>
 knitr::kable(screening_table, align = c("l", "c", "c"))
 ```
 
-The table on postpartum depressive symptoms by screening status shows that 15.2 percent of respondents who were not screened during prenatal care reported postpartum depressive symptoms, compared with 13.9 percent among those who were screened.
+The table on postpartum depressive symptoms by screening status shows a slightly higher percentage of depressive symptoms among respondents who were not screened during prenatal care than among those who were screened.
 
 ```{r}
 #| label: tbl-model-validation
@@ -419,6 +419,7 @@ ggplot(model_validation_plot, aes(x = model, y = mean)) +
   )
 
 ```
+
 Figure \@ref(fig-model-performance) shows that logistic regression and random forest had very similar performance across both accuracy and ROC AUC. The error bars, which reflect the standard error across cross-validation folds, were small for both models and support the stability of the results.
 
 Reference groups were not screened during prenatal care, no depression during pregnancy, and less than high school education.
