@@ -1,19 +1,39 @@
-# products
+## Reproducibility
 
-The folders inside this folder should contain all the products of your project.
+Run all scripts in the following order. Each script must complete successfully 
+before running the next.
 
-For a classical academic project, this will be a peer-reviewed manuscript. Often, you will also give presentations and/or make posters based on your work.
+1. `code/processing-code/01_load_clean.qmd`
+   - Output: `data/processed-data/prams_clean.rds`
 
-The `manuscript` folder contains a template for an academic manuscript. The content of the template is structured as a report for a class, but you can easily replace it with whatever structure you need.
+2. `code/processing-code/02_create_analytic_dataset.qmd`
+   - Output: `data/processed-data/prams_analytic_localfix.rds`
+   - Note: prams_analytic_localfix.rds is the file used for all downstream 
+     analyses and manuscript rendering. It was created to resolve a file 
+     compatibility issue with the original analytic dataset.
 
-Most manuscripts these days have supplementary material, place those into the `supplement` folder. (You can have the supplement inside the `manuscript` folder or next to it, whatever is better for your setup).
+3. `code/eda-code/03_exploratory_analysis.qmd`
+   - Output: `results/figures/screening_vs_postpartum_depression.png`
+   - Output: `results/tables/screening_distribution.rds`
 
-Often, you might make/give a presentation on your work and make slides for that. An example is the `presentation` folder. 
+4. `code/analysis-code/04_statistical_analysis.qmd`
+   - Output: `results/tables/glm_bivariate_screened.rds`
+   - Output: `results/tables/glm_multivariable_main.rds`
+   - Output: `results/output/tidymodels_logistic_main.rds`
 
-Similarly, it is common to make posters to present at conferences. Those can go into the `poster` folder.
+5. `code/analysis-code/05_model_validation.qmd`
+   - Output: `results/tables/model_comparison.rds`
+   - Output: `results/figures/roc_curve_comparison.png`
 
-Often you need a library of references in BibTeX format, as well as a CSL style file that determines reference formatting. Those files might be used by several of the products. They should be placed into the `assets` folder, or for presentations and posters, separately into their respective `media` folders.
+6. `quarto render products/manuscript/Manuscript.qmd`
 
-You can add further folders. For instance, if you have multiple presentations or posters, you might want to create subfolders for each. 
-Or you could have a `blog-post` folder if you plan to write a blog-post. It's up to you how to structure/organize, as long as it is somewhat logical and you document it. Ideally, put a readme file in each folder to orient others/your future self on what is going on.  
+## Note on file paths
 
+The README lists `code/processing/` but the actual folder is 
+`code/processing-code/`. All paths above reflect the actual folder names.
+
+- `code/processing-code/01_load_clean.qmd`
+- `code/processing-code/02_create_analytic_dataset.qmd`
+- `code/eda-code/03_exploratory_analysis.qmd`
+- `code/analysis-code/04_statistical_analysis.qmd`
+- `code/analysis-code/05_model_validation.qmd`

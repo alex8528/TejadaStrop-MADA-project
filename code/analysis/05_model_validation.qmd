@@ -125,4 +125,40 @@ file.exists(here("results", "output", "logistic_cv_results.rds"))
 file.exists(here("results", "output", "random_forest_cv_results.rds"))
 ```
 
+```{r}
+# ROC curve comparison using saved predictions
+log_preds <- collect_predictions(log_res) |>
+  mutate(model = "Logistic Regression")
+
+rf_preds <- collect_predictions(rf_res) |>
+  mutate(model = "Random Forest")
+
+all_preds <- bind_rows(log_preds, rf_preds)
+
+roc_plot <- all_preds |>
+  group_by(model) |>
+  roc_curve(truth = pp_depress_bin, .pred_Yes, event_level = "second") |>
+  ggplot(aes(x = 1 - specificity, y = sensitivity, color = model)) +
+  geom_line(linewidth = 1) +
+  geom_abline(lty = 2) +
+  labs(
+    title = "ROC Curve Comparison: Logistic Regression vs Random Forest",
+    x = "1 - Specificity",
+    y = "Sensitivity",
+    color = "Model"
+  ) +
+  theme_minimal()
+
+roc_plot
+
+dir.create(here("results", "figures"), showWarnings = FALSE, recursive = TRUE)
+
+ggsave(
+  filename = here("results", "figures", "roc_curve_comparison.png"),
+  plot = roc_plot,
+  width = 7,
+  height = 5,
+  dpi = 300
+)
+```
 

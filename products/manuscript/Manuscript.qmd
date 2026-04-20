@@ -1,8 +1,8 @@
 ---
 title: "Prenatal Mental Health Screening and Postpartum Depressive Symptoms"
 author: "Alexandra Tejada-Strop"
-bibliography: references.bib
-csl: apa.csl
+bibliography: ../../assets/references/references.bib
+csl: ../../assets/references/apa.csl
 
 format:
   html:
@@ -30,8 +30,6 @@ analytic_path <- here("data", "processed-data", "prams_analytic_localfix.rds")
 stopifnot(file.exists(analytic_path))
 
 analytic_dat <- readRDS(analytic_path)
-
-dir.create(here("class-project", "figures"), showWarnings = FALSE, recursive = TRUE)
 
 n_total <- nrow(analytic_dat)
 
@@ -189,21 +187,56 @@ Multivariable logistic regression models were used with postpartum depressive sy
 
 To incorporate concepts from this course, I also compared logistic regression with a random forest model using 5 fold cross validation. Model performance was evaluated using accuracy and ROC AUC. Mean performance and standard error across folds were used to assess both performance and variability.
 
-To explore whether more flexible models improved prediction, I used the tidymodels framework to fit both logistic regression and random forest models. This allowed for a direct comparison between a simpler, interpretable model and a more flexible machine learning approach.
+To explore whether more flexible models improved prediction, I used the tidymodels framework to fit both logistic regression and random forest models. The random forest model was fit using the ranger engine with 300 trees and default 
+hyperparameters for mtry and minimum node size.
+
+This allowed for a direct comparison between a simpler, interpretable model and a more flexible machine learning approach.
 
 \newpage
 
 # Results
-The analytic sample included `r scales::comma(n_analysis)` respondents after excluding observations with missing values for the primary exposure, outcome, and selected covariates. Overall, `r round(100 * sum(analytic_complete$screened == 1) / n_analysis, 1)` percent of respondents reported being screened for depression during prenatal care, and `r round(100 * sum(analytic_complete$pp_depress_bin == 0) / n_analysis, 1)` percent reported postpartum depressive symptoms.
+The analytic sample included `r scales::comma(n_analysis)` respondents after excluding observations with missing values for the primary exposure, outcome, and selected covariates. Overall, `r round(100 * sum(analytic_complete$screened == 1) / n_analysis, 1)` percent of respondents reported being screened for depression during prenatal care, and `r round(100 * sum(analytic_complete$pp_depress_bin == 1) / n_analysis, 1)` 
+percent reported postpartum depressive symptoms.
 
 ## Exploratory Analysis
 I first examined the distribution of prenatal mental health screening and postpartum depressive symptoms in the analytic sample. I also explored how postpartum depressive symptoms varied by screening status, depression during pregnancy, and maternal education.
-
-Descriptive results suggested that postpartum depressive symptoms were slightly more common among respondents who reported receiving prenatal mental health screening. Higher rates of postpartum depressive symptoms were also observed among respondents who reported depression during pregnancy. Differences across maternal education groups were also examined to assess potential patterns in the data.
-
-Higher rates of postpartum depressive symptoms were also observed among respondents who reported depression during pregnancy. Differences across maternal education groups were also examined to assess potential patterns in the data.
+Descriptive results showed that postpartum depressive symptoms were slightly more 
+common among respondents who were not screened during prenatal care (15.2%) compared 
+with those who were screened (13.9%). Higher rates of postpartum depressive symptoms 
+were also observed among respondents who reported depression during pregnancy. 
+Differences across maternal education groups were also examined.
 
 These exploratory analyses helped identify initial patterns in the dataset and informed the selection of variables for adjusted modeling.
+
+```{r}
+#| label: tbl-bivariate
+#| tbl-cap: "Unadjusted odds ratio for prenatal mental health screening and postpartum depressive symptoms"
+
+biv_clean <- biv_tbl |>
+  filter(term == "screened1") |>
+  transmute(
+    Predictor = "Prenatal mental health screening",
+    `Odds ratio` = sprintf("%.2f", estimate),
+    `95% CI` = paste0("(", sprintf("%.2f", conf.low), ", ", sprintf("%.2f", conf.high), ")"),
+    `P value` = ifelse(p.value < 0.001, "<0.001", sprintf("%.3f", p.value))
+  )
+
+knitr::kable(
+  biv_clean,
+  col.names = c("Predictor", "Odds ratio", "95% CI", "P value"),
+  align = c("l", "c", "c", "c"),
+  booktabs = TRUE
+) |>
+  kableExtra::kable_styling(full_width = FALSE, position = "left") |>
+  kableExtra::footnote(
+    general = "Unadjusted model. Reference group: not screened during prenatal care.",
+    general_title = "Note:",
+    footnote_as_chunk = TRUE
+  )
+```
+
+The unadjusted model showed a similar pattern, with screened respondents having 
+lower odds of postpartum depressive symptoms before accounting for covariates.
 
 ```{r}
 #| label: tbl-multivariable
@@ -238,7 +271,12 @@ knitr::kable(
   align = c("l", "c", "c", "c"),
   booktabs = TRUE
 ) |>
-  kableExtra::kable_styling(full_width = FALSE, position = "left")
+  kableExtra::kable_styling(full_width = FALSE, position = "left") |>
+  kableExtra::footnote(
+    general = "Reference groups: not screened during prenatal care, no depression during pregnancy, less than high school education.",
+    general_title = "Note:",
+    footnote_as_chunk = TRUE
+  )
 ```
 
 
@@ -325,10 +363,10 @@ ggplot(fig_dep_preg, aes(x = Depression_pregnancy, y = percent, fill = Outcome))
     axis.title = element_text(size = 11)
   )
 
-dir.create(here("class-project", "figures"), showWarnings = FALSE, recursive = TRUE)  
+dir.create(here("results", "figures"), showWarnings = FALSE, recursive = TRUE)
 
 ggsave(
-  filename = here("class-project", "figures", "depression_pregnancy_vs_postpartum.png"),
+  filename = here("results", "figures", "depression_pregnancy_vs_postpartum.png"),
   plot = last_plot(),
   width = 8,
   height = 5,
@@ -360,7 +398,9 @@ screening_table <- analytic_complete |>
 knitr::kable(screening_table, align = c("l", "c", "c"))
 ```
 
-The table on postpartum depressive symptoms by screening status shows a slightly higher percentage of depressive symptoms among respondents who were screened during prenatal care than among those who were not screened.
+The table shows that 15.2% of respondents who were not screened reported postpartum 
+depressive symptoms, compared with 13.9% among those who were screened, consistent 
+with the adjusted model results.
 
 ```{r}
 #| label: tbl-model-validation
@@ -424,9 +464,10 @@ theme(
 
 ```
 
-Figure @fig-model-performance shows that logistic regression and random forest had very similar performance across both accuracy and ROC AUC. The error bars, which reflect the standard error across cross-validation folds, were small for both models and support the stability of the results.
-
-Reference groups were no prenatal mental health screening, no depression during pregnancy, and less than high school education.
+Figure @fig-model-performance shows that logistic regression and random forest had very similar performance across both accuracy and ROC AUC. The standard errors across folds were small for both models, indicating that 
+performance estimates were stable regardless of which observations held out. 
+A ROC AUC of approximately 0.656 reflects modest discriminative ability beyond 
+chance, which is consistent with the small number of predictors included in the model.
 
 The logistic regression and random forest models performed very similarly. The random forest model did not meaningfully improve accuracy or ROC AUC compared with logistic regression.
 
