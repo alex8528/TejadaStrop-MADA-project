@@ -381,6 +381,45 @@ model_validation_tbl <- model_validation_results |>
 knitr::kable(model_validation_tbl, align = c("l", "c", "c"))
 ```
 
+```{r}
+#| label: fig-model-performance
+#| fig-cap: "Cross-validation performance of logistic regression and random forest"
+
+model_validation_plot <- model_validation_results |>
+  filter(.metric %in% c("accuracy", "roc_auc")) |>
+  mutate(
+    metric_label = case_when(
+      .metric == "accuracy" ~ "Accuracy",
+      .metric == "roc_auc" ~ "ROC AUC",
+      TRUE ~ .metric
+    ),
+    model = case_when(
+      model == "logistic_regression" ~ "Logistic regression",
+      model == "random_forest" ~ "Random forest",
+      TRUE ~ str_replace_all(model, "_", " ") |> str_to_title()
+    )
+  )
+
+ggplot(model_validation_plot, aes(x = model, y = mean)) +
+  geom_col(width = 0.6, fill = "steelblue") +
+  geom_errorbar(
+    aes(ymin = mean - std_err, ymax = mean + std_err),
+    width = 0.15
+  ) +
+  facet_wrap(~ metric_label, scales = "free_y") +
+  labs(
+    x = "Model",
+    y = "Cross-validated mean performance"
+  ) +
+  theme_minimal() +
+  theme(
+    strip.text = element_text(size = 10),
+    axis.text = element_text(size = 10),
+    axis.title = element_text(size = 11)
+  )
+
+```
+Figure \@ref(fig-model-performance) shows that logistic regression and random forest had very similar performance across both accuracy and ROC AUC. The error bars, which reflect the standard error across cross-validation folds, were small for both models and support the stability of the results.
 
 Reference groups were not screened during prenatal care, no depression during pregnancy, and less than high school education.
 
