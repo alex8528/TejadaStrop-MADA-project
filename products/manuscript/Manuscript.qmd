@@ -137,8 +137,8 @@ study_pop_tbl <- tibble(
     scales::comma(sum(analytic_complete$screened == 1)),
     scales::comma(sum(analytic_complete$screened == 0)),
     "",
-    scales::comma(sum(analytic_complete$pp_depress_bin == 1)),
     scales::comma(sum(analytic_complete$pp_depress_bin == 0)),
+    scales::comma(sum(analytic_complete$pp_depress_bin == 1)),
     "",
     scales::comma(sum(analytic_complete$bpg_deprs8 == 1)),
     scales::comma(sum(analytic_complete$bpg_deprs8 == 2)),
@@ -157,8 +157,8 @@ study_pop_tbl <- tibble(
     paste0(round(100 * sum(analytic_complete$screened == 1) / n_analysis, 1), "%"),
     paste0(round(100 * sum(analytic_complete$screened == 0) / n_analysis, 1), "%"),
     "",
-    paste0(round(100 * sum(analytic_complete$pp_depress_bin == 1) / n_analysis, 1), "%"),
     paste0(round(100 * sum(analytic_complete$pp_depress_bin == 0) / n_analysis, 1), "%"),
+    paste0(round(100 * sum(analytic_complete$pp_depress_bin == 1) / n_analysis, 1), "%"),
     "",
     paste0(round(100 * sum(analytic_complete$bpg_deprs8 == 1) / n_analysis, 1), "%"),
     paste0(round(100 * sum(analytic_complete$bpg_deprs8 == 2) / n_analysis, 1), "%"),
@@ -194,10 +194,10 @@ To explore whether more flexible models improved prediction, I used the tidymode
 \newpage
 
 # Results
-The analytic sample included `r scales::comma(n_analysis)` respondents after excluding observations with missing values for the primary exposure, outcome, and selected covariates. Overall, `r round(100 * sum(analytic_complete$screened == 1) / n_analysis, 1)` percent of respondents reported being screened for depression during prenatal care, and `r round(100 * sum(analytic_complete$pp_depress_bin == 1) / n_analysis, 1)` percent reported postpartum depressive symptoms.
+The analytic sample included `r scales::comma(n_analysis)` respondents after excluding observations with missing values for the primary exposure, outcome, and selected covariates. Overall, `r round(100 * sum(analytic_complete$screened == 1) / n_analysis, 1)` percent of respondents reported being screened for depression during prenatal care, and `r round(100 * sum(analytic_complete$pp_depress_bin == 0) / n_analysis, 1)` percent reported postpartum depressive symptoms.
 
 ## Exploratory Analysis
-We first examined the distribution of prenatal mental health screening and postpartum depressive symptoms in the analytic sample. We also explored how postpartum depressive symptoms varied by screening status, depression during pregnancy, and maternal education.
+I first examined the distribution of prenatal mental health screening and postpartum depressive symptoms in the analytic sample. I also explored how postpartum depressive symptoms varied by screening status, depression during pregnancy, and maternal education.
 
 Descriptive results suggested that postpartum depressive symptoms were more common among respondents who did not report receiving prenatal mental health screening. Higher rates of postpartum depressive symptoms were also observed among respondents who reported depression during pregnancy. Differences across maternal education groups were also examined to assess potential patterns in the data.
 
@@ -211,14 +211,32 @@ multi_clean <- multi_tbl |>
   filter(term != "(Intercept)") |>
   mutate(
     Predictor = case_when(
-  term == "screened1" ~ "Prenatal mental health screening",
-  term == "bpg_deprs82" ~ "Depression during pregnancy",
-  term == "mat_ed2" ~ "Education: High school graduate",
-  term == "mat_ed3" ~ "Education: Some college",
-  term == "mat_ed4" ~ "Education: College graduate",
-  term == "mat_ed5" ~ "Education: More than college",
-  TRUE ~ term
-)
+      term == "screened1" ~ "Prenatal mental health screening",
+      term == "bpg_deprs82" ~ "Depression during pregnancy",
+      term == "mat_ed2" ~ "Education: High school graduate",
+      term == "mat_ed3" ~ "Education: Some college",
+      term == "mat_ed4" ~ "Education: College graduate",
+      term == "mat_ed5" ~ "Education: More than college",
+      TRUE ~ term
+    ),
+    OR = estimate,
+    CI_low = conf.low,
+    CI_high = conf.high
+  ) |>
+  transmute(
+    Predictor,
+    `Odds ratio` = sprintf("%.2f", OR),
+    `95% CI` = paste0("(", sprintf("%.2f", CI_low), ", ", sprintf("%.2f", CI_high), ")"),
+    `P value` = ifelse(p.value < 0.001, "<0.001", sprintf("%.3f", p.value))
+  )
+
+knitr::kable(
+  multi_clean,
+  col.names = c("Predictor", "Odds ratio", "95% CI", "P value"),
+  align = c("l", "c", "c", "c"),
+  booktabs = TRUE
+) |>
+  kableExtra::kable_styling(full_width = FALSE, position = "left")
 ```
 
 
@@ -340,7 +358,7 @@ screening_table <- analytic_complete |>
 knitr::kable(screening_table, align = c("l", "c", "c"))
 ```
 
-The table on postpartum depressive symptoms by screening status shows a slightly higher percentage of depressive symptoms among respondents who were not screened during prenatal care than among those who were screened.
+The table on postpartum depressive symptoms by screening status shows a slightly higher percentage of depressive symptoms among respondents who were screened during prenatal care than among those who were not screened.
 
 ```{r}
 #| label: tbl-model-validation
@@ -404,7 +422,7 @@ theme(
 
 ```
 
-Figure \@ref(fig-model-performance) shows that logistic regression and random forest had very similar performance across both accuracy and ROC AUC. The error bars, which reflect the standard error across cross-validation folds, were small for both models and support the stability of the results.
+Figure @fig-model-performance shows that logistic regression and random forest had very similar performance across both accuracy and ROC AUC. The error bars, which reflect the standard error across cross-validation folds, were small for both models and support the stability of the results.
 
 Reference groups were no prenatal mental health screening, no depression during pregnancy, and less than high school education.
 
