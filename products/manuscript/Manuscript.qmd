@@ -199,7 +199,9 @@ The analytic sample included `r scales::comma(n_analysis)` respondents after exc
 ## Exploratory Analysis
 I first examined the distribution of prenatal mental health screening and postpartum depressive symptoms in the analytic sample. I also explored how postpartum depressive symptoms varied by screening status, depression during pregnancy, and maternal education.
 
-Descriptive results suggested that postpartum depressive symptoms were more common among respondents who did not report receiving prenatal mental health screening. Higher rates of postpartum depressive symptoms were also observed among respondents who reported depression during pregnancy. Differences across maternal education groups were also examined to assess potential patterns in the data.
+Descriptive results suggested that postpartum depressive symptoms were slightly more common among respondents who reported receiving prenatal mental health screening. Higher rates of postpartum depressive symptoms were also observed among respondents who reported depression during pregnancy. Differences across maternal education groups were also examined to assess potential patterns in the data.
+
+Higher rates of postpartum depressive symptoms were also observed among respondents who reported depression during pregnancy. Differences across maternal education groups were also examined to assess potential patterns in the data.
 
 These exploratory analyses helped identify initial patterns in the dataset and informed the selection of variables for adjusted modeling.
 
