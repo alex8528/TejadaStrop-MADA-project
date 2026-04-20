@@ -205,38 +205,20 @@ These exploratory analyses helped identify initial patterns in the dataset and i
 
 ```{r}
 #| label: tbl-multivariable
-#| tbl-cap: "Adjusted odds ratios for postpartum depressive symptoms"
+#| tbl-cap: "Adjusted odds ratios for factors associated with postpartum depressive symptoms"
 
 multi_clean <- multi_tbl |>
   filter(term != "(Intercept)") |>
   mutate(
     Predictor = case_when(
-      term == "screened1" ~ "Screened during prenatal care",
-      term == "bpg_deprs82" ~ "Depression during pregnancy",
-      term == "mat_ed2" ~ "High school graduate",
-      term == "mat_ed3" ~ "Some college",
-      term == "mat_ed4" ~ "College graduate",
-      term == "mat_ed5" ~ "More than college",
-      TRUE ~ term
-    ),
-    OR = estimate,
-    CI_low = conf.low,
-    CI_high = conf.high
-  ) |>
-  transmute(
-    Predictor,
-    `Odds ratio` = sprintf("%.2f", OR),
-    `95% CI` = paste0("(", sprintf("%.2f", CI_low), ", ", sprintf("%.2f", CI_high), ")"),
-    `P value` = ifelse(p.value < 0.001, "<0.001", sprintf("%.3f", p.value))
-  )
-
-knitr::kable(
-  multi_clean,
-  col.names = c("Predictor", "Odds ratio", "95% CI", "P value"),
-  align = c("l", "c", "c", "c"),
-  booktabs = TRUE
-) |>
-  kableExtra::kable_styling(full_width = FALSE, position = "left")
+  term == "screened1" ~ "Prenatal mental health screening",
+  term == "bpg_deprs82" ~ "Depression during pregnancy",
+  term == "mat_ed2" ~ "Education: High school graduate",
+  term == "mat_ed3" ~ "Education: Some college",
+  term == "mat_ed4" ~ "Education: College graduate",
+  term == "mat_ed5" ~ "Education: More than college",
+  TRUE ~ term
+)
 ```
 
 
@@ -410,19 +392,21 @@ ggplot(model_validation_plot, aes(x = model, y = mean)) +
   labs(
     x = "Model",
     y = "Cross-validated mean performance"
-  ) +
-  theme_minimal() +
-  theme(
-    strip.text = element_text(size = 10),
-    axis.text = element_text(size = 10),
-    axis.title = element_text(size = 11)
-  )
+  ) + coord_cartesian(ylim = c(0.6, 0.9)) +
+geom_text(aes(label = round(mean, 3)), vjust = -0.5, size = 3) +
+theme_minimal() +
+theme(
+  strip.text = element_text(size = 10),
+  axis.text = element_text(size = 10),
+  axis.title = element_text(size = 11),
+  axis.text.x = element_text(angle = 20, hjust = 1)
+)
 
 ```
 
 Figure \@ref(fig-model-performance) shows that logistic regression and random forest had very similar performance across both accuracy and ROC AUC. The error bars, which reflect the standard error across cross-validation folds, were small for both models and support the stability of the results.
 
-Reference groups were not screened during prenatal care, no depression during pregnancy, and less than high school education.
+Reference groups were no prenatal mental health screening, no depression during pregnancy, and less than high school education.
 
 The logistic regression and random forest models performed very similarly. The random forest model did not meaningfully improve accuracy or ROC AUC compared with logistic regression.
 
