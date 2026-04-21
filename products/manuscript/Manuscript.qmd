@@ -302,11 +302,11 @@ ggplot(fig_data, aes(x = Screening, y = percent, fill = Outcome)) +
     size = 3
   ) +
   scale_fill_manual(
-    values = c(
-      "Depressive symptoms" = "#D55E00",
-      "No depressive symptoms" = "#0072B2"
-    )
-  ) +
+  values = c(
+    "Depressive symptoms" = "#0072B2",
+    "No depressive symptoms" = "#D55E00"
+  )
+) +
   labs(
     x = "Prenatal mental health screening",
     y = "Percent of respondents",
