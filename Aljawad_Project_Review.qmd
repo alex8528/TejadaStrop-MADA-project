@@ -1,0 +1,193 @@
+---
+title: Al Jawad Project Review 
+author: Saraa Al Jawad 
+date: date-modified
+format: 
+  html:
+    toc: true
+    toc-depth: 3
+    number-sections: true
+---
+
+# Overview
+
+Title of project:
+
+Prenatal Mental Health Screening and Postpartum Depressive Symptoms
+
+Name of project author(s):
+
+Alexandra Tejada-Strop
+
+Name of project reviewer:
+
+Saraa Al Jawad 
+
+# Instructions
+
+Write your comments and feedback below for each section/component of the project. The goal should be to help the author improve their project. Make comments as constructive and actionable as possible. You can provide both criticism and praise.
+
+For each component, pick one summary statement by deleting the ones that do not apply and keeping only the one that you think most closely summarizes a given component. 
+
+Make sure your final document compiles/renders into a readable, well-formatted html document.
+
+Delete any sections/text of this template that are not part of your final review document. (Including these instructions.)
+
+
+# Specific project content evaluation
+Evaluate the different parts of the project by filling in the sections below.
+
+
+## Background, Context and Motivation
+How well is the context of the project described? Is a comprehensive background, including summary of previous/related work given? Is the project well placed into the context of existing work (including proper referencing of existing work). Is it clear why the project was undertaken and what new information it hopes to provide?
+
+### Feedback and Comments
+
+The background is clearly explained and provides good context for the study. The importance of prenatal mental health and postpartum depression is well described, and the motivation for the project is easy to understand. Relevant references that support the topic were included.
+
+### Summary assessment (PICK ONE, DELETE THE OTHERS)
+
+* strong contextualization and motivation
+
+
+## Question description
+How well and clear are the question(s)/hypotheses the project aims to address described? Is it clear how the questions relate to the data?
+
+
+### Feedback and Comments
+
+The research question is clearly stated and easy to understand. It is also clear how the question relates to the data used in the analysis.
+
+### Summary assessment
+
+* question/hypotheses fully clear
+
+
+## Data description
+How well is the data overall described? Is the source provided? Is a codebook or other meta-information available that makes it clear what the data is? 
+
+### Feedback and Comments
+
+The dataset is well described. It is well explained that the data come from PRAMS, a population-based surveillance system, and it includes self-reported pregnancy, prenatal care, and postpartum health information. The manuscript also explains the main outcome, predictor, and covariates used in the analysis, which makes the dataset easy to understand.
+
+### Summary assessment
+
+* source and overall structure of data well explained
+
+
+## Data wrangling and exploratory analysis
+How well is the data cleaned/processed and explored? Are all steps reasonable and well explained? Are alternatives discussed and considered? Are meaningful exploratory results shown (e.g. in the supplementary materials)?
+
+### Feedback and Comments
+
+The data cleaning and processing steps are clearly explained and appropriate for the analysis. The dataset is prepared in a clear way, and missing values are handled properly. The exploratory analysis includes useful summaries and comparisons that help understand the relationship between screening and postpartum depressive symptoms.
+
+### Summary assessment
+
+* essentially no weaknesses in wrangling and exploratory component
+
+
+
+## Appropriateness of Analysis
+Were the analysis methods appropriate for the data? Was the analysis done properly? Were different components of the analysis (e.g. performance measure, variable selection, data pre-processing, model evaluation) done in the best way possible and explained well?
+
+### Feedback and Comments
+
+The analysis methods are appropriate for the research question. Logistic regression is suitable, and the inclusion of covariates improves the model. The comparison with the random forest model is a good addition and shows that a more complex model does not improve performance.
+
+### Summary assessment
+
+* strong and reasonable analysis
+
+## Presentation
+How well are results presented? Are tables and figures easy to read and understand? Are the main figures/tables publication level quality? 
+
+### Feedback and Comments
+
+The results are clearly presented and easy to understand. The tables and figures are well organized and support the findings effectively. The flow from the analysis to the results is clear.
+
+### Summary assessment
+
+* results are very well presented
+
+
+## Discussion/Conclusions
+Are the study findings properly discussed? Are strengths and limitations acknowledged? Are findings interpreted properly?
+
+### Feedback and Comments
+
+The discussion is clear and easy to follow. The findings are interpreted appropriately, and the main limitations are acknowledged. The conclusions are consistent with the results.
+
+### Summary assessment
+
+* strong, complete and clear discussion
+
+
+## Further comments
+
+The project is very well done overall. The analysis and results are clear and easy to follow. The comparison between models adds value, and the workflow is well organized.
+
+
+
+# Overall project content evaluation
+Evaluate overall features of the project  by filling in the sections below.
+
+
+## Structure
+Is the project well structured? Are files in well labeled folders? Do files have reasonable names? Are all "junk" files not needed for analysis/reproduction removed? By just looking at files and folders, can you get an idea of how things fit together?
+
+### Feedback and Comments
+
+The project is well structured, with clearly labeled folders and organized files. It is easy to navigate and understand how different parts of the project are connected.
+
+### Summary assessment
+
+* well structured
+
+
+## Documentation 
+How well is the project documented? Are you able to understand each step of the whole analysis, each decision that was made, and each line of code? Is enough information provided as comments in code or as part of Rmd files? 
+
+### Feedback and Comments
+
+The documentation is clear and easy to follow. The README file is helpful and provides enough information to understand the workflow. The project is also well structured, which makes it easier to follow. Adding more comments in the code could make it even clearer.
+
+### Summary assessment
+
+* fully and well documented
+
+
+
+## Reproducibility
+Are all results fully reproducible? Is documentation provided which clearly explains how to reproduce things, and does it work without the need for any manual intervention? Are you able to re-run the whole analysis without having to do manual interventions/edits?
+
+### Feedback and Comments
+
+The project is reproducible, and the manuscript runs successfully. The workflow is clear, and the steps can be followed without major issues.
+
+
+### Summary assessment
+
+* fully reproducible without issues
+
+
+## Thoroughness
+How thorough was the overall study? Were alternatives (e.g. different ways of processing the data or different models) considered? Were alternatives discussed? Were the questions/hypotheses fully and thoroughly addressed?
+
+### Feedback and Comments
+
+The study shows a strong level of thoroughness. The analysis includes appropriate models and a comparison between logistic regression and random forest, which strengthens the results. The research question is clearly addressed.
+
+### Summary assessment
+
+* strong level of thorougness
+
+
+## Further comments
+
+This is a strong and well-structured project that demonstrates a solid understanding of the research question and appropriate use of statistical methods. Great job!
+
+
+
+
+
