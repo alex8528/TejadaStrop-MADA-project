@@ -149,3 +149,6 @@ file.exists(here("results", "output", "glm_multivariable_main.rds"))
 file.exists(here("results", "output", "tidymodels_logistic_main.rds"))
 ```
 
+# Running bivariate models first to assess unadjusted associations before adjusting
+
+# Covariates include age, race/ethnicity, and insurance -- established confounders in the literature

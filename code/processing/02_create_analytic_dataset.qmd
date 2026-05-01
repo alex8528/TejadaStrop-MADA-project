@@ -98,3 +98,6 @@ if (!file.exists(clean_path)) {
   }
 }
 ```
+
+# Selecting covariates based on prior literature on postpartum depression risk factors
+# Restricting to complete cases -- listwise deletion appropriate given low missingness rate

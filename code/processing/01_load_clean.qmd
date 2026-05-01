@@ -64,3 +64,6 @@ if (!file.exists(raw_path)) {
   }
 }
 ```
+
+# Recoding variables to binary (Yes/No) for consistency across the dataset
+# Dropping rows missing the outcome variable -- cannot impute the dependent variable
