@@ -1,0 +1,171 @@
+---
+title: Project Review Template 
+author: Talia C. Swanson
+date: date-modified
+format: 
+  html:
+    toc: true
+    toc-depth: 3
+    number-sections: true
+---
+
+# Overview
+
+Title of project: Prenatal Mental Health Screening and Postpartum Depressive Symptoms
+
+Name of project author(s): Alexandra Tejada-Strop
+
+Name of project reviewer: Talia C. Swanson
+
+
+# Specific project content evaluation
+Evaluate the different parts of the project by filling in the sections below.
+
+
+## Background, Context and Motivation
+How well is the context of the project described? Is a comprehensive background, including summary of previous/related work given? Is the project well placed into the context of existing work (including proper referencing of existing work). Is it clear why the project was undertaken and what new information it hopes to provide?
+
+### Feedback and Comments
+
+The project provides a strong and well motivated public health rationale for examining postpartum depressive symptoms for prenatal mental health screening. The introduction clearly situates the topic and prior literature, particularly the importance of routine perinatal mental health screening. Additionally, the usage of PRAMS as a population surveillance system is justified, and why the data is appropriate for addressing the research question. Overall, the context is clearly established and grounded with a public health relevance.
+
+### Summary assessment (PICK ONE, DELETE THE OTHERS)
+
+* some contextualization and motivation
+
+
+## Question description
+How well and clear are the question(s)/hypotheses the project aims to address described? Is it clear how the questions relate to the data?
+
+
+### Feedback and Comments
+
+The research question is clearly stated. It is also easy to understand what exposure and outcome, prenantal mental health screening and postpartum depressive symptoms. Overall, the question is well-defined and appropriate. 
+
+### Summary assessment
+
+* question/hypotheses fully clear
+
+
+## Data description
+How well is the data overall described? Is the source provided? Is a codebook or other meta-information available that makes it clear what the data is? 
+
+### Feedback and Comments
+
+The PRAMS dataset is well described, including its purpose, structure, and population coverage. The author explains that it is a surveillance system coordinated by CDC and includes self-reported postpartum data link with birth certificate variables. Large sample size is highlighted for population-level analysis. Data description could be more clear by explaining the states included in the subset, and also the difference of the phase (e.g. Phase 8). Overall, the data source is clear.
+
+### Summary assessment
+
+* source and overall structure of data well explained
+
+
+## Data wrangling and exploratory analysis
+How well is the data cleaned/processed and explored? Are all steps reasonable and well explained? Are alternatives discussed and considered? Are meaningful exploratory results shown (e.g. in the supplementary materials)?
+
+### Feedback and Comments
+
+The data cleaning wrangling process is clearly documented, including selection of variables and handling of missing data. The exploratory analysis included meaningful comparison. One limitation might be the reliance on complete case analysis, and not discussing potential bias introduced by this. Overall, the workflow is well executed.
+
+### Summary assessment
+
+* essentially no weaknesses in wrangling and exploratory component
+
+
+
+## Appropriateness of Analysis
+Were the analysis methods appropriate for the data? Was the analysis done properly? Were different components of the analysis (e.g. performance measure, variable selection, data pre-processing, model evaluation) done in the best way possible and explained well?
+
+### Feedback and Comments
+
+The use of multivariable logistic regression is appropriate for binary outcome and aligns with the research question. The inclusion of key covariates such as depression during pregnancy/education is justified and improves the model. The random forest model is strong, but justification is limited. Overall, analytic approach is appropriate. 
+
+### Summary assessment
+
+* strong and reasonable analysis
+
+## Presentation
+How well are results presented? Are tables and figures easy to read and understand? Are the main figures/tables publication level quality? 
+
+### Feedback and Comments
+
+Results are presented clearly with well-structured tables and figures that are easy to interpret.  Figures are publication-quality and appropriately labeled. Overall, presentation quality is strong and professional.
+
+### Summary assessment
+
+* results are very well presented
+
+
+## Discussion/Conclusions
+Are the study findings properly discussed? Are strengths and limitations acknowledged? Are findings interpreted properly?
+
+### Feedback and Comments
+
+The discussion appropriately summarizes the main findings and explains the modest association between prenatal screening and postpartum depressive symptoms. The author demonstrates understanding of limitationsband potential confounding. Strengths of the dataset and analysis are clearly acknowledged. One area for improvement would be a deeper discussion of potential mechanisms explaining the observed association. Overall, the discussion is well-structured.
+
+### Summary assessment
+
+* strong, complete and clear discussion
+
+
+
+# Overall project content evaluation
+Evaluate overall features of the project by filling in the sections below.
+
+
+## Structure
+Is the project well structured? Are files in well labeled folders? Do files have reasonable names? Are all "junk" files not needed for analysis/reproduction removed? By just looking at files and folders, can you get an idea of how things fit together?
+
+### Feedback and Comments
+
+The project is well organized with a clear logical flow from data loading to analysis and results. Great file paths and result outputs. The files names are reasonable and no junk files. Overall, structure is strong and easy to follow.
+
+### Summary assessment
+
+* well structured
+
+
+## Documentation 
+How well is the project documented? Are you able to understand each step of the whole analysis, each decision that was made, and each line of code? Is enough information provided as comments in code or as part of Rmd files? 
+
+### Feedback and Comments
+The project is very well documented, with clear and consistent explanations throughout the Quarto file. Each step of the analysis is easy to follow, and key decisions are well explained within the text. The structure of the document guides the reader through the workflow, making the analysis understandable. Overall, great documentation. 
+
+### Summary assessment
+
+* fully and well documented
+
+
+
+## Reproducibility
+Are all results fully reproducible? Is documentation provided which clearly explains how to reproduce things, and does it work without the need for any manual intervention? Are you able to re-run the whole analysis without having to do manual interventions/edits?
+
+### Feedback and Comments
+
+The project is well structured and reproducible. The workflow is clearly structured and runs smoothly with corrects setups. Additionally, the README contains clear directions for the project.  
+
+
+### Summary assessment
+
+* fully reproducible without issues
+
+
+## Thoroughness
+How thorough was the overall study? Were alternatives (e.g. different ways of processing the data or different models) considered? Were alternatives discussed? Were the questions/hypotheses fully and thoroughly addressed?
+
+### Feedback and Comments
+
+The analysis is thorough, including descriptive, exploratory, and multivariable modeling, along with model comparison using cross-validation. The inclusion of both regression and machine learning approaches adds depth and demonstrates a well-rounded analytical strategy.
+
+### Summary assessment
+
+* strong level of thorougness
+
+
+## Further comments
+
+Great work Alexandra!
+
+
+
+
+
