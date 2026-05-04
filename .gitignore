@@ -40,3 +40,5 @@ results/large-files/*
 .Rhistory
 **/.Rhistory
 **/*.vdoc*
+/.quarto/
+**/*.quarto_ipynb
