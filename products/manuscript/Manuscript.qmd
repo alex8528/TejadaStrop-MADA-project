@@ -367,7 +367,7 @@ screening_table <- analytic_complete |>
 knitr::kable(screening_table, align = c("l", "c", "c"))
 ```
 
-Table 4 shows that 15.2% of respondents who were not screened reported postpartum depression symptoms, compared to 13.9% of those who were screened. This aligns with the results from the adjusted model.
+Table 4 shows that 15.1% of respondents who were not screened reported postpartum depression symptoms, compared to 13.9% of those who were screened. This aligns with the results from the adjusted model.
 
 ```{r}
 #| label: tbl-model-validation
