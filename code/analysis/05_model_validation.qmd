@@ -25,17 +25,17 @@ stopifnot(file.exists(data_path))
 
 analytic_dat <- readRDS(data_path)
 
-required_vars <- c("pp_depress_bin", "screened", "bpg_deprs8", "mat_ed")
+required_vars <- c("pp_depress_bin", "screened", "bpg_deprs8_bin", "mat_ed")
 stopifnot(all(required_vars %in% names(analytic_dat)))
 
 analytic_dat <- analytic_dat |>
   mutate(
     pp_depress_bin = factor(pp_depress_bin, levels = c(0, 1), labels = c("No", "Yes")),
     screened = factor(screened),
-    bpg_deprs8 = factor(bpg_deprs8),
+    bpg_deprs8_bin = factor(bpg_deprs8_bin),
     mat_ed = factor(mat_ed)
   ) |>
-  drop_na(pp_depress_bin, screened, bpg_deprs8, mat_ed)
+  drop_na(pp_depress_bin, screened, bpg_deprs8_bin, mat_ed)
 
 glimpse(analytic_dat)
 ```
@@ -59,7 +59,7 @@ my_metrics <- metric_set(
 log_spec <- logistic_reg() |>
   set_engine("glm")
 
-log_recipe <- recipe(pp_depress_bin ~ screened + bpg_deprs8 + mat_ed, data = analytic_dat)
+log_recipe <- recipe(pp_depress_bin ~ screened + bpg_deprs8_bin + mat_ed, data = analytic_dat)
 
 log_workflow <- workflow() |>
   add_model(log_spec) |>
@@ -83,7 +83,7 @@ log_metrics
 rf_spec <- rand_forest(trees = 300, mode = "classification") |>
   set_engine("ranger")
 
-rf_recipe <- recipe(pp_depress_bin ~ screened + bpg_deprs8 + mat_ed, data = analytic_dat)
+rf_recipe <- recipe(pp_depress_bin ~ screened + bpg_deprs8_bin + mat_ed, data = analytic_dat)
 
 rf_workflow <- workflow() |>
   add_model(rf_spec) |>

@@ -38,7 +38,7 @@ glimpse(dat)
 # Define variables
 outcome <- "pp_depress_bin"
 main_exposure <- "screened"
-covariates <- c("bpg_deprs8", "mat_ed")
+covariates <- c("bpg_deprs8_bin", "mat_ed")
 
 all_vars <- c(outcome, main_exposure, covariates)
 stopifnot(all(all_vars %in% names(dat)))
@@ -49,7 +49,7 @@ analysis_dat <- dat |>
   drop_na() |>
   mutate(
     screened = as.factor(screened),
-    bpg_deprs8 = as.factor(bpg_deprs8),
+    bpg_deprs8_bin = as.factor(bpg_deprs8_bin),
     mat_ed = as.factor(mat_ed)
   )
 ```
@@ -100,7 +100,7 @@ saveRDS(fit_biv, here("results", "output", "glm_bivariate_screened.rds"))
 # Multivariable logistic regression model
 ```{r}
 fit_multi <- glm(
-  pp_depress_bin ~ screened + bpg_deprs8 + mat_ed,
+  pp_depress_bin ~ screened + bpg_deprs8_bin + mat_ed,
   data = analysis_dat,
   family = binomial()
 )
@@ -121,7 +121,7 @@ saveRDS(fit_multi, here("results", "output", "glm_multivariable_main.rds"))
 analysis_dat2 <- analysis_dat |>
   mutate(pp_depress_bin = factor(pp_depress_bin, levels = c(0, 1)))
 
-rec <- recipe(pp_depress_bin ~ screened + bpg_deprs8 + mat_ed, data = analysis_dat2) |>
+rec <- recipe(pp_depress_bin ~ screened + bpg_deprs8_bin + mat_ed, data = analysis_dat2) |>
   step_dummy(all_nominal_predictors()) |>
   step_zv(all_predictors())
 

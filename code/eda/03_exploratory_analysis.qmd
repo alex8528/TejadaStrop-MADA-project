@@ -156,8 +156,8 @@ The exploratory analysis suggests that postpartum depressive symptoms were sligh
 # Depression by prior depression during pregnancy
 ```{r}
 dep_prior_tbl <- analytic_dat |>
-  count(bpg_deprs8, pp_depress_bin) |>
-  group_by(bpg_deprs8) |>
+  count(bpg_deprs8_bin, pp_depress_bin) |>
+  group_by(bpg_deprs8_bin) |>
   mutate(pct = n / sum(n))
 
 dep_prior_tbl

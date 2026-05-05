@@ -131,7 +131,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(dat)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Rows: 237,392
-Columns: 18
+Columns: 19
 $ id             &lt;chr&gt; "2016AK327002", "2016AK327006", "2016AK327007", "2016AK…
 $ pp_depress     &lt;dbl&gt; 2, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 2, 1, 2, 1, 1, 1, 1, 1…
 $ ask_dprs       &lt;dbl&gt; 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 2, 2, 2, 2, 2, 2, 2…
@@ -149,14 +149,15 @@ $ stratumc       &lt;dbl&gt; 129, 129, 129, 129, 129, 129, 129, 129, 129, 129, 1
 $ sud_nest       &lt;dbl&gt; 1292016, 1292016, 1292016, 1292016, 1292016, 1292016, 1…
 $ nest_yr        &lt;dbl&gt; 2016, 2016, 2016, 2016, 2016, 2016, 2016, 2016, 2016, 2…
 $ screened       &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0…
-$ pp_depress_bin &lt;dbl&gt; 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1…</code></pre>
+$ pp_depress_bin &lt;dbl&gt; 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1…
+$ bpg_deprs8_bin &lt;dbl&gt; 0, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1…</code></pre>
 </div>
 </div>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Define variables</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>outcome <span class="ot">&lt;-</span> <span class="st">"pp_depress_bin"</span></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>main_exposure <span class="ot">&lt;-</span> <span class="st">"screened"</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>covariates <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"bpg_deprs8"</span>, <span class="st">"mat_ed"</span>)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>covariates <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"bpg_deprs8_bin"</span>, <span class="st">"mat_ed"</span>)</span>
 <span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>all_vars <span class="ot">&lt;-</span> <span class="fu">c</span>(outcome, main_exposure, covariates)</span>
 <span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="fu">stopifnot</span>(<span class="fu">all</span>(all_vars <span class="sc">%in%</span> <span class="fu">names</span>(dat)))</span>
@@ -167,7 +168,7 @@ $ pp_depress_bin &lt;dbl&gt; 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 
 <span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">drop_na</span>() <span class="sc">|&gt;</span></span>
 <span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
 <span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">screened =</span> <span class="fu">as.factor</span>(screened),</span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">bpg_deprs8 =</span> <span class="fu">as.factor</span>(bpg_deprs8),</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">bpg_deprs8_bin =</span> <span class="fu">as.factor</span>(bpg_deprs8_bin),</span>
 <span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">mat_ed =</span> <span class="fu">as.factor</span>(mat_ed)</span>
 <span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
@@ -239,7 +240,7 @@ $ pp_depress_bin &lt;dbl&gt; 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 
 <h1>Multivariable logistic regression model</h1>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>fit_multi <span class="ot">&lt;-</span> <span class="fu">glm</span>(</span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  pp_depress_bin <span class="sc">~</span> screened <span class="sc">+</span> bpg_deprs8 <span class="sc">+</span> mat_ed,</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  pp_depress_bin <span class="sc">~</span> screened <span class="sc">+</span> bpg_deprs8_bin <span class="sc">+</span> mat_ed,</span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> analysis_dat,</span>
 <span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">family =</span> <span class="fu">binomial</span>()</span>
 <span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>)</span>
@@ -249,15 +250,15 @@ $ pp_depress_bin &lt;dbl&gt; 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 
 <span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>multi_tbl</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 7 × 7
-  term        estimate std.error statistic  p.value conf.low conf.high
-  &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;
-1 (Intercept)    8.54     0.0385     55.7  0           7.92      9.21 
-2 screened1      0.759    0.0154    -17.9  2.30e-71    0.737     0.783
-3 bpg_deprs82    0.296    0.0136    -89.5  0           0.288     0.304
-4 mat_ed2        0.735    0.0425     -7.24 4.64e-13    0.676     0.799
-5 mat_ed3        0.776    0.0399     -6.36 2.03e-10    0.717     0.838
-6 mat_ed4        0.919    0.0398     -2.12 3.39e- 2    0.849     0.993
-7 mat_ed5        1.44     0.0400      9.13 6.62e-20    1.33      1.56 </code></pre>
+  term            estimate std.error statistic   p.value conf.low conf.high
+  &lt;chr&gt;              &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;
+1 (Intercept)        2.53     0.0399     23.3  7.90e-120    2.34      2.74 
+2 screened1          0.759    0.0154    -17.9  2.30e- 71    0.737     0.783
+3 bpg_deprs8_bin1    3.38     0.0136     89.5  0            3.29      3.47 
+4 mat_ed2            0.735    0.0425     -7.24 4.64e- 13    0.676     0.799
+5 mat_ed3            0.776    0.0399     -6.36 2.03e- 10    0.717     0.838
+6 mat_ed4            0.919    0.0398     -2.12 3.39e-  2    0.849     0.993
+7 mat_ed5            1.44     0.0400      9.13 6.62e- 20    1.33      1.56 </code></pre>
 </div>
 </div>
 </section>
@@ -274,7 +275,7 @@ $ pp_depress_bin &lt;dbl&gt; 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>analysis_dat2 <span class="ot">&lt;-</span> analysis_dat <span class="sc">|&gt;</span></span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">pp_depress_bin =</span> <span class="fu">factor</span>(pp_depress_bin, <span class="at">levels =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>)))</span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>rec <span class="ot">&lt;-</span> <span class="fu">recipe</span>(pp_depress_bin <span class="sc">~</span> screened <span class="sc">+</span> bpg_deprs8 <span class="sc">+</span> mat_ed, <span class="at">data =</span> analysis_dat2) <span class="sc">|&gt;</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>rec <span class="ot">&lt;-</span> <span class="fu">recipe</span>(pp_depress_bin <span class="sc">~</span> screened <span class="sc">+</span> bpg_deprs8_bin <span class="sc">+</span> mat_ed, <span class="at">data =</span> analysis_dat2) <span class="sc">|&gt;</span></span>
 <span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_dummy</span>(<span class="fu">all_nominal_predictors</span>()) <span class="sc">|&gt;</span></span>
 <span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_zv</span>(<span class="fu">all_predictors</span>())</span>
 <span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a></span>
@@ -307,10 +308,10 @@ Model: logistic_reg()
 Call:  stats::glm(formula = ..y ~ ., family = stats::binomial, data = data)
 
 Coefficients:
-  (Intercept)    screened_X1  bpg_deprs8_X2      mat_ed_X2      mat_ed_X3  
-      2.14436       -0.27543       -1.21666       -0.30775       -0.25397  
-    mat_ed_X4      mat_ed_X5  
-     -0.08452        0.36571  
+      (Intercept)        screened_X1  bpg_deprs8_bin_X1          mat_ed_X2  
+          0.92770           -0.27543            1.21666           -0.30775  
+        mat_ed_X3          mat_ed_X4          mat_ed_X5  
+         -0.25397           -0.08452            0.36571  
 
 Degrees of Freedom: 233212 Total (i.e. Null);  233206 Residual
 Null Deviance:      189700 
@@ -346,6 +347,12 @@ Residual Deviance: 179200   AIC: 179300</code></pre>
 <pre><code>[1] TRUE</code></pre>
 </div>
 </div>
+</section>
+<section id="running-bivariate-models-first-to-assess-unadjusted-associations-before-adjusting" class="level1">
+<h1>Running bivariate models first to assess unadjusted associations before adjusting</h1>
+</section>
+<section id="covariates-include-age-raceethnicity-and-insurance-established-confounders-in-the-literature" class="level1">
+<h1>Covariates include age, race/ethnicity, and insurance – established confounders in the literature</h1>
 </section>
 
 </main>

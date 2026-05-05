@@ -122,22 +122,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>analytic_dat <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(data_path)</span>
 <span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>required_vars <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"pp_depress_bin"</span>, <span class="st">"screened"</span>, <span class="st">"bpg_deprs8"</span>, <span class="st">"mat_ed"</span>)</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>required_vars <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"pp_depress_bin"</span>, <span class="st">"screened"</span>, <span class="st">"bpg_deprs8_bin"</span>, <span class="st">"mat_ed"</span>)</span>
 <span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="fu">stopifnot</span>(<span class="fu">all</span>(required_vars <span class="sc">%in%</span> <span class="fu">names</span>(analytic_dat)))</span>
 <span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>analytic_dat <span class="ot">&lt;-</span> analytic_dat <span class="sc">|&gt;</span></span>
 <span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
 <span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">pp_depress_bin =</span> <span class="fu">factor</span>(pp_depress_bin, <span class="at">levels =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>), <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"No"</span>, <span class="st">"Yes"</span>)),</span>
 <span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">screened =</span> <span class="fu">factor</span>(screened),</span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">bpg_deprs8 =</span> <span class="fu">factor</span>(bpg_deprs8),</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">bpg_deprs8_bin =</span> <span class="fu">factor</span>(bpg_deprs8_bin),</span>
 <span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">mat_ed =</span> <span class="fu">factor</span>(mat_ed)</span>
 <span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
-<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">drop_na</span>(pp_depress_bin, screened, bpg_deprs8, mat_ed)</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">drop_na</span>(pp_depress_bin, screened, bpg_deprs8_bin, mat_ed)</span>
 <span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(analytic_dat)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Rows: 233,213
-Columns: 18
+Columns: 19
 $ id             &lt;chr&gt; "2016AK327002", "2016AK327006", "2016AK327007", "2016AK…
 $ pp_depress     &lt;dbl&gt; 2, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 2, 1, 2, 1, 1, 1, 1, 1…
 $ ask_dprs       &lt;dbl&gt; 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 2, 2, 2, 2, 2, 2, 2…
@@ -146,7 +146,7 @@ $ mat_ed         &lt;fct&gt; 3, 2, 3, 3, 2, 4, 4, 2, 3, 3, 3, 3, 4, 3, 3, 3, 2, 
 $ income8        &lt;dbl&gt; 101, 102, 107, 104, 101, 112, 101, 101, 104, 101, NA, 1…
 $ hispanic       &lt;dbl&gt; 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1…
 $ married        &lt;dbl&gt; 2, 2, 2, 1, 2, 1, 2, 2, 1, 2, 1, 1, 1, 1, 2, 1, 2, 1, 1…
-$ bpg_deprs8     &lt;fct&gt; 2, 1, 1, 1, 2, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 2, 1, 1…
+$ bpg_deprs8     &lt;dbl&gt; 2, 1, 1, 1, 2, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 2, 1, 1…
 $ hth_anx        &lt;dbl&gt; 1, 1, 1, 1, 2, 1, 1, 1, 1, 2, 1, 1, 1, 1, 2, 1, 2, 1, 1…
 $ kotelchuck     &lt;dbl&gt; 2, 3, 2, 3, 2, 2, 3, 3, 2, 4, 3, 2, 2, 2, 3, 1, 1, 4, 4…
 $ pnc_1trm       &lt;dbl&gt; 1, 2, 2, 1, 1, 2, 1, 1, 1, 1, NA, 1, 2, 1, 1, 2, 2, 1, …
@@ -155,7 +155,8 @@ $ stratumc       &lt;dbl&gt; 129, 129, 129, 129, 129, 129, 129, 129, 129, 129, 1
 $ sud_nest       &lt;dbl&gt; 1292016, 1292016, 1292016, 1292016, 1292016, 1292016, 1…
 $ nest_yr        &lt;dbl&gt; 2016, 2016, 2016, 2016, 2016, 2016, 2016, 2016, 2016, 2…
 $ screened       &lt;fct&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0…
-$ pp_depress_bin &lt;fct&gt; No, Yes, Yes, Yes, No, Yes, Yes, Yes, Yes, Yes, Yes, No…</code></pre>
+$ pp_depress_bin &lt;fct&gt; No, Yes, Yes, Yes, No, Yes, Yes, Yes, Yes, Yes, Yes, No…
+$ bpg_deprs8_bin &lt;fct&gt; 0, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1…</code></pre>
 </div>
 </div>
 <section id="cross-validation" class="level1">
@@ -190,7 +191,7 @@ $ pp_depress_bin &lt;fct&gt; No, Yes, Yes, Yes, No, Yes, Yes, Yes, Yes, Yes, Yes
 <span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>log_spec <span class="ot">&lt;-</span> <span class="fu">logistic_reg</span>() <span class="sc">|&gt;</span></span>
 <span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_engine</span>(<span class="st">"glm"</span>)</span>
 <span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>log_recipe <span class="ot">&lt;-</span> <span class="fu">recipe</span>(pp_depress_bin <span class="sc">~</span> screened <span class="sc">+</span> bpg_deprs8 <span class="sc">+</span> mat_ed, <span class="at">data =</span> analytic_dat)</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>log_recipe <span class="ot">&lt;-</span> <span class="fu">recipe</span>(pp_depress_bin <span class="sc">~</span> screened <span class="sc">+</span> bpg_deprs8_bin <span class="sc">+</span> mat_ed, <span class="at">data =</span> analytic_dat)</span>
 <span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>log_workflow <span class="ot">&lt;-</span> <span class="fu">workflow</span>() <span class="sc">|&gt;</span></span>
 <span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_model</span>(log_spec) <span class="sc">|&gt;</span></span>
@@ -222,7 +223,7 @@ $ pp_depress_bin &lt;fct&gt; No, Yes, Yes, Yes, No, Yes, Yes, Yes, Yes, Yes, Yes
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>rf_spec <span class="ot">&lt;-</span> <span class="fu">rand_forest</span>(<span class="at">trees =</span> <span class="dv">300</span>, <span class="at">mode =</span> <span class="st">"classification"</span>) <span class="sc">|&gt;</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_engine</span>(<span class="st">"ranger"</span>)</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>rf_recipe <span class="ot">&lt;-</span> <span class="fu">recipe</span>(pp_depress_bin <span class="sc">~</span> screened <span class="sc">+</span> bpg_deprs8 <span class="sc">+</span> mat_ed, <span class="at">data =</span> analytic_dat)</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>rf_recipe <span class="ot">&lt;-</span> <span class="fu">recipe</span>(pp_depress_bin <span class="sc">~</span> screened <span class="sc">+</span> bpg_deprs8_bin <span class="sc">+</span> mat_ed, <span class="at">data =</span> analytic_dat)</span>
 <span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>rf_workflow <span class="ot">&lt;-</span> <span class="fu">workflow</span>() <span class="sc">|&gt;</span></span>
 <span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_model</span>(rf_spec) <span class="sc">|&gt;</span></span>
@@ -244,7 +245,7 @@ $ pp_depress_bin &lt;fct&gt; No, Yes, Yes, Yes, No, Yes, Yes, Yes, Yes, Yes, Yes
   .metric  .estimator  mean     n    std_err .config         model        
   &lt;chr&gt;    &lt;chr&gt;      &lt;dbl&gt; &lt;int&gt;      &lt;dbl&gt; &lt;chr&gt;           &lt;chr&gt;        
 1 accuracy binary     0.859     5 0.00000308 pre0_mod0_post0 Random forest
-2 roc_auc  binary     0.344     5 0.000950   pre0_mod0_post0 Random forest</code></pre>
+2 roc_auc  binary     0.344     5 0.000947   pre0_mod0_post0 Random forest</code></pre>
 </div>
 </div>
 </section>
@@ -281,7 +282,7 @@ $ pp_depress_bin &lt;fct&gt; No, Yes, Yes, Yes, No, Yes, Yes, Yes, Yes, Yes, Yes
   &lt;chr&gt;               &lt;chr&gt;    &lt;dbl&gt;      &lt;dbl&gt; &lt;int&gt;
 1 Logistic regression accuracy 0.859 0.00000308     5
 2 Random forest       accuracy 0.859 0.00000308     5
-3 Random forest       roc_auc  0.656 0.000950       5
+3 Random forest       roc_auc  0.656 0.000947       5
 4 Logistic regression roc_auc  0.656 0.000836       5</code></pre>
 </div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dir.create</span>(<span class="fu">here</span>(<span class="st">"results"</span>, <span class="st">"tables"</span>), <span class="at">showWarnings =</span> <span class="cn">FALSE</span>, <span class="at">recursive =</span> <span class="cn">TRUE</span>)</span>
@@ -322,18 +323,21 @@ $ pp_depress_bin &lt;fct&gt; No, Yes, Yes, Yes, No, Yes, Yes, Yes, Yes, Yes, Yes
 <span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>roc_plot <span class="ot">&lt;-</span> all_preds <span class="sc">|&gt;</span></span>
 <span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(model) <span class="sc">|&gt;</span></span>
 <span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">roc_curve</span>(<span class="at">truth =</span> pp_depress_bin, .pred_Yes, <span class="at">event_level =</span> <span class="st">"second"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="dv">1</span> <span class="sc">-</span> specificity, <span class="at">y =</span> sensitivity, <span class="at">color =</span> model)) <span class="sc">+</span></span>
-<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">linewidth =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
-<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_abline</span>(<span class="at">lty =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
-<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
-<span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"ROC Curve Comparison: Logistic Regression vs Random Forest"</span>,</span>
-<span id="cb20-18"><a href="#cb20-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"1 - Specificity"</span>,</span>
-<span id="cb20-19"><a href="#cb20-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Sensitivity"</span>,</span>
-<span id="cb20-20"><a href="#cb20-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"Model"</span></span>
-<span id="cb20-21"><a href="#cb20-21" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb20-22"><a href="#cb20-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span>
-<span id="cb20-23"><a href="#cb20-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-24"><a href="#cb20-24" aria-hidden="true" tabindex="-1"></a>roc_plot</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="dv">1</span> <span class="sc">-</span> specificity, <span class="at">y =</span> sensitivity, </span>
+<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a>             <span class="at">color =</span> model, <span class="at">linetype =</span> model)) <span class="sc">+</span></span>
+<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">linewidth =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_abline</span>(<span class="at">lty =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb20-18"><a href="#cb20-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"ROC Curve Comparison: Logistic Regression vs Random Forest"</span>,</span>
+<span id="cb20-19"><a href="#cb20-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">"Both models produced identical curves (AUC = 0.656)"</span>,</span>
+<span id="cb20-20"><a href="#cb20-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"1 - Specificity"</span>,</span>
+<span id="cb20-21"><a href="#cb20-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Sensitivity"</span>,</span>
+<span id="cb20-22"><a href="#cb20-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"Model"</span>,</span>
+<span id="cb20-23"><a href="#cb20-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">linetype =</span> <span class="st">"Model"</span></span>
+<span id="cb20-24"><a href="#cb20-24" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb20-25"><a href="#cb20-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span>
+<span id="cb20-26"><a href="#cb20-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-27"><a href="#cb20-27" aria-hidden="true" tabindex="-1"></a>roc_plot</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">

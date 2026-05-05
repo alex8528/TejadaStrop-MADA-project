@@ -70,6 +70,11 @@ if (!file.exists(clean_path)) {
           pp_depress %in% c(1, "1") ~ 1,
           pp_depress %in% c(2, "2") ~ 0,
           TRUE ~ NA_real_
+        ),
+        bpg_deprs8_bin = case_when(
+          bpg_deprs8 %in% c(1, "1") ~ 1,
+          bpg_deprs8 %in% c(2, "2") ~ 0,
+          TRUE ~ NA_real_
         )
       ) |>
       filter(!is.na(screened), !is.na(pp_depress_bin))

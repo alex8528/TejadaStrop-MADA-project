@@ -123,7 +123,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(analytic_dat)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 237392     18</code></pre>
+<pre><code>[1] 237392     19</code></pre>
 </div>
 </div>
 </section>
@@ -293,22 +293,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h1>Depression by prior depression during pregnancy</h1>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>dep_prior_tbl <span class="ot">&lt;-</span> analytic_dat <span class="sc">|&gt;</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(bpg_deprs8, pp_depress_bin) <span class="sc">|&gt;</span></span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(bpg_deprs8) <span class="sc">|&gt;</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(bpg_deprs8_bin, pp_depress_bin) <span class="sc">|&gt;</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(bpg_deprs8_bin) <span class="sc">|&gt;</span></span>
 <span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">pct =</span> n <span class="sc">/</span> <span class="fu">sum</span>(n))</span>
 <span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>dep_prior_tbl</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 6 × 4
-# Groups:   bpg_deprs8 [3]
-  bpg_deprs8 pp_depress_bin      n   pct
-       &lt;dbl&gt;          &lt;dbl&gt;  &lt;int&gt; &lt;dbl&gt;
-1          1              0  21603 0.109
-2          1              1 175943 0.891
-3          2              0  11601 0.307
-4          2              1  26157 0.693
-5         NA              0    395 0.189
-6         NA              1   1693 0.811</code></pre>
+# Groups:   bpg_deprs8_bin [3]
+  bpg_deprs8_bin pp_depress_bin      n   pct
+           &lt;dbl&gt;          &lt;dbl&gt;  &lt;int&gt; &lt;dbl&gt;
+1              0              0  11601 0.307
+2              0              1  26157 0.693
+3              1              0  21603 0.109
+4              1              1 175943 0.891
+5             NA              0    395 0.189
+6             NA              1   1693 0.811</code></pre>
 </div>
 </div>
 </section>
