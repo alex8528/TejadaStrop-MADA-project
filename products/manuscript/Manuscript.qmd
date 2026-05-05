@@ -26,7 +26,7 @@ library(scales)
 library(survey)
 library(kableExtra)
 
-analytic_path <- here("data", "processed-data", "prams_analytic.rds")
+analytic_path <- here("data", "processed-data", "prams_analytic_localfix.rds")
 stopifnot(file.exists(analytic_path))
 
 analytic_dat <- readRDS(analytic_path)
@@ -34,7 +34,7 @@ analytic_dat <- readRDS(analytic_path)
 n_total <- nrow(analytic_dat)
 
 analytic_complete <- analytic_dat |>
-  select(pp_depress_bin, screened, bpg_deprs8, mat_ed) |>
+  select(pp_depress_bin, screened, bpg_deprs8_bin, mat_ed) |>
   drop_na()
 
 n_analysis <- nrow(analytic_complete)
@@ -60,7 +60,7 @@ Disclaimer: The opinions expressed in this article are the author's own and do n
 
 # Abstract
 This study looks at whether screening for mental health issues during pregnancy is related to depression after childbirth, using data from the Pregnancy Risk Assessment Monitoring System (PRAMS) Phase 8. It mainly considers women’s self-reports about their prenatal care and mental health afterward.
-The study used basic statistics and logistic regression to see if there’s a link between screening and feelings of depression, taking into account other important factors. It found that women who were screened had slightly lower chances of experiencing postpartum depression, but the difference was small. Since the data is based on self-reports and observational, the results should be viewed with caution.
+The study used basic statistics and logistic regression to see if there’s a link between screening and feelings of depression, taking into account other important factors. It found that women who were screened had lower odds of postpartum depression (OR = 0.76), a meaningful association that warrants further investigation. Since the data is based on self-reports and observational, the results should be viewed with caution.
 
 # Introduction
 Postpartum depression is an important health issue that impacts a mother's well-being, family life, and the health of the baby @bauman2020vitalsigns. Guidelines now suggest regularly checking for depression and anxiety during pregnancy and after giving birth period @acog2023screening; @uspstf2019perinatal.
@@ -123,8 +123,8 @@ scales::comma(sum(analytic_complete$screened == 1)),
     scales::comma(sum(analytic_complete$pp_depress_bin == 0)),
     scales::comma(sum(analytic_complete$pp_depress_bin == 1)),
     "",
-    scales::comma(sum(analytic_complete$bpg_deprs8 == 1)),
-    scales::comma(sum(analytic_complete$bpg_deprs8 == 2)),
+    scales::comma(sum(analytic_complete$bpg_deprs8_bin == 0)),
+    scales::comma(sum(analytic_complete$bpg_deprs8_bin == 1)),
     "",
     scales::comma(sum(analytic_complete$mat_ed == 1)),
     scales::comma(sum(analytic_complete$mat_ed == 2)),
@@ -143,8 +143,8 @@ paste0(round(100 * sum(analytic_complete$screened == 1) / n_analysis, 1), "%"),
     paste0(round(100 * sum(analytic_complete$pp_depress_bin == 0) / n_analysis, 1), "%"),
     paste0(round(100 * sum(analytic_complete$pp_depress_bin == 1) / n_analysis, 1), "%"),
     "",
-    paste0(round(100 * sum(analytic_complete$bpg_deprs8 == 1) / n_analysis, 1), "%"),
-    paste0(round(100 * sum(analytic_complete$bpg_deprs8 == 2) / n_analysis, 1), "%"),
+    paste0(round(100 * sum(analytic_complete$bpg_deprs8_bin == 0) / n_analysis, 1), "%"),
+    paste0(round(100 * sum(analytic_complete$bpg_deprs8_bin == 1) / n_analysis, 1), "%"),
     "",
     paste0(round(100 * sum(analytic_complete$mat_ed == 1) / n_analysis, 1), "%"),
     paste0(round(100 * sum(analytic_complete$mat_ed == 2) / n_analysis, 1), "%"),
@@ -216,7 +216,7 @@ multi_clean <- multi_tbl |>
   mutate(
     Predictor = case_when(
       term == "screened1" ~ "Prenatal mental health screening",
-      term == "bpg_deprs82" ~ "Depression during pregnancy",
+      term == "bpg_deprs8_bin1" ~ "Depression during pregnancy",
       term == "mat_ed2" ~ "Education: High school graduate",
       term == "mat_ed3" ~ "Education: Some college",
       term == "mat_ed4" ~ "Education: College graduate",
@@ -296,13 +296,13 @@ Figure 1 shows the distribution of postpartum depressive symptoms by prenatal sc
 #| fig-cap: "Postpartum depressive symptoms by depression during pregnancy"
 
 fig_dep_preg <- analytic_complete |>
-  filter(bpg_deprs8 %in% c(1, 2), pp_depress_bin %in% c(0, 1)) |>
-  count(bpg_deprs8, pp_depress_bin) |>
-  group_by(bpg_deprs8) |>
+  filter(bpg_deprs8_bin %in% c(0, 1), pp_depress_bin %in% c(0, 1)) |>
+  count(bpg_deprs8_bin, pp_depress_bin) |>
+  group_by(bpg_deprs8_bin) |>
   mutate(percent = 100 * n / sum(n)) |>
   ungroup() |>
   mutate(
-    Depression_pregnancy = ifelse(bpg_deprs8 == 2, "Yes", "No"),
+    Depression_pregnancy = ifelse(bpg_deprs8_bin == 1, "Yes", "No"),
     Outcome = ifelse(pp_depress_bin == 0, "Depressive symptoms", "No depressive symptoms")
   )
 
@@ -453,7 +453,7 @@ This study examined whether screening for mental health issues during pregnancy 
 
 These findings are broadly consistent with prior work showing that postpartum depressive symptoms are common and that provider screening practices vary @bauman2020vitalsigns; @farr2016provider. Clinical guidelines recommend routine screening during pregnancy and postpartum @acog2023screening, and these results add to the population-level evidence on how screening relates to reported symptoms.
 
-The most noticeable finding was how strongly depression during pregnancy predicted postpartum depression symptoms (e.g., women with a history of depression were almost three times more likely to experience postpartum symptoms). This highlights the importance of considering mental health history when studying postpartum outcomes.
+The most noticeable finding was how strongly depression during pregnancy predicted postpartum depression symptoms (e.g., women with depression during pregnancy were more than three times more likely to experience postpartum symptoms (OR = 3.38). This highlights the importance of considering mental health history when studying postpartum outcomes.
 
 It is important to understand what this study cannot show. Since the data are based on a single point in time and rely on self-reports, we can't say whether screening itself led to better results. Women who were screened might also have had better access to healthcare or more supportive providers, which could influence postpartum mental health independently.
 **Strengths:** PRAMS is a large dataset spanning multiple states, providing sufficient information for detailed analysis and making the results more applicable across different areas than studies limited to a single site.
