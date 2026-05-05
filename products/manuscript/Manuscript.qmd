@@ -362,7 +362,7 @@ screening_table <- analytic_complete |>
   mutate(value = paste0(scales::comma(n), " (", percent, "%)")) |>
   select(Screening, Outcome, value) |>
   pivot_wider(names_from = Outcome, values_from = value) |>
-  rename(`Screening status` = Screening)
+  select(`Screening status` = Screening, `Depressive symptoms`, `No depressive symptoms`)
 
 knitr::kable(screening_table, align = c("l", "c", "c"))
 ```
