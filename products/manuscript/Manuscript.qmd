@@ -100,8 +100,8 @@ study_pop_tbl <- tibble(
     "  Screened during prenatal care",
     "  Not screened during prenatal care",
     "Postpartum depressive symptoms",
-    "  Yes",
     "  No",
+    "  Yes",
     "Depression during pregnancy",
     "  No",
     "  Yes",
@@ -173,7 +173,7 @@ A multivariable logistic regression was used to analyze whether postpartum depre
 A random forest approach was also used alongside logistic regression because it can handle complex relationships between variables without needing to specify them in advance. To see if this method improved prediction, both models were tested using 5-fold cross-validation. The random forest used the ranger package with 300 trees and default settings for other options. The performance of the models was measured by accuracy and ROC AUC, with averages and variation across the tests used to check stability.
 
 # Results
-The analytic sample included `r scales::comma(n_analysis)` respondents. Overall, `r round(100 * sum(analytic_complete$screened == 0) / n_analysis, 1)`% reported being screened for depression during prenatal care, and `r round(100 * sum(analytic_complete$pp_depress_bin == 1) / n_analysis, 1)`% reported postpartum depressive symptoms.
+The analytic sample included `r scales::comma(n_analysis)` respondents. Overall, `r round(100 * sum(analytic_complete$screened == 0) / n_analysis, 1)`% reported being screened for depression during prenatal care, and `r round(100 * sum(analytic_complete$pp_depress_bin == 0) / n_analysis, 1)`% reported postpartum depressive symptoms.
 
 ## Exploratory Analysis
 Postpartum depression was a bit more common among women who were not screened, at 15.2%, compared to 13.9% for those who were screened. Higher rates were also seen in women who experienced depression during pregnancy, and differences between various education levels were visible. Table 2 shows that before adjusting for covariates, screened respondents already had lower odds of postpartum depressive symptoms compared with those who were not screened.
