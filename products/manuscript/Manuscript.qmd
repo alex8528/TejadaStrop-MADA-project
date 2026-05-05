@@ -137,8 +137,8 @@ study_pop_tbl <- tibble(
     "100.0%",
     paste0(round(100 * n_analysis / n_total, 1), "%"),
     "",
-    paste0(round(100 * sum(analytic_complete$screened == 1) / n_analysis, 0), "%"),
-paste0(round(100 * sum(analytic_complete$screened == 1) / n_analysis, 1), "%"),
+    paste0(round(100 * sum(analytic_complete$screened == 1) / n_analysis, 1), "%"),
+paste0(round(100 * sum(analytic_complete$screened == 0) / n_analysis, 1), "%"),
     "",
     paste0(round(100 * sum(analytic_complete$pp_depress_bin == 1) / n_analysis, 1), "%"),
     paste0(round(100 * sum(analytic_complete$pp_depress_bin == 0) / n_analysis, 1), "%"),
@@ -366,6 +366,7 @@ screening_table <- analytic_complete |>
 
 knitr::kable(screening_table, align = c("l", "c", "c"))
 ```
+
 
 Table 4 shows that 15.1% of respondents who were not screened reported postpartum depression symptoms, compared to 13.9% of those who were screened. This aligns with the results from the adjusted model.
 
