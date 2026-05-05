@@ -258,8 +258,8 @@ fig_data <- analytic_complete |>
   mutate(percent = 100 * n / sum(n)) |>
   ungroup() |>
   mutate(
-    Screening = ifelse(screened == 1, "Screened", "Not screened"),
-    Outcome = ifelse(pp_depress_bin == 0, "Depressive symptoms", "No depressive symptoms")
+    Screening = ifelse(screened == 0, "Screened", "Not screened"),
+    Outcome = ifelse(pp_depress_bin == 1, "Depressive symptoms", "No depressive symptoms")
   )
 
 ggplot(fig_data, aes(x = Screening, y = percent, fill = Outcome)) +
@@ -303,7 +303,7 @@ fig_dep_preg <- analytic_complete |>
   ungroup() |>
   mutate(
     Depression_pregnancy = ifelse(bpg_deprs8 == 2, "Yes", "No"),
-    Outcome = ifelse(pp_depress_bin == 0, "Depressive symptoms", "No depressive symptoms")
+    Outcome = ifelse(pp_depress_bin == 1, "Depressive symptoms", "No depressive symptoms")
   )
 
 ggplot(fig_dep_preg, aes(x = Depression_pregnancy, y = percent, fill = Outcome)) +
@@ -353,8 +353,8 @@ screening_table <- analytic_complete |>
   group_by(screened) |>
   mutate(
     percent = round(100 * n / sum(n), 1),
-    Screening = ifelse(screened == 1, "Screened", "Not screened"),
-    Outcome = ifelse(pp_depress_bin == 0, "Depressive symptoms", "No depressive symptoms")
+    Screening = ifelse(screened == 0, "Screened", "Not screened"),
+    Outcome = ifelse(pp_depress_bin == 1, "Depressive symptoms", "No depressive symptoms")
   ) |>
   ungroup() |>
   mutate(value = paste0(scales::comma(n), " (", percent, "%)")) |>
@@ -437,11 +437,15 @@ In the adjusted model, women who had prenatal mental health screening were less 
 
 # Discussion
 This study examined whether screening for mental health issues during pregnancy was linked to lower chances of experiencing depression after childbirth, using PRAMS data. Women who were screened had slightly lower chances of postpartum depression even after considering previous depression and education levels. However, because this was an observational study, we can't say for sure that screening caused the lower depression rates. One possible reason is that screening might make women more aware of mental health concerns and encourage them to seek help, connecting them with support before they give birth. Another possibility is that screening detects women who were already more vulnerable to depression, which might show up later regardless of any action taken.
+
 These findings are broadly consistent with prior work showing that postpartum depressive symptoms are common and that provider screening practices vary @bauman2020vitalsigns; @farr2016provider. Clinical guidelines recommend routine screening during pregnancy and postpartum @acog2023screening, and these results add to the population-level evidence on how screening relates to reported symptoms.
+
 The most noticeable finding was how strongly depression during pregnancy predicted postpartum depression symptoms (e.g., women with a history of depression were almost three times more likely to experience postpartum symptoms). This highlights the importance of considering mental health history when studying postpartum outcomes.
-It’s important to understand what this study cannot show. Since the data are based on a single point in time and rely on self-reports, we can't say whether screening itself led to better results. Women who were screened might also have had better access to healthcare or more supportive providers, which could influence postpartum mental health independently.
-**Strengths:** PRAMS is a large dataset from multiple states, which provides enough information for detailed analysis and makes the results more applicable to different areas than studies limited to a single site.
-**Limitations:** The data are based on what participants reported themselves and might be affected by memory errors. The measure used for postpartum depression symptoms is not a hospital diagnosis. Because the study looks at data from one point in time, it’s hard to say what causes what. Factors we did not measure, like whether someone has insurance, social support, or the way healthcare providers offer care, might influence the results.
+
+It is important to understand what this study cannot show. Since the data are based on a single point in time and rely on self-reports, we can't say whether screening itself led to better results. Women who were screened might also have had better access to healthcare or more supportive providers, which could influence postpartum mental health independently.
+**Strengths:** PRAMS is a large dataset spanning multiple states, providing sufficient information for detailed analysis and making the results more applicable across different areas than studies limited to a single site.
+
+**Limitations:** The data are based on participants' self-reports and may be affected by memory errors. The measure used for postpartum depression symptoms is not a hospital diagnosis. Because the study looks at data from one point in time, it’s hard to say what causes what. Factors we did not measure, such as whether someone has insurance, social support, or how healthcare providers deliver care, might influence the results.
 In future studies, including details such as insurance status, access to mental health care, and income level could be helpful. Using the survey’s weighting factors would also give a better picture of how the results apply to the wider population.
 
 # References
