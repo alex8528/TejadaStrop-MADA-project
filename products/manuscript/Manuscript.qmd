@@ -117,8 +117,8 @@ study_pop_tbl <- tibble(
     scales::comma(n_total),
     scales::comma(n_analysis),
     "",
-    scales::comma(sum(analytic_complete$screened == 0)),
     scales::comma(sum(analytic_complete$screened == 1)),
+    scales::comma(sum(analytic_complete$screened == 0)),
     "",
     scales::comma(sum(analytic_complete$pp_depress_bin == 1)),
     scales::comma(sum(analytic_complete$pp_depress_bin == 0)),
@@ -258,7 +258,7 @@ fig_data <- analytic_complete |>
   mutate(percent = 100 * n / sum(n)) |>
   ungroup() |>
   mutate(
-    Screening = ifelse(screened == 0, "Screened", "Not screened"),
+    Screening = ifelse(screened == 1, "Screened", "Not screened"),
     Outcome = ifelse(pp_depress_bin == 1, "Depressive symptoms", "No depressive symptoms")
   )
 
@@ -342,6 +342,8 @@ ggsave(
   dpi = 300
 )
 ```
+
+
 Women who experience depression during pregnancy are more likely to have postpartum depression. About 31 out of 100 women with depression during pregnancy also had postpartum depression, compared to about 11 out of 100 women who did not experience depression.
 
 ```{r}
@@ -353,7 +355,7 @@ screening_table <- analytic_complete |>
   group_by(screened) |>
   mutate(
     percent = round(100 * n / sum(n), 1),
-    Screening = ifelse(screened == 0, "Screened", "Not screened"),
+    Screening = ifelse(screened == 1, "Screened", "Not screened"),
     Outcome = ifelse(pp_depress_bin == 1, "Depressive symptoms", "No depressive symptoms")
   ) |>
   ungroup() |>
@@ -432,8 +434,17 @@ ggplot(model_validation_plot, aes(x = model, y = mean)) +
   )
 ```
 
-Both models performed very similarly, with an accuracy of 0.859 and a ROC AUC of 0.656. The small differences in error across the different tests suggest the results are consistent and not affected much by which data points were left out. A ROC AUC of 0.656 shows only a moderate ability to tell the differences, which isn't surprising given the small number of factors used. Since the random forest didn't do better than logistic regression, we kept the simpler model.
+Both models performed very similarly, with an accuracy of 0.859 and a ROC AUC of 0.656. The small differences in error across the different tests suggest the results are consistent and not affected much by which data points were left out. A ROC AUC of 0.656 shows only a moderate ability to tell the differences, which is not surprising given the small number of factors used. Since the random forest didn't do better than logistic regression, we kept the simpler model.
 In the adjusted model, women who had prenatal mental health screening were less likely to experience postpartum depression compared to those who weren't screened (OR = 0.76, 95% CI: 0.74 to 0.78, p < 0.001), even after taking into account depression during pregnancy and maternal education.
+
+```{r}
+#| label: fig-roc-curve
+#| fig-cap: "ROC curve comparison: logistic regression and random forest"
+
+knitr::include_graphics(here("results", "figures", "roc_curve_comparison.png"))
+
+```
+
 
 # Discussion
 This study examined whether screening for mental health issues during pregnancy was linked to lower chances of experiencing depression after childbirth, using PRAMS data. Women who were screened had slightly lower chances of postpartum depression even after considering previous depression and education levels. However, because this was an observational study, we can't say for sure that screening caused the lower depression rates. One possible reason is that screening might make women more aware of mental health concerns and encourage them to seek help, connecting them with support before they give birth. Another possibility is that screening detects women who were already more vulnerable to depression, which might show up later regardless of any action taken.

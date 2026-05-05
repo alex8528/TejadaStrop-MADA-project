@@ -191,12 +191,12 @@ Table&nbsp;1: Study population characteristics
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Screened during prenatal care</td>
-<td style="text-align: right;">189,220</td>
+<td style="text-align: right;">43,993</td>
 <td style="text-align: right;">81.1%</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Not screened during prenatal care</td>
-<td style="text-align: right;">43,993</td>
+<td style="text-align: right;">189,220</td>
 <td style="text-align: right;">18.9%</td>
 </tr>
 <tr class="odd">
@@ -440,12 +440,12 @@ Table&nbsp;4: Distribution of postpartum depressive symptoms by prenatal mental 
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">Screened</td>
+<td style="text-align: left;">Not screened</td>
 <td style="text-align: center;">26,238 (13.9%)</td>
 <td style="text-align: center;">162,982 (86.1%)</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">Not screened</td>
+<td style="text-align: left;">Screened</td>
 <td style="text-align: center;">6,641 (15.1%)</td>
 <td style="text-align: center;">37,352 (84.9%)</td>
 </tr>
@@ -477,12 +477,12 @@ Table&nbsp;5: Model validation results comparing logistic regression and random 
 <tr class="odd">
 <td style="text-align: left;">Logistic regression</td>
 <td style="text-align: center;">0.859 (SE 0)</td>
-<td style="text-align: center;">0.344 (SE 0.001)</td>
+<td style="text-align: center;">0.656 (SE 0.001)</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Random forest</td>
 <td style="text-align: center;">0.859 (SE 0)</td>
-<td style="text-align: center;">0.344 (SE 0.001)</td>
+<td style="text-align: center;">0.656 (SE 0.001)</td>
 </tr>
 </tbody>
 </table>
@@ -506,7 +506,21 @@ Figure&nbsp;3: Cross-validation performance of logistic regression and random fo
 </div>
 </div>
 </div>
-<p>Both models performed very similarly, with an accuracy of 0.859 and a ROC AUC of 0.656. The small differences in error across the different tests suggest the results are consistent and not affected much by which data points were left out. A ROC AUC of 0.656 shows only a moderate ability to tell the differences, which isn’t surprising given the small number of factors used. Since the random forest didn’t do better than logistic regression, we kept the simpler model. In the adjusted model, women who had prenatal mental health screening were less likely to experience postpartum depression compared to those who weren’t screened (OR = 0.76, 95% CI: 0.74 to 0.78, p &lt; 0.001), even after taking into account depression during pregnancy and maternal education.</p>
+<p>Both models performed very similarly, with an accuracy of 0.859 and a ROC AUC of 0.656. The small differences in error across the different tests suggest the results are consistent and not affected much by which data points were left out. A ROC AUC of 0.656 shows only a moderate ability to tell the differences, which is not surprising given the small number of factors used. Since the random forest didn’t do better than logistic regression, we kept the simpler model. In the adjusted model, women who had prenatal mental health screening were less likely to experience postpartum depression compared to those who weren’t screened (OR = 0.76, 95% CI: 0.74 to 0.78, p &lt; 0.001), even after taking into account depression during pregnancy and maternal education.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-roc-curve" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-roc-curve-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../../results/figures/roc_curve_comparison.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-roc-curve-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4: ROC curve comparison: logistic regression and random forest
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
 </section>
 </section>
 <section id="discussion" class="level1" data-number="6">

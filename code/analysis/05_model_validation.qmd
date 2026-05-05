@@ -105,17 +105,36 @@ rf_metrics
 
 # Compare models
 ```{r}
-model_compare <- bind_rows(log_metrics, rf_metrics) |>
-  select(model, .metric, mean, std_err, n) |>
-  arrange(.metric, desc(mean))
+# Recalculate ROC AUC correctly with event_level = "second"
+log_auc_fixed <- collect_predictions(log_res) |>
+  group_by(id) |>
+  roc_auc(truth = pp_depress_bin, .pred_Yes, event_level = "second") |>
+  summarise(mean = mean(.estimate), std_err = sd(.estimate)/sqrt(n()), n = n()) |>
+  mutate(model = "Logistic regression", .metric = "roc_auc")
 
-model_compare
+rf_auc_fixed <- collect_predictions(rf_res) |>
+  group_by(id) |>
+  roc_auc(truth = pp_depress_bin, .pred_Yes, event_level = "second") |>
+  summarise(mean = mean(.estimate), std_err = sd(.estimate)/sqrt(n()), n = n()) |>
+  mutate(model = "Random forest", .metric = "roc_auc")
+
+acc_rows <- bind_rows(log_metrics, rf_metrics) |>
+  filter(.metric == "accuracy") |>
+  select(model, .metric, mean, std_err, n)
+
+model_compare_fixed <- bind_rows(
+  acc_rows,
+  log_auc_fixed |> select(model, .metric, mean, std_err, n),
+  rf_auc_fixed |> select(model, .metric, mean, std_err, n)
+) |> arrange(.metric, desc(mean))
+
+model_compare_fixed
 
 dir.create(here("results", "tables"), showWarnings = FALSE, recursive = TRUE)
 dir.create(here("results", "output"), showWarnings = FALSE, recursive = TRUE)
 
-write_csv(model_compare, here("results", "tables", "model_comparison.csv"))
-saveRDS(model_compare, here("results", "tables", "model_comparison.rds"))
+write_csv(model_compare_fixed, here("results", "tables", "model_comparison.csv"))
+saveRDS(model_compare_fixed, here("results", "tables", "model_comparison.rds"))
 saveRDS(log_res, here("results", "output", "logistic_cv_results.rds"))
 saveRDS(rf_res, here("results", "output", "random_forest_cv_results.rds"))
 
