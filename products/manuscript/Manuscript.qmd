@@ -72,17 +72,21 @@ Data for this study come from PRAMS, a population-based surveillance system cond
 # Research Question
 Are women who are asked about depression or anxiety during prenatal visits less likely to experience postpartum depression? 
 The main outcome is whether women report feelings of depression or losing interest since giving birth, based on survey questions. The main factor studied is whether healthcare providers asked about mental health during pregnancy. Other factors include depression during pregnancy and the mother's education level.
+
 # Methods
 ## Use of Computational Assistance
 ChatGPT was used to help troubleshoot parts of the code. All analyses, decisions, and interpretations were reviewed and completed by the author.
+
 ## Analysis Approach
 The analysis started by comparing people who reported having prenatal mental health screening with those who did not. This helped us check the data for quality, find missing details, and identify early patterns. We then used statistical methods to explore the relationship between prenatal screening and postpartum depression, taking into account important factors.
+
 ## Data Source
 Data came from PRAMS, a survey system run by the Centers for Disease Control and Prevention along with state health departments. PRAMS gathers information that people report about their experiences before, during, and shortly after pregnancy.
 Because PRAMS uses a detailed survey method, the data can be analyzed using special variables included in the dataset. The analyses shown here are unweighted and intended as a simple example of how to build models so others can repeat them.
 
 ## Study Population
-The full PRAMS analytic dataset included `r scales::comma(n_total)` respondents. After excluding observations with missing values for the primary exposure, outcome, and selected covariates, the final analytic sample included `r scales::comma(n_analysis)` respondents. Complete case analysis was used, which might cause bias if data are not missing completely at random. Respondents with missing data might differ in important ways from those with complete data, potentially affecting how well the results apply to other groups.
+The full PRAMS analytic dataset included `r scales::comma(n_total)` respondents. After excluding observations with missing values for the primary exposure, outcome, and selected covariates, the final analytic sample included `r scales::comma(n_analysis)` respondents. Complete case analysis was used, which might cause bias if data are not missing completely at random. Respondents with missing data might differ in important ways from those with complete data, potentially affecting how well the results apply to other groups. Table 1 summarizes the characteristics of the study population.
+
 ```{r}
 #| label: tbl-study-pop
 #| tbl-cap: "Study population characteristics"
@@ -154,6 +158,8 @@ knitr::kable(study_pop_tbl, align = c("l", "r", "r"), booktabs = TRUE) |>
   kableExtra::kable_styling(full_width = FALSE, position = "left", font_size = 11)
 ```
 
+
+
 ## Measures
 The main exposure was whether a healthcare provider talked about depression or anxiety during prenatal visits, based on a survey question. This was recorded as yes or no.
 The main outcome was postpartum depressive symptoms, measured using survey questions about feelings of depression and loss of interest after childbirth. These questions have been used before in research on postpartum depression @bauman2020vitalsigns; @farr2016provider.
@@ -169,7 +175,8 @@ A random forest approach was also used alongside logistic regression because it 
 The analytic sample included `r scales::comma(n_analysis)` respondents. Overall, `r round(100 * sum(analytic_complete$screened == 1) / n_analysis, 1)`% reported being screened for depression during prenatal care, and `r round(100 * sum(analytic_complete$pp_depress_bin == 1) / n_analysis, 1)`% reported postpartum depressive symptoms.
 
 ## Exploratory Analysis
-Postpartum depression was a bit more common among women who were not screened, at 15.2%, compared to 13.9% for those who were screened. Higher rates were also seen in women who experienced depression during pregnancy, and differences between various education levels were visible.
+Postpartum depression was a bit more common among women who were not screened, at 15.2%, compared to 13.9% for those who were screened. Higher rates were also seen in women who experienced depression during pregnancy, and differences between various education levels were visible. Table 2 shows that before adjusting for covariates, screened respondents already had lower odds of postpartum depressive symptoms compared with those who were not screened.
+
 
 ```{r}
 #| label: tbl-bivariate
@@ -197,7 +204,8 @@ knitr::kable(
     footnote_as_chunk = TRUE
   )
 ```
-Before considering other factors, the respondents who were screened already had lower chances of postpartum depression compared to those who were not screened.
+
+Before considering other factors, the respondents who were screened already had lower chances of postpartum depression compared to those who were not screened. Table 3 presents the adjusted odds ratio for all predictors in the model.
 
 ```{r}
 #| label: tbl-multivariable
@@ -279,6 +287,8 @@ ggplot(fig_data, aes(x = Screening, y = percent, fill = Outcome)) +
     axis.title = element_text(size = 11)
   )
 ```
+
+Figure 1 shows the distribution of postpartum depressive symptoms by prenatal screening status.
 
 ```{r}
 #| label: fig-depression-pregnancy
@@ -376,6 +386,9 @@ model_validation_tbl <- model_validation_results |>
 
 knitr::kable(model_validation_tbl, align = c("l", "c", "c"))
 ```
+
+Table 5 and Figure 3 compare model performance across logistic regression and random forest.
+
 
 ```{r}
 #| label: fig-model-performance
