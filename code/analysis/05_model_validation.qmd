@@ -157,14 +157,17 @@ all_preds <- bind_rows(log_preds, rf_preds)
 roc_plot <- all_preds |>
   group_by(model) |>
   roc_curve(truth = pp_depress_bin, .pred_Yes, event_level = "second") |>
-  ggplot(aes(x = 1 - specificity, y = sensitivity, color = model)) +
+  ggplot(aes(x = 1 - specificity, y = sensitivity, 
+             color = model, linetype = model)) +
   geom_line(linewidth = 1) +
   geom_abline(lty = 2) +
   labs(
     title = "ROC Curve Comparison: Logistic Regression vs Random Forest",
+    subtitle = "Both models produced identical curves (AUC = 0.656)",
     x = "1 - Specificity",
     y = "Sensitivity",
-    color = "Model"
+    color = "Model",
+    linetype = "Model"
   ) +
   theme_minimal()
 
