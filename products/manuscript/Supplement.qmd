@@ -1,0 +1,145 @@
+---
+title: "Supplemental Materials: Prenatal Mental Health Screening and Postpartum Depressive Symptoms"
+author: "Alexandra Tejada-Strop"
+format:
+  html:
+    toc: true
+    highlight-style: github
+execute:
+  echo: false
+  warning: false
+  message: false
+  eval: true
+---
+
+```{r}
+library(tidyverse)
+library(here)
+library(knitr)
+
+model_validation_path <- here("results", "tables", "model_comparison.rds")
+stopifnot(file.exists(model_validation_path))
+model_validation_results <- readRDS(model_validation_path)
+```
+
+
+The following tables and figures provide additional detail on model validation and stratified results referenced in the main manuscript.
+
+Table S1 and Figure S1 compare model performance across logistic regression and random forest.
+
+```{r}
+#| label: tbl-model-validation
+#| tbl-cap: "Model validation results comparing logistic regression and random forest"
+
+model_validation_tbl <- model_validation_results |>
+  filter(.metric %in% c("accuracy", "roc_auc")) |>
+  mutate(
+    metric_label = case_when(
+      .metric == "accuracy" ~ "Accuracy",
+      .metric == "roc_auc" ~ "ROC AUC",
+      TRUE ~ .metric
+    ),
+    value = paste0(round(mean, 3), " (SE ", round(std_err, 3), ")")
+  ) |>
+  select(model, metric_label, value) |>
+  pivot_wider(names_from = metric_label, values_from = value) |>
+  rename(Model = model)
+
+knitr::kable(model_validation_tbl, align = c("l", "c", "c"))
+```
+
+
+```{r}
+#| label: fig-model-performance
+#| fig-cap: "Cross-validation performance of logistic regression and random forest"
+
+model_validation_plot <- model_validation_results |>
+  filter(.metric %in% c("accuracy", "roc_auc")) |>
+  mutate(
+    metric_label = case_when(
+      .metric == "accuracy" ~ "Accuracy",
+      .metric == "roc_auc" ~ "ROC AUC",
+      TRUE ~ .metric
+    ),
+    model = case_when(
+      model == "logistic_regression" ~ "Logistic regression",
+      model == "random_forest" ~ "Random forest",
+      TRUE ~ str_replace_all(model, "_", " ") |> str_to_title()
+    )
+  )
+
+ggplot(model_validation_plot, aes(x = model, y = mean)) +
+  geom_col(width = 0.6, fill = "steelblue") +
+  geom_errorbar(
+    aes(ymin = mean - std_err, ymax = mean + std_err),
+    width = 0.15
+  ) +
+  facet_wrap(~ metric_label, scales = "free_y") +
+  labs(
+    x = "Model",
+    y = "Cross-validated mean performance"
+  ) +
+  coord_cartesian(ylim = c(0.6, 0.9)) +
+  geom_text(aes(label = round(mean, 3)), vjust = -0.5, size = 3) +
+  theme_minimal() +
+  theme(
+    strip.text = element_text(size = 10),
+    axis.text = element_text(size = 10),
+    axis.title = element_text(size = 11),
+    axis.text.x = element_text(angle = 20, hjust = 1)
+  )
+```
+
+Both models performed similarly, with an accuracy of 0.859 and a ROC AUC of 0.656. The small variations in error across different tests suggest the results are consistent and not influenced much by which data points were left out. A ROC AUC of 0.656 indicates a moderate ability to distinguish between groups, which is not surprising given the limited number of factors used. Since the random forest did not outperform logistic regression, we chose the simpler model.
+
+Figure S2 shows the ROC curves for both models across the cross-validation folds.
+
+```{r}
+#| label: fig-roc-curve
+#| fig-cap: "ROC curve comparison: logistic regression and random forest"
+
+knitr::include_graphics(here("results", "figures", "roc_curve_comparison.png"))
+
+```
+
+
+Figure S3 presents the stratified odds ratios for prenatal screening by depression during pregnancy status.
+
+
+```{r}
+#| label: fig-forest
+#| fig-cap: "Forest plot of screening odds ratios by depression during pregnancy group"
+
+forest_data <- tibble(
+  Group = c("No depression during pregnancy", "Depression during pregnancy"),
+  OR = c(0.757, 0.769),
+  Lower = c(0.732, 0.721),
+  Upper = c(0.784, 0.820)
+)
+
+ggplot(forest_data, aes(x = OR, y = Group)) +
+  geom_point(size = 4, color = "#0072B2") +
+  geom_errorbarh(
+    aes(xmin = Lower, xmax = Upper),
+    height = 0.2,
+    color = "#0072B2",
+    linewidth = 1
+  ) +
+  geom_vline(xintercept = 1, linetype = "dashed", color = "gray50") +
+  scale_x_continuous(
+    limits = c(0.6, 1.2),
+    breaks = seq(0.6, 1.2, by = 0.1)
+  ) +
+  labs(
+    x = "Odds Ratio (95% CI)",
+    y = NULL,
+    caption = "Dashed line indicates OR = 1 (no effect)"
+  ) +
+  theme_minimal() +
+  theme(
+    axis.text = element_text(size = 11),
+    axis.title = element_text(size = 11),
+    plot.caption = element_text(size = 9, color = "gray50")
+  )
+
+```

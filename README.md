@@ -30,7 +30,9 @@ TejadaStrop-MADA-project/
 │   ├── figures/
 │   └── output/
 └── products/
-└── manuscript/
+    └── manuscript/
+        ├── Manuscript.qmd
+        └── Supplement.qmd
 
 ## How to reproduce the analysis
 
@@ -65,15 +67,18 @@ Run the scripts in this order. Each one needs to finish before starting the next
 6. `quarto render products/manuscript/Manuscript.qmd`
    - Renders the final manuscript using all saved outputs
 
-## Data
+7. `quarto render products/manuscript/Supplement.qmd`
+   - Renders the supplemental materials including model validation tables and figures
 
+## Data
 Raw data live in `data/raw-data/`. All processed files are in 
 `data/processed-data/` and saved as `.rds` files to preserve variable types.
 
 ## Software
-
 Built in R and Quarto. Main packages: tidyverse, tidymodels, broom, knitr, 
 here, kableExtra, ranger, survey.
+
+Supplemental materials are rendered separately from the main manuscript but rely on the same saved output files.
 
 ## Author
 
