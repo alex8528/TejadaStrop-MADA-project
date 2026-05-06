@@ -347,6 +347,160 @@ Residual Deviance: 179200   AIC: 179300</code></pre>
 <pre><code>[1] TRUE</code></pre>
 </div>
 </div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(survey)</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(broom)</span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Prepare data for weighted analysis</span></span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>dat_weighted <span class="ot">&lt;-</span> dat <span class="sc">|&gt;</span></span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">screened =</span> <span class="fu">factor</span>(screened),</span>
+<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">bpg_deprs8_bin =</span> <span class="fu">factor</span>(bpg_deprs8_bin, <span class="at">levels =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>)),</span>
+<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">mat_ed =</span> <span class="fu">factor</span>(mat_ed)</span>
+<span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb31-11"><a href="#cb31-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">drop_na</span>(pp_depress_bin, screened, bpg_deprs8_bin, mat_ed, wtanal, sud_nest, stratumc)</span>
+<span id="cb31-12"><a href="#cb31-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-13"><a href="#cb31-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Handle strata with single PSU</span></span>
+<span id="cb31-14"><a href="#cb31-14" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">survey.lonely.psu =</span> <span class="st">"adjust"</span>)</span>
+<span id="cb31-15"><a href="#cb31-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-16"><a href="#cb31-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Create survey design object</span></span>
+<span id="cb31-17"><a href="#cb31-17" aria-hidden="true" tabindex="-1"></a>svy_design <span class="ot">&lt;-</span> <span class="fu">svydesign</span>(</span>
+<span id="cb31-18"><a href="#cb31-18" aria-hidden="true" tabindex="-1"></a>  <span class="at">ids =</span> <span class="sc">~</span>sud_nest,</span>
+<span id="cb31-19"><a href="#cb31-19" aria-hidden="true" tabindex="-1"></a>  <span class="at">strata =</span> <span class="sc">~</span>stratumc,</span>
+<span id="cb31-20"><a href="#cb31-20" aria-hidden="true" tabindex="-1"></a>  <span class="at">weights =</span> <span class="sc">~</span>wtanal,</span>
+<span id="cb31-21"><a href="#cb31-21" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> dat_weighted,</span>
+<span id="cb31-22"><a href="#cb31-22" aria-hidden="true" tabindex="-1"></a>  <span class="at">nest =</span> <span class="cn">TRUE</span></span>
+<span id="cb31-23"><a href="#cb31-23" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb31-24"><a href="#cb31-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-25"><a href="#cb31-25" aria-hidden="true" tabindex="-1"></a><span class="co"># Weighted multivariable logistic regression</span></span>
+<span id="cb31-26"><a href="#cb31-26" aria-hidden="true" tabindex="-1"></a>fit_weighted <span class="ot">&lt;-</span> <span class="fu">svyglm</span>(</span>
+<span id="cb31-27"><a href="#cb31-27" aria-hidden="true" tabindex="-1"></a>  pp_depress_bin <span class="sc">~</span> screened <span class="sc">+</span> bpg_deprs8_bin <span class="sc">+</span> mat_ed,</span>
+<span id="cb31-28"><a href="#cb31-28" aria-hidden="true" tabindex="-1"></a>  <span class="at">design =</span> svy_design,</span>
+<span id="cb31-29"><a href="#cb31-29" aria-hidden="true" tabindex="-1"></a>  <span class="at">family =</span> <span class="fu">binomial</span>()</span>
+<span id="cb31-30"><a href="#cb31-30" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb31-31"><a href="#cb31-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-32"><a href="#cb31-32" aria-hidden="true" tabindex="-1"></a>weighted_tbl <span class="ot">&lt;-</span> <span class="fu">tidy</span>(fit_weighted, <span class="at">conf.int =</span> <span class="cn">TRUE</span>, <span class="at">exponentiate =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb31-33"><a href="#cb31-33" aria-hidden="true" tabindex="-1"></a>weighted_tbl</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 7 × 7
+  term            estimate std.error statistic   p.value conf.low conf.high
+  &lt;chr&gt;              &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;
+1 (Intercept)        0.133    0.0646    -31.2  2.98e-123    0.117     0.151
+2 screened1          0.786    0.0216    -11.2  3.73e- 26    0.753     0.820
+3 bpg_deprs8_bin1    3.46     0.0234     53.0  1.75e-216    3.30      3.62 
+4 mat_ed2            1.41     0.0704      4.90 1.29e-  6    1.23      1.62 
+5 mat_ed3            1.29     0.0676      3.82 1.49e-  4    1.13      1.48 
+6 mat_ed4            1.12     0.0654      1.76 7.87e-  2    0.987     1.28 
+7 mat_ed5            0.699    0.0670     -5.35 1.29e-  7    0.613     0.797</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">saveRDS</span>(weighted_tbl, <span class="fu">here</span>(<span class="st">"results"</span>, <span class="st">"tables"</span>, <span class="st">"glm_weighted_main.rds"</span>))</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a><span class="fu">saveRDS</span>(fit_weighted, <span class="fu">here</span>(<span class="st">"results"</span>, <span class="st">"output"</span>, <span class="st">"glm_weighted_main.rds"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Interaction model: screening x depression during pregnancy</span></span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>fit_interaction <span class="ot">&lt;-</span> <span class="fu">glm</span>(</span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>  pp_depress_bin <span class="sc">~</span> screened <span class="sc">+</span> bpg_deprs8_bin <span class="sc">+</span> screened<span class="sc">:</span>bpg_deprs8_bin <span class="sc">+</span> mat_ed,</span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> analysis_dat,</span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">family =</span> <span class="fu">binomial</span>()</span>
+<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-8"><a href="#cb34-8" aria-hidden="true" tabindex="-1"></a>interaction_tbl <span class="ot">&lt;-</span> <span class="fu">tidy</span>(fit_interaction, <span class="at">conf.int =</span> <span class="cn">TRUE</span>, <span class="at">exponentiate =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb34-9"><a href="#cb34-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-10"><a href="#cb34-10" aria-hidden="true" tabindex="-1"></a>interaction_tbl</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 8 × 7
+  term                 estimate std.error statistic   p.value conf.low conf.high
+  &lt;chr&gt;                   &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;
+1 (Intercept)             0.155    0.0406   -45.9   0            0.143     0.168
+2 screened1               0.756    0.0175   -16.0   6.55e- 58    0.730     0.782
+3 bpg_deprs8_bin1         3.32     0.0341    35.2   1.23e-271    3.10      3.55 
+4 mat_ed2                 1.36     0.0425     7.24  4.62e- 13    1.25      1.48 
+5 mat_ed3                 1.29     0.0399     6.36  2.01e- 10    1.19      1.40 
+6 mat_ed4                 1.09     0.0398     2.12  3.39e-  2    1.01      1.18 
+7 mat_ed5                 0.694    0.0400    -9.14  6.44e- 20    0.642     0.751
+8 screened1:bpg_deprs…    1.02     0.0370     0.549 5.83e-  1    0.949     1.10 </code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">saveRDS</span>(interaction_tbl, <span class="fu">here</span>(<span class="st">"results"</span>, <span class="st">"tables"</span>, <span class="st">"glm_interaction_main.rds"</span>))</span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a><span class="fu">saveRDS</span>(fit_interaction, <span class="fu">here</span>(<span class="st">"results"</span>, <span class="st">"output"</span>, <span class="st">"glm_interaction_main.rds"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Stratified analysis by depression during pregnancy</span></span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Stratum 1: Women WITHOUT depression during pregnancy</span></span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>dat_no_depression <span class="ot">&lt;-</span> analysis_dat <span class="sc">|&gt;</span></span>
+<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(bpg_deprs8_bin <span class="sc">==</span> <span class="dv">0</span>)</span>
+<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a>fit_strat_no_dep <span class="ot">&lt;-</span> <span class="fu">glm</span>(</span>
+<span id="cb37-8"><a href="#cb37-8" aria-hidden="true" tabindex="-1"></a>  pp_depress_bin <span class="sc">~</span> screened <span class="sc">+</span> mat_ed,</span>
+<span id="cb37-9"><a href="#cb37-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> dat_no_depression,</span>
+<span id="cb37-10"><a href="#cb37-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">family =</span> <span class="fu">binomial</span>()</span>
+<span id="cb37-11"><a href="#cb37-11" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb37-12"><a href="#cb37-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-13"><a href="#cb37-13" aria-hidden="true" tabindex="-1"></a>strat_no_dep_tbl <span class="ot">&lt;-</span> <span class="fu">tidy</span>(fit_strat_no_dep, <span class="at">conf.int =</span> <span class="cn">TRUE</span>, <span class="at">exponentiate =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span></span>
+<span id="cb37-14"><a href="#cb37-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">stratum =</span> <span class="st">"No depression during pregnancy"</span>)</span>
+<span id="cb37-15"><a href="#cb37-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-16"><a href="#cb37-16" aria-hidden="true" tabindex="-1"></a>strat_no_dep_tbl</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 8
+  term        estimate std.error statistic  p.value conf.low conf.high stratum  
+  &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt; &lt;chr&gt;    
+1 (Intercept)    0.149    0.0451    -42.2  0           0.136     0.163 No depre…
+2 screened1      0.757    0.0175    -15.9  4.48e-57    0.732     0.784 No depre…
+3 mat_ed2        1.40     0.0490      6.80 1.05e-11    1.27      1.54  No depre…
+4 mat_ed3        1.33     0.0452      6.38 1.72e-10    1.22      1.46  No depre…
+5 mat_ed4        1.12     0.0451      2.57 1.02e- 2    1.03      1.23  No depre…
+6 mat_ed5        0.727    0.0450     -7.09 1.34e-12    0.666     0.794 No depre…</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Stratum 2: Women WITH depression during pregnancy</span></span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>dat_depression <span class="ot">&lt;-</span> analysis_dat <span class="sc">|&gt;</span></span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(bpg_deprs8_bin <span class="sc">==</span> <span class="dv">1</span>)</span>
+<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a>fit_strat_dep <span class="ot">&lt;-</span> <span class="fu">glm</span>(</span>
+<span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a>  pp_depress_bin <span class="sc">~</span> screened <span class="sc">+</span> mat_ed,</span>
+<span id="cb39-7"><a href="#cb39-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> dat_depression,</span>
+<span id="cb39-8"><a href="#cb39-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">family =</span> <span class="fu">binomial</span>()</span>
+<span id="cb39-9"><a href="#cb39-9" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb39-10"><a href="#cb39-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-11"><a href="#cb39-11" aria-hidden="true" tabindex="-1"></a>strat_dep_tbl <span class="ot">&lt;-</span> <span class="fu">tidy</span>(fit_strat_dep, <span class="at">conf.int =</span> <span class="cn">TRUE</span>, <span class="at">exponentiate =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span></span>
+<span id="cb39-12"><a href="#cb39-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">stratum =</span> <span class="st">"Depression during pregnancy"</span>)</span>
+<span id="cb39-13"><a href="#cb39-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-14"><a href="#cb39-14" aria-hidden="true" tabindex="-1"></a>strat_dep_tbl</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 8
+  term        estimate std.error statistic  p.value conf.low conf.high stratum  
+  &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt; &lt;chr&gt;    
+1 (Intercept)    0.596    0.0900    -5.75  9.13e- 9    0.499     0.710 Depressi…
+2 screened1      0.769    0.0328    -8.02  1.04e-15    0.721     0.820 Depressi…
+3 mat_ed2        1.20     0.0908     1.98  4.78e- 2    1.00      1.43  Depressi…
+4 mat_ed3        1.12     0.0878     1.25  2.12e- 1    0.941     1.33  Depressi…
+5 mat_ed4        0.949    0.0877    -0.598 5.50e- 1    0.800     1.13  Depressi…
+6 mat_ed5        0.573    0.0897    -6.21  5.22e-10    0.481     0.684 Depressi…</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Combine results</span></span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>strat_combined <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(strat_no_dep_tbl, strat_dep_tbl)</span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a>strat_combined</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 12 × 8
+   term        estimate std.error statistic  p.value conf.low conf.high stratum 
+   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt; &lt;chr&gt;   
+ 1 (Intercept)    0.149    0.0451   -42.2   0           0.136     0.163 No depr…
+ 2 screened1      0.757    0.0175   -15.9   4.48e-57    0.732     0.784 No depr…
+ 3 mat_ed2        1.40     0.0490     6.80  1.05e-11    1.27      1.54  No depr…
+ 4 mat_ed3        1.33     0.0452     6.38  1.72e-10    1.22      1.46  No depr…
+ 5 mat_ed4        1.12     0.0451     2.57  1.02e- 2    1.03      1.23  No depr…
+ 6 mat_ed5        0.727    0.0450    -7.09  1.34e-12    0.666     0.794 No depr…
+ 7 (Intercept)    0.596    0.0900    -5.75  9.13e- 9    0.499     0.710 Depress…
+ 8 screened1      0.769    0.0328    -8.02  1.04e-15    0.721     0.820 Depress…
+ 9 mat_ed2        1.20     0.0908     1.98  4.78e- 2    1.00      1.43  Depress…
+10 mat_ed3        1.12     0.0878     1.25  2.12e- 1    0.941     1.33  Depress…
+11 mat_ed4        0.949    0.0877    -0.598 5.50e- 1    0.800     1.13  Depress…
+12 mat_ed5        0.573    0.0897    -6.21  5.22e-10    0.481     0.684 Depress…</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="fu">saveRDS</span>(strat_combined, <span class="fu">here</span>(<span class="st">"results"</span>, <span class="st">"tables"</span>, <span class="st">"glm_stratified_main.rds"</span>))</span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a><span class="fu">saveRDS</span>(<span class="fu">list</span>(<span class="at">no_dep =</span> fit_strat_no_dep, <span class="at">dep =</span> fit_strat_dep), </span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>        <span class="fu">here</span>(<span class="st">"results"</span>, <span class="st">"output"</span>, <span class="st">"glm_stratified_main.rds"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
 </section>
 <section id="running-bivariate-models-first-to-assess-unadjusted-associations-before-adjusting" class="level1">
 <h1>Running bivariate models first to assess unadjusted associations before adjusting</h1>

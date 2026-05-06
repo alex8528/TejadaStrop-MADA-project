@@ -149,6 +149,107 @@ file.exists(here("results", "output", "glm_multivariable_main.rds"))
 file.exists(here("results", "output", "tidymodels_logistic_main.rds"))
 ```
 
+```{r}
+library(survey)
+library(broom)
+
+# Prepare data for weighted analysis
+dat_weighted <- dat |>
+  mutate(
+    screened = factor(screened),
+    bpg_deprs8_bin = factor(bpg_deprs8_bin, levels = c(0, 1)),
+    mat_ed = factor(mat_ed)
+  ) |>
+  drop_na(pp_depress_bin, screened, bpg_deprs8_bin, mat_ed, wtanal, sud_nest, stratumc)
+
+# Handle strata with single PSU
+options(survey.lonely.psu = "adjust")
+
+# Create survey design object
+svy_design <- svydesign(
+  ids = ~sud_nest,
+  strata = ~stratumc,
+  weights = ~wtanal,
+  data = dat_weighted,
+  nest = TRUE
+)
+
+# Weighted multivariable logistic regression
+fit_weighted <- svyglm(
+  pp_depress_bin ~ screened + bpg_deprs8_bin + mat_ed,
+  design = svy_design,
+  family = binomial()
+)
+
+weighted_tbl <- tidy(fit_weighted, conf.int = TRUE, exponentiate = TRUE)
+weighted_tbl
+
+saveRDS(weighted_tbl, here("results", "tables", "glm_weighted_main.rds"))
+saveRDS(fit_weighted, here("results", "output", "glm_weighted_main.rds"))
+
+```
+
+
+```{r}
+# Interaction model: screening x depression during pregnancy
+fit_interaction <- glm(
+  pp_depress_bin ~ screened + bpg_deprs8_bin + screened:bpg_deprs8_bin + mat_ed,
+  data = analysis_dat,
+  family = binomial()
+)
+
+interaction_tbl <- tidy(fit_interaction, conf.int = TRUE, exponentiate = TRUE)
+
+interaction_tbl
+
+saveRDS(interaction_tbl, here("results", "tables", "glm_interaction_main.rds"))
+saveRDS(fit_interaction, here("results", "output", "glm_interaction_main.rds"))
+```
+
+```{r}
+# Stratified analysis by depression during pregnancy
+
+# Stratum 1: Women WITHOUT depression during pregnancy
+dat_no_depression <- analysis_dat |>
+  filter(bpg_deprs8_bin == 0)
+
+fit_strat_no_dep <- glm(
+  pp_depress_bin ~ screened + mat_ed,
+  data = dat_no_depression,
+  family = binomial()
+)
+
+strat_no_dep_tbl <- tidy(fit_strat_no_dep, conf.int = TRUE, exponentiate = TRUE) |>
+  mutate(stratum = "No depression during pregnancy")
+
+strat_no_dep_tbl
+
+# Stratum 2: Women WITH depression during pregnancy
+dat_depression <- analysis_dat |>
+  filter(bpg_deprs8_bin == 1)
+
+fit_strat_dep <- glm(
+  pp_depress_bin ~ screened + mat_ed,
+  data = dat_depression,
+  family = binomial()
+)
+
+strat_dep_tbl <- tidy(fit_strat_dep, conf.int = TRUE, exponentiate = TRUE) |>
+  mutate(stratum = "Depression during pregnancy")
+
+strat_dep_tbl
+
+# Combine results
+strat_combined <- bind_rows(strat_no_dep_tbl, strat_dep_tbl)
+
+strat_combined
+
+saveRDS(strat_combined, here("results", "tables", "glm_stratified_main.rds"))
+saveRDS(list(no_dep = fit_strat_no_dep, dep = fit_strat_dep), 
+        here("results", "output", "glm_stratified_main.rds"))
+```        
+
+
 # Running bivariate models first to assess unadjusted associations before adjusting
 
 # Covariates include age, race/ethnicity, and insurance -- established confounders in the literature
