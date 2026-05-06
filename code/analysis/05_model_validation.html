@@ -154,9 +154,9 @@ $ wtanal         &lt;dbl&gt; 7.619050, 7.619050, 7.619050, 7.619050, 7.619050, 5
 $ stratumc       &lt;dbl&gt; 129, 129, 129, 129, 129, 129, 129, 129, 129, 129, 129, …
 $ sud_nest       &lt;dbl&gt; 1292016, 1292016, 1292016, 1292016, 1292016, 1292016, 1…
 $ nest_yr        &lt;dbl&gt; 2016, 2016, 2016, 2016, 2016, 2016, 2016, 2016, 2016, 2…
-$ screened       &lt;fct&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0…
-$ pp_depress_bin &lt;fct&gt; No, Yes, Yes, Yes, No, Yes, Yes, Yes, Yes, Yes, Yes, No…
-$ bpg_deprs8_bin &lt;fct&gt; 0, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1…</code></pre>
+$ screened       &lt;fct&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1…
+$ pp_depress_bin &lt;fct&gt; Yes, No, No, No, Yes, No, No, No, No, No, No, Yes, No, …
+$ bpg_deprs8_bin &lt;fct&gt; 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0…</code></pre>
 </div>
 </div>
 <section id="cross-validation" class="level1">
@@ -213,7 +213,7 @@ $ bpg_deprs8_bin &lt;fct&gt; 0, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 
   .metric  .estimator  mean     n    std_err .config         model              
   &lt;chr&gt;    &lt;chr&gt;      &lt;dbl&gt; &lt;int&gt;      &lt;dbl&gt; &lt;chr&gt;           &lt;chr&gt;              
 1 accuracy binary     0.859     5 0.00000308 pre0_mod0_post0 Logistic regression
-2 roc_auc  binary     0.344     5 0.000836   pre0_mod0_post0 Logistic regression</code></pre>
+2 roc_auc  binary     0.344     5 0.00163    pre0_mod0_post0 Logistic regression</code></pre>
 </div>
 </div>
 </section>
@@ -245,7 +245,7 @@ $ bpg_deprs8_bin &lt;fct&gt; 0, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 
   .metric  .estimator  mean     n    std_err .config         model        
   &lt;chr&gt;    &lt;chr&gt;      &lt;dbl&gt; &lt;int&gt;      &lt;dbl&gt; &lt;chr&gt;           &lt;chr&gt;        
 1 accuracy binary     0.859     5 0.00000308 pre0_mod0_post0 Random forest
-2 roc_auc  binary     0.344     5 0.000947   pre0_mod0_post0 Random forest</code></pre>
+2 roc_auc  binary     0.344     5 0.00174    pre0_mod0_post0 Random forest</code></pre>
 </div>
 </div>
 </section>
@@ -282,8 +282,8 @@ $ bpg_deprs8_bin &lt;fct&gt; 0, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 
   &lt;chr&gt;               &lt;chr&gt;    &lt;dbl&gt;      &lt;dbl&gt; &lt;int&gt;
 1 Logistic regression accuracy 0.859 0.00000308     5
 2 Random forest       accuracy 0.859 0.00000308     5
-3 Random forest       roc_auc  0.656 0.000947       5
-4 Logistic regression roc_auc  0.656 0.000836       5</code></pre>
+3 Logistic regression roc_auc  0.656 0.00163        5
+4 Random forest       roc_auc  0.656 0.00174        5</code></pre>
 </div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dir.create</span>(<span class="fu">here</span>(<span class="st">"results"</span>, <span class="st">"tables"</span>), <span class="at">showWarnings =</span> <span class="cn">FALSE</span>, <span class="at">recursive =</span> <span class="cn">TRUE</span>)</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">dir.create</span>(<span class="fu">here</span>(<span class="st">"results"</span>, <span class="st">"output"</span>), <span class="at">showWarnings =</span> <span class="cn">FALSE</span>, <span class="at">recursive =</span> <span class="cn">TRUE</span>)</span>

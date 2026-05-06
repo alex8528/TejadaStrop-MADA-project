@@ -49,7 +49,7 @@ analysis_dat <- dat |>
   drop_na() |>
   mutate(
     screened = as.factor(screened),
-    bpg_deprs8_bin = as.factor(bpg_deprs8_bin),
+    bpg_deprs8_bin = factor(bpg_deprs8_bin, levels = c(0, 1)),
     mat_ed = as.factor(mat_ed)
   )
 ```

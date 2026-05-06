@@ -35,6 +35,7 @@ n_total <- nrow(analytic_dat)
 
 analytic_complete <- analytic_dat |>
   select(pp_depress_bin, screened, bpg_deprs8_bin, mat_ed) |>
+  filter(bpg_deprs8_bin %in% c(0, 1)) |>
   drop_na()
 
 n_analysis <- nrow(analytic_complete)
@@ -103,8 +104,8 @@ study_pop_tbl <- tibble(
     "  No",
     "  Yes",
     "Depression during pregnancy",
-    "  No",
     "  Yes",
+    "  No",
     "Maternal education",
     "  Less than high school",
     "  High school graduate",
@@ -117,14 +118,14 @@ study_pop_tbl <- tibble(
     scales::comma(n_total),
     scales::comma(n_analysis),
     "",
-    scales::comma(sum(analytic_complete$screened == 0)),
-scales::comma(sum(analytic_complete$screened == 1)),
+    scales::comma(sum(analytic_complete$screened == 1)),
+scales::comma(sum(analytic_complete$screened == 0)),
     "",
     scales::comma(sum(analytic_complete$pp_depress_bin == 0)),
     scales::comma(sum(analytic_complete$pp_depress_bin == 1)),
     "",
-    scales::comma(sum(analytic_complete$bpg_deprs8_bin == 0)),
     scales::comma(sum(analytic_complete$bpg_deprs8_bin == 1)),
+    scales::comma(sum(analytic_complete$bpg_deprs8_bin == 0)),
     "",
     scales::comma(sum(analytic_complete$mat_ed == 1)),
     scales::comma(sum(analytic_complete$mat_ed == 2)),
@@ -137,14 +138,14 @@ scales::comma(sum(analytic_complete$screened == 1)),
     "100.0%",
     paste0(round(100 * n_analysis / n_total, 1), "%"),
     "",
-    paste0(round(100 * sum(analytic_complete$screened == 0) / n_analysis, 1), "%"),
-paste0(round(100 * sum(analytic_complete$screened == 1) / n_analysis, 1), "%"),
+    paste0(round(100 * sum(analytic_complete$screened == 1) / n_analysis, 1), "%"),
+paste0(round(100 * sum(analytic_complete$screened == 0) / n_analysis, 1), "%"),
     "",
     paste0(round(100 * sum(analytic_complete$pp_depress_bin == 0) / n_analysis, 1), "%"),
     paste0(round(100 * sum(analytic_complete$pp_depress_bin == 1) / n_analysis, 1), "%"),
     "",
-    paste0(round(100 * sum(analytic_complete$bpg_deprs8_bin == 0) / n_analysis, 1), "%"),
     paste0(round(100 * sum(analytic_complete$bpg_deprs8_bin == 1) / n_analysis, 1), "%"),
+    paste0(round(100 * sum(analytic_complete$bpg_deprs8_bin == 0) / n_analysis, 1), "%"),
     "",
     paste0(round(100 * sum(analytic_complete$mat_ed == 1) / n_analysis, 1), "%"),
     paste0(round(100 * sum(analytic_complete$mat_ed == 2) / n_analysis, 1), "%"),
@@ -173,7 +174,7 @@ A multivariable logistic regression was used to analyze whether postpartum depre
 A random forest approach was also used alongside logistic regression because it can handle complex relationships between variables without needing to specify them in advance. To see if this method improved prediction, both models were tested using 5-fold cross-validation. The random forest used the ranger package with 300 trees and default settings for other options. The performance of the models was measured by accuracy and ROC AUC, with averages and variation across the tests used to check stability.
 
 # Results
-The analytic sample included `r scales::comma(n_analysis)` respondents. Overall, `r round(100 * sum(analytic_complete$screened == 0) / n_analysis, 1)`% reported being screened for depression during prenatal care, and `r round(100 * sum(analytic_complete$pp_depress_bin == 0) / n_analysis, 1)`% reported postpartum depressive symptoms.
+The analytic sample included `r scales::comma(n_analysis)` respondents. Overall, `r round(100 * sum(analytic_complete$screened == 1) / n_analysis, 1)`% reported being screened for depression during prenatal care, and `r round(100 * sum(analytic_complete$pp_depress_bin == 1) / n_analysis, 1)`% reported postpartum depressive symptoms.
 
 ## Exploratory Analysis
 Postpartum depression was a bit more common among women who were not screened, at 15.1%, compared to 13.9% for those who were screened. Higher rates were also seen in women who experienced depression during pregnancy, and differences between various education levels were visible. Table 2 shows that before adjusting for covariates, screened respondents already had lower odds of postpartum depressive symptoms compared with those who were not screened.
@@ -258,8 +259,8 @@ fig_data <- analytic_complete |>
   mutate(percent = 100 * n / sum(n)) |>
   ungroup() |>
   mutate(
-    Screening = ifelse(screened == 0, "Screened", "Not screened"),
-    Outcome = ifelse(pp_depress_bin == 0, "Depressive symptoms", "No depressive symptoms")
+    Screening = ifelse(screened == 0, "Not screened", "Screened"),
+    Outcome = ifelse(pp_depress_bin == 0, "No depressive symptoms", "Depressive symptoms")
   )
 
 ggplot(fig_data, aes(x = Screening, y = percent, fill = Outcome)) +
@@ -303,7 +304,7 @@ fig_dep_preg <- analytic_complete |>
   ungroup() |>
   mutate(
     Depression_pregnancy = ifelse(bpg_deprs8_bin == 1, "Yes", "No"),
-    Outcome = ifelse(pp_depress_bin == 0, "Depressive symptoms", "No depressive symptoms")
+    Outcome = ifelse(pp_depress_bin == 0, "No depressive symptoms", "Depressive symptoms")
   )
 
 ggplot(fig_dep_preg, aes(x = Depression_pregnancy, y = percent, fill = Outcome)) +
@@ -355,8 +356,8 @@ screening_table <- analytic_complete |>
   group_by(screened) |>
   mutate(
     percent = round(100 * n / sum(n), 1),
-    Screening = ifelse(screened == 0, "Screened", "Not screened"),
-    Outcome = ifelse(pp_depress_bin == 0, "Depressive symptoms", "No depressive symptoms")
+    Screening = ifelse(screened == 0, "Not screened", "Screened"),
+    Outcome = ifelse(pp_depress_bin == 0, "No depressive symptoms", "Depressive symptoms")
   ) |>
   ungroup() |>
   mutate(value = paste0(scales::comma(n), " (", percent, "%)")) |>
@@ -453,7 +454,7 @@ This study examined whether screening for mental health issues during pregnancy 
 
 These findings are broadly consistent with prior work showing that postpartum depressive symptoms are common and that provider screening practices vary @bauman2020vitalsigns; @farr2016provider. Clinical guidelines recommend routine screening during pregnancy and postpartum @acog2023screening, and these results add to the population-level evidence on how screening relates to reported symptoms.
 
-The most noticeable finding was how strongly depression during pregnancy predicted postpartum depression symptoms (e.g., women with depression during pregnancy were more than three times more likely to experience postpartum symptoms (OR = 3.38). This highlights the importance of considering mental health history when studying postpartum outcomes.
+The most noticeable finding was how strongly depression during pregnancy predicted postpartum depression symptoms women with depression during pregnancy were more than three times more likely to experience postpartum symptoms (OR = 3.38). This highlights the importance of considering mental health history when studying postpartum outcomes.
 
 It is important to understand what this study cannot show. Since the data are based on a single point in time and rely on self-reports, we can't say whether screening itself led to better results. Women who were screened might also have had better access to healthcare or more supportive providers, which could influence postpartum mental health independently.
 **Strengths:** PRAMS is a large dataset spanning multiple states, providing sufficient information for detailed analysis and making the results more applicable across different areas than studies limited to a single site.

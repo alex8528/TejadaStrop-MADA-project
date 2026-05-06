@@ -130,7 +130,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Quick check of imported data</span></span>
 <span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(dat)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Rows: 237,392
+<pre><code>Rows: 235,304
 Columns: 19
 $ id             &lt;chr&gt; "2016AK327002", "2016AK327006", "2016AK327007", "2016AK…
 $ pp_depress     &lt;dbl&gt; 2, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 2, 1, 2, 1, 1, 1, 1, 1…
@@ -148,9 +148,9 @@ $ wtanal         &lt;dbl&gt; 7.619050, 7.619050, 7.619050, 7.619050, 7.619050, 5
 $ stratumc       &lt;dbl&gt; 129, 129, 129, 129, 129, 129, 129, 129, 129, 129, 129, …
 $ sud_nest       &lt;dbl&gt; 1292016, 1292016, 1292016, 1292016, 1292016, 1292016, 1…
 $ nest_yr        &lt;dbl&gt; 2016, 2016, 2016, 2016, 2016, 2016, 2016, 2016, 2016, 2…
-$ screened       &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0…
-$ pp_depress_bin &lt;dbl&gt; 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1…
-$ bpg_deprs8_bin &lt;dbl&gt; 0, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1…</code></pre>
+$ screened       &lt;dbl&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1…
+$ pp_depress_bin &lt;dbl&gt; 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0…
+$ bpg_deprs8_bin &lt;dbl&gt; 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0…</code></pre>
 </div>
 </div>
 <div class="cell">
@@ -168,7 +168,7 @@ $ bpg_deprs8_bin &lt;dbl&gt; 0, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 
 <span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">drop_na</span>() <span class="sc">|&gt;</span></span>
 <span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
 <span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">screened =</span> <span class="fu">as.factor</span>(screened),</span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">bpg_deprs8_bin =</span> <span class="fu">as.factor</span>(bpg_deprs8_bin),</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">bpg_deprs8_bin =</span> <span class="fu">factor</span>(bpg_deprs8_bin, <span class="at">levels =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>)),</span>
 <span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">mat_ed =</span> <span class="fu">as.factor</span>(mat_ed)</span>
 <span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
@@ -179,7 +179,7 @@ $ bpg_deprs8_bin &lt;dbl&gt; 0, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 
 <div class="cell-output cell-output-stdout">
 <pre><code>
      0      1 
- 32879 200334 </code></pre>
+200334  32879 </code></pre>
 </div>
 </div>
 </section>
@@ -204,7 +204,7 @@ $ bpg_deprs8_bin &lt;dbl&gt; 0, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 
 <pre><code># A tibble: 1 × 2
        n postpartum_depression_cases
    &lt;int&gt;                       &lt;int&gt;
-1 233213                      200334</code></pre>
+1 233213                       32879</code></pre>
 </div>
 </div>
 </section>
@@ -224,8 +224,8 @@ $ bpg_deprs8_bin &lt;dbl&gt; 0, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 
 <pre><code># A tibble: 2 × 7
   term        estimate std.error statistic  p.value conf.low conf.high
   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;
-1 (Intercept)    6.21    0.00665    275.   0           6.13      6.29 
-2 screened1      0.905   0.0149      -6.67 2.54e-11    0.879     0.932</code></pre>
+1 (Intercept)    0.178    0.0133   -130.   0           0.173     0.182
+2 screened1      0.905    0.0149     -6.67 2.54e-11    0.879     0.932</code></pre>
 </div>
 </div>
 </section>
@@ -250,15 +250,15 @@ $ bpg_deprs8_bin &lt;dbl&gt; 0, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 
 <span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>multi_tbl</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 7 × 7
-  term            estimate std.error statistic   p.value conf.low conf.high
-  &lt;chr&gt;              &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;
-1 (Intercept)        2.53     0.0399     23.3  7.90e-120    2.34      2.74 
-2 screened1          0.759    0.0154    -17.9  2.30e- 71    0.737     0.783
-3 bpg_deprs8_bin1    3.38     0.0136     89.5  0            3.29      3.47 
-4 mat_ed2            0.735    0.0425     -7.24 4.64e- 13    0.676     0.799
-5 mat_ed3            0.776    0.0399     -6.36 2.03e- 10    0.717     0.838
-6 mat_ed4            0.919    0.0398     -2.12 3.39e-  2    0.849     0.993
-7 mat_ed5            1.44     0.0400      9.13 6.62e- 20    1.33      1.56 </code></pre>
+  term            estimate std.error statistic  p.value conf.low conf.high
+  &lt;chr&gt;              &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;
+1 (Intercept)        0.154    0.0401    -46.6  0           0.143     0.167
+2 screened1          0.759    0.0154    -17.9  2.30e-71    0.737     0.783
+3 bpg_deprs8_bin1    3.38     0.0136     89.5  0           3.29      3.47 
+4 mat_ed2            1.36     0.0425      7.24 4.64e-13    1.25      1.48 
+5 mat_ed3            1.29     0.0399      6.36 2.03e-10    1.19      1.39 
+6 mat_ed4            1.09     0.0398      2.12 3.39e- 2    1.01      1.18 
+7 mat_ed5            0.694    0.0400     -9.13 6.62e-20    0.642     0.751</code></pre>
 </div>
 </div>
 </section>
@@ -309,9 +309,9 @@ Call:  stats::glm(formula = ..y ~ ., family = stats::binomial, data = data)
 
 Coefficients:
       (Intercept)        screened_X1  bpg_deprs8_bin_X1          mat_ed_X2  
-          0.92770           -0.27543            1.21666           -0.30775  
+         -1.86893           -0.27543            1.21666            0.30775  
         mat_ed_X3          mat_ed_X4          mat_ed_X5  
-         -0.25397           -0.08452            0.36571  
+          0.25397            0.08452           -0.36571  
 
 Degrees of Freedom: 233212 Total (i.e. Null);  233206 Residual
 Null Deviance:      189700 

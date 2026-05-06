@@ -9,7 +9,7 @@ execute:
 ---
 
 ```{r}
-# Load packages
+
 library(tidyverse)
 library(here)
 
@@ -62,22 +62,22 @@ if (!file.exists(clean_path)) {
       ) |>
       mutate(
         screened = case_when(
-          ask_dprs %in% c(1, "1") ~ 1,
-          ask_dprs %in% c(2, "2") ~ 0,
+          ask_dprs %in% c(2, "2") ~ 1,
+          ask_dprs %in% c(1, "1") ~ 0,
           TRUE ~ NA_real_
         ),
         pp_depress_bin = case_when(
-          pp_depress %in% c(1, "1") ~ 1,
-          pp_depress %in% c(2, "2") ~ 0,
+          pp_depress %in% c(2, "2") ~ 1,
+          pp_depress %in% c(1, "1") ~ 0,
           TRUE ~ NA_real_
         ),
         bpg_deprs8_bin = case_when(
-          bpg_deprs8 %in% c(1, "1") ~ 1,
-          bpg_deprs8 %in% c(2, "2") ~ 0,
+          bpg_deprs8 %in% c(2, "2") ~ 1,
+          bpg_deprs8 %in% c(1, "1") ~ 0,
           TRUE ~ NA_real_
         )
       ) |>
-      filter(!is.na(screened), !is.na(pp_depress_bin))
+      filter(!is.na(screened), !is.na(pp_depress_bin), !is.na(bpg_deprs8_bin))
 
     # Create processed-data folder if needed
     dir.create(here("data", "processed-data"), recursive = TRUE, showWarnings = FALSE)
@@ -105,4 +105,4 @@ if (!file.exists(clean_path)) {
 ```
 
 # Selecting covariates based on prior literature on postpartum depression risk factors
-# Restricting to complete cases -- listwise deletion appropriate given low missingness rate
+# Restricting to complete cases; listwise deletion appropriate given low missingness rate

@@ -123,7 +123,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(analytic_dat)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 237392     19</code></pre>
+<pre><code>[1] 235304     19</code></pre>
 </div>
 </div>
 </section>
@@ -146,8 +146,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code># A tibble: 2 × 4
   screened      n   pct screening_status
      &lt;dbl&gt;  &lt;int&gt; &lt;dbl&gt; &lt;chr&gt;           
-1        0 192539 0.811 Not screened    
-2        1  44853 0.189 Screened        </code></pre>
+1        0  44383 0.189 Not screened    
+2        1 190921 0.811 Screened        </code></pre>
 </div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">saveRDS</span>(</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  screen_tbl,</span>
@@ -174,8 +174,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code># A tibble: 2 × 4
   pp_depress_bin      n   pct depression_status             
            &lt;dbl&gt;  &lt;int&gt; &lt;dbl&gt; &lt;chr&gt;                         
-1              0  33599 0.142 No depressive symptoms        
-2              1 203793 0.858 Postpartum depressive symptoms</code></pre>
+1              0 202100 0.859 No depressive symptoms        
+2              1  33204 0.141 Postpartum depressive symptoms</code></pre>
 </div>
 </div>
 </section>
@@ -281,10 +281,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 # Groups:   screened [2]
   screened screening_status depression_status                   n percent
      &lt;dbl&gt; &lt;chr&gt;            &lt;chr&gt;                           &lt;int&gt;   &lt;dbl&gt;
-1        0 Not screened     No depressive symptoms          26794    13.9
-2        0 Not screened     Postpartum depressive symptoms 165745    86.1
-3        1 Screened         No depressive symptoms           6805    15.2
-4        1 Screened         Postpartum depressive symptoms  38048    84.8</code></pre>
+1        0 Not screened     No depressive symptoms          37673    84.9
+2        0 Not screened     Postpartum depressive symptoms   6710    15.1
+3        1 Screened         No depressive symptoms         164427    86.1
+4        1 Screened         Postpartum depressive symptoms  26494    13.9</code></pre>
 </div>
 </div>
 <p>The exploratory analysis suggests that postpartum depressive symptoms were slightly less common among respondents who reported being screened during prenatal care. About 13.9% of screened respondents reported postpartum depressive symptoms compared with 15.2% among those who were not screened.</p>
@@ -299,16 +299,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>dep_prior_tbl</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 6 × 4
-# Groups:   bpg_deprs8_bin [3]
+<pre><code># A tibble: 4 × 4
+# Groups:   bpg_deprs8_bin [2]
   bpg_deprs8_bin pp_depress_bin      n   pct
            &lt;dbl&gt;          &lt;dbl&gt;  &lt;int&gt; &lt;dbl&gt;
-1              0              0  11601 0.307
-2              0              1  26157 0.693
-3              1              0  21603 0.109
-4              1              1 175943 0.891
-5             NA              0    395 0.189
-6             NA              1   1693 0.811</code></pre>
+1              0              0 175943 0.891
+2              0              1  21603 0.109
+3              1              0  26157 0.693
+4              1              1  11601 0.307</code></pre>
 </div>
 </div>
 </section>
@@ -326,18 +324,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 # Groups:   mat_ed [6]
    mat_ed pp_depress_bin     n    pct
     &lt;dbl&gt;          &lt;dbl&gt; &lt;int&gt;  &lt;dbl&gt;
- 1      1              0   831 0.130 
- 2      1              1  5570 0.870 
- 3      2              0  3918 0.194 
- 4      2              1 16240 0.806 
- 5      3              0 10127 0.180 
- 6      3              1 45987 0.820 
- 7      4              0 10268 0.155 
- 8      4              1 56158 0.845 
- 9      5              0  8126 0.0943
-10      5              1 78056 0.906 
-11     NA              0   329 0.156 
-12     NA              1  1782 0.844 </code></pre>
+ 1      1              0  5472 0.871 
+ 2      1              1   807 0.129 
+ 3      2              0 16033 0.806 
+ 4      2              1  3853 0.194 
+ 5      3              0 45504 0.820 
+ 6      3              1  9998 0.180 
+ 7      4              0 55714 0.846 
+ 8      4              1 10158 0.154 
+ 9      5              0 77611 0.906 
+10      5              1  8063 0.0941
+11     NA              0  1766 0.845 
+12     NA              1   325 0.155 </code></pre>
 </div>
 </div>
 </section>
@@ -408,10 +406,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 # Groups:   screened [2]
   screened `Prenatal screening` `Postpartum depressive symptoms`      n percent
      &lt;dbl&gt; &lt;chr&gt;                &lt;chr&gt;                             &lt;int&gt;   &lt;dbl&gt;
-1        0 Not screened         No                                26794    13.9
-2        0 Not screened         Yes                              165745    86.1
-3        1 Screened             No                                 6805    15.2
-4        1 Screened             Yes                               38048    84.8</code></pre>
+1        0 Not screened         No                                37673    84.9
+2        0 Not screened         Yes                                6710    15.1
+3        1 Screened             No                               164427    86.1
+4        1 Screened             Yes                               26494    13.9</code></pre>
 </div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write_csv</span>(</span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  screening_table,</span>
