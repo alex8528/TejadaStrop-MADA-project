@@ -454,7 +454,7 @@ This study examined whether screening for mental health issues during pregnancy 
 
 These findings are broadly consistent with prior work showing that postpartum depressive symptoms are common and that provider screening practices vary @bauman2020vitalsigns; @farr2016provider. Clinical guidelines recommend routine screening during pregnancy and postpartum @acog2023screening, and these results add to the population-level evidence on how screening relates to reported symptoms.
 
-The most noticeable finding was how strongly depression during pregnancy predicted postpartum depression symptoms women with depression during pregnancy were more than three times more likely to experience postpartum symptoms (OR = 3.38). This highlights the importance of considering mental health history when studying postpartum outcomes.
+The most noticeable finding was how strongly depression during pregnancy predicted postpartum depression symptoms. Women with depression during pregnancy were more than three times more likely to experience postpartum symptoms (OR = 3.38). This highlights the importance of considering mental health history when studying postpartum outcomes.
 
 It is important to understand what this study cannot show. Since the data are based on a single point in time and rely on self-reports, we can't say whether screening itself led to better results. Women who were screened might also have had better access to healthcare or more supportive providers, which could influence postpartum mental health independently.
 **Strengths:** PRAMS is a large dataset spanning multiple states, providing sufficient information for detailed analysis and making the results more applicable across different areas than studies limited to a single site.
